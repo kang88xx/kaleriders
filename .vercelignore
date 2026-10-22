@@ -1,0 +1,6 @@
+.git/
+checks/
+README.md
+.DS_Store
+._*
+**/._*

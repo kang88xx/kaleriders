@@ -1,0 +1,81 @@
+/* Original articulated characters. Their parent flight engine owns translation. */
+.character-art { overflow: visible; }
+.character-art g { transform-box: fill-box; transform-origin: center; }
+.character-body { animation: character-breathe 2.8s steps(34,end) infinite; }
+.character-look { animation: character-look 7.5s steps(90,end) infinite; }
+.character-blink { animation: character-blink 5.8s steps(1,end) infinite; }
+.character-arm-left { transform-origin: right center!important; animation: character-wave 3.4s steps(41,end) infinite; }
+.character-arm-right { transform-origin: left center!important; animation: character-wave 3.8s steps(46,end) -1.2s infinite reverse; }
+.character-feet { animation: character-feet 2.8s steps(34,end) infinite; }
+.character-orbit-back,.character-orbit-front { animation: character-orbit 4.2s steps(50,end) infinite; }
+.character-coil { animation: character-coil 2.7s steps(32,end) infinite; }
+.character-star { animation: character-star 4.5s steps(54,end) infinite; }
+.character-satellite,.character-spark { animation: character-spark 3.6s steps(43,end) infinite; }
+.character-art--kalya .character-blink { animation-delay: -1.8s; }
+.character-art--mascort .character-blink { animation-delay: -3.4s; }
+.character-art--kalya .character-body { animation-delay: -.8s; }
+.character-art--mascort .character-body { animation-delay: -1.5s; }
+
+/* The flag's free edge flexes more than its pole; typography only tilts slightly. */
+.floating-member .member-flag {
+  --flag-color: #d8ee7a;
+  position: relative;
+  isolation: isolate;
+  clip-path: none;
+  border-radius: 2px;
+  transform-origin: 0 50%;
+  animation: character-flag 3.2s steps(38,end) infinite;
+}
+.member-kalya .member-flag { --flag-color: #254ad8; animation-delay: -.9s; }
+.member-mascort .member-flag { --flag-color: #e8b58d; animation-delay: -1.8s; }
+.floating-member .member-flag::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: calc(100% - 2px);
+  top: -1px;
+  width: 15px;
+  height: calc(100% + 2px);
+  background: var(--flag-color);
+  border-block: 1px solid var(--blue, #254ad8);
+  clip-path: polygon(0 0,100% 0,55% 50%,100% 100%,0 100%);
+  transform-origin: left center;
+  animation: character-tail 3.2s steps(38,end) infinite;
+  animation-delay: inherit;
+}
+.floating-member .member-flag::before {
+  content: '';
+  position: absolute;
+  right: 3px;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: #f4f3eb;
+  opacity: .13;
+  transform: skewY(-7deg);
+  pointer-events: none;
+}
+.character-art g,.floating-member .member-flag,.floating-member .member-flag::after { animation-play-state: paused; }
+.flight-ready.is-flight-visible .character-art g,
+.flight-ready.is-flight-visible .member-flag,
+.flight-ready.is-flight-visible .member-flag::after { animation-play-state: running; }
+.motion-paused .character-art g,
+.motion-paused .member-flag,.motion-paused .member-flag::after,
+[data-frozen="true"] .character-art g,
+[data-frozen="true"] .member-flag,[data-frozen="true"] .member-flag::after { animation-play-state: paused!important; }
+
+@keyframes character-breathe { 0%,100%{transform:scale(1,1)} 50%{transform:translateY(-.8px) scale(1.025,.975)} }
+@keyframes character-look { 0%,25%,85%,100%{transform:translateX(0)} 35%,65%{transform:translate(1.4px,-.4px)} 75%{transform:translateX(-.7px)} }
+@keyframes character-blink { 0%,43%,47%,100%{transform:scaleY(1)} 44%,46%{transform:scaleY(.12)} }
+@keyframes character-wave { 0%,100%{transform:rotate(-5deg)} 50%{transform:rotate(10deg)} }
+@keyframes character-feet { 0%,100%{transform:rotate(-3deg)} 50%{transform:rotate(4deg) translateY(-1px)} }
+@keyframes character-orbit { 0%,100%{transform:rotate(-3deg) scaleY(.96)} 50%{transform:rotate(3deg) scaleY(1.04)} }
+@keyframes character-coil { 0%,100%{transform:scaleY(.96)} 50%{transform:scaleY(1.035)} }
+@keyframes character-star { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
+@keyframes character-spark { 0%,100%{transform:translateY(0) scale(.9)} 50%{transform:translateY(-2px) scale(1.08)} }
+@keyframes character-flag { 0%,100%{transform:rotate(1deg) skewY(-1deg)} 50%{transform:rotate(-1deg) skewY(1.5deg)} }
+@keyframes character-tail { 0%,100%{transform:skewY(-7deg) scaleX(.92)} 50%{transform:skewY(8deg) scaleX(1.04)} }
+@media(max-width:600px) { .floating-member .member-flag::after{width:10px} }
+@media(prefers-reduced-motion:reduce) {
+  .character-art g,.floating-member .member-flag,.floating-member .member-flag::after { animation:none!important; }
+}
