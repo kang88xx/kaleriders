@@ -28,7 +28,7 @@ function starPoints() {
 }
 
 export function avatarMarkup(member) {
-  const identity = ['kang', 'kalya', 'mascort'].includes(member) ? member : 'kang';
+  const identity = ['kang', 'kalya', 'mascot'].includes(member) ? member : 'kang';
   const figures = {
     kang: `<g class="character-orbit-back"><ellipse cx="40" cy="41" rx="35" ry="12" transform="rotate(-24 40 41)" fill="none" stroke="${BLUE}" stroke-width="1.5"/></g>
       ${limbs()}<g class="character-body"><circle cx="40" cy="39" r="25" fill="${LIME}" stroke="${BLUE}" stroke-width="1.5"/>
@@ -37,7 +37,7 @@ export function avatarMarkup(member) {
     kalya: `${limbs()}<g class="character-coil"><path d="M22 17C-1 21 8 32 40 32S78 46 57 51S7 47 15 61C22 72 64 69 69 59" fill="none" stroke="${BLUE}" stroke-width="8" stroke-linecap="round"/><path d="M23 17C2 21 9 30 40 30S76 44 57 49S10 46 17 59" fill="none" stroke="${PALE}" stroke-width="1.8" stroke-linecap="round"/></g>
       <g class="character-body"><ellipse cx="40" cy="36" rx="22" ry="21" fill="${PALE}" stroke="${BLUE}" stroke-width="1.5"/><path d="M22 22Q40 7 58 22" fill="none" stroke="${BLUE}" stroke-width="5" stroke-linecap="round"/>${face()}</g>
       <g class="character-satellite"><circle cx="65" cy="16" r="4" fill="${LIME}" stroke="${BLUE}" stroke-width="1.2"/></g>`,
-    mascort: `${limbs()}<g class="character-body"><g class="character-star"><polygon points="${starPoints()}" fill="${APRICOT}" stroke="${BLUE}" stroke-width="1.5" stroke-linejoin="round"/><path d="M25 28L29 24" fill="none" stroke="${PAPER}" stroke-width="2.5" stroke-linecap="round"/></g>${face()}</g>
+    mascot: `${limbs()}<g class="character-body"><g class="character-star"><polygon points="${starPoints()}" fill="${APRICOT}" stroke="${BLUE}" stroke-width="1.5" stroke-linejoin="round"/><path d="M25 28L29 24" fill="none" stroke="${PAPER}" stroke-width="2.5" stroke-linecap="round"/></g>${face()}</g>
       <g class="character-spark" fill="none" stroke="${BLUE}" stroke-width="1.4" stroke-linecap="round"><path d="M67 10V18M63 14H71"/></g>`,
   };
   return `<svg xmlns="http://www.w3.org/2000/svg" class="character-art character-art--${identity}" viewBox="0 0 80 80" width="80" height="80" aria-hidden="true" focusable="false" style="display:block;width:100%;height:100%;overflow:visible">${figures[identity]}</svg>`;

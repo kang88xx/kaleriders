@@ -12,9 +12,9 @@
 .character-star { animation: character-star 4.5s steps(54,end) infinite; }
 .character-satellite,.character-spark { animation: character-spark 3.6s steps(43,end) infinite; }
 .character-art--kalya .character-blink { animation-delay: -1.8s; }
-.character-art--mascort .character-blink { animation-delay: -3.4s; }
+.character-art--mascot .character-blink { animation-delay: -3.4s; }
 .character-art--kalya .character-body { animation-delay: -.8s; }
-.character-art--mascort .character-body { animation-delay: -1.5s; }
+.character-art--mascot .character-body { animation-delay: -1.5s; }
 
 /* The flag's free edge flexes more than its pole; typography only tilts slightly. */
 .floating-member .member-flag {
@@ -27,7 +27,7 @@
   animation: character-flag 3.2s steps(38,end) infinite;
 }
 .member-kalya .member-flag { --flag-color: #254ad8; animation-delay: -.9s; }
-.member-mascort .member-flag { --flag-color: #e8b58d; animation-delay: -1.8s; }
+.member-mascot .member-flag { --flag-color: #e8b58d; animation-delay: -1.8s; }
 .floating-member .member-flag::after {
   content: '';
   position: absolute;
