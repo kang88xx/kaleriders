@@ -82,8 +82,8 @@ export function buildMotifs() {
 
 export function patternMarkup(text, illuminated) {
   const id = `member-letter-${++artworkId}`;
-  const label = text === 'Start today' ? 'Start today' : 'CRYPTO';
-  const letters = `x="700" y="${illuminated ? 330 : 350}" text-anchor="middle" textLength="1320" lengthAdjust="spacingAndGlyphs" font-family="Arial, Helvetica, sans-serif" font-size="${illuminated ? 325 : 390}" font-weight="900" letter-spacing="-18"`;
+  const label = text === 'Kale Riders' ? 'Kale Riders' : 'CRYPTO';
+  const letters = `x="700" y="${illuminated ? 325 : 350}" text-anchor="middle" textLength="1320" lengthAdjust="spacingAndGlyphs" font-family="Arial, Helvetica, sans-serif" font-size="${illuminated ? 300 : 390}" font-weight="900" letter-spacing="-18"`;
   const items = buildMotifs();
   const marks = items.map((item, i) => `<g data-pattern-motif data-x="${item.x}" data-y="${item.y}" data-angle="${item.angle}" data-size="${item.size}" data-color="${item.color}" data-arrival="${item.arrival}" transform="translate(${item.x} ${item.y})" style="color:${PALETTE[item.color]}"><g data-motif-motion transform="rotate(${item.angle}) scale(${item.size})">${motif(item.variant)}</g></g>`).join('');
   const gradients = illuminated ? [0, 1].map(i => `<linearGradient id="${id}-beam-${i}" gradientUnits="userSpaceOnUse" data-beam-gradient><stop stop-color="${PALETTE[i ? 2 : 0]}" stop-opacity=".12"/><stop offset="1" stop-color="${PALETTE[i ? 2 : 0]}" stop-opacity=".5"/></linearGradient><radialGradient id="${id}-halo-${i}"><stop stop-color="${PALETTE[i ? 2 : 0]}" stop-opacity=".76"/><stop offset=".72" stop-color="${PALETTE[i ? 2 : 0]}" stop-opacity=".38"/><stop offset="1" stop-color="${PALETTE[i ? 2 : 0]}" stop-opacity="0"/></radialGradient>`).join('') : '';

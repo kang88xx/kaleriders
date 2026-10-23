@@ -70,7 +70,7 @@ function fixture({ reduced = false } = {}) {
     const scene = new Element({ flightScene: kind });
     scene.clientWidth = 1200;
     scene.clientHeight = 450;
-    const pattern = new Element({ patternText: kind === 'hero' ? 'CRYPTO' : 'Start today' });
+    const pattern = new Element({ patternText: kind === 'hero' ? 'CRYPTO' : 'Kale Riders' });
     pattern.clientWidth = 1200;
     pattern.clientHeight = 400;
     pattern.selectors = { '[data-pattern-drift]': new Element() };

@@ -86,8 +86,9 @@ test('artwork is deterministic, richly varied and has exactly two footer lightin
   const motifs = buildMotifs();
   assert.equal(new Set(motifs.map(item => item.variant)).size, 8);
   assert.equal(new Set(motifs.map(item => item.color)).size, 4);
-  const one = patternMarkup('Start today', true);
-  const two = patternMarkup('Start today', true);
+  const one = patternMarkup('Kale Riders', true);
+  const two = patternMarkup('Kale Riders', true);
+  assert.equal((one.match(/>Kale Riders<\/text>/g) || []).length, 2, 'The closing label must drive both the clip and its outline');
   assert.equal(one.replace(/member-letter-\d+/g, 'scene'), two.replace(/member-letter-\d+/g, 'scene'));
   const ids = [...(one + two).matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   assert.equal(new Set(ids).size, ids.length, 'Separate scenes cannot collide in SVG IDs');
@@ -117,7 +118,7 @@ function effectsFixture({ reduced = false, closing = false } = {}) {
   const window = new EventTarget();
   const media = new EventTarget(); media.matches = reduced;
   const scene = new Element({ flightScene: closing ? 'closing' : 'hero' });
-  const pattern = new Element({ patternText: closing ? 'Start today' : 'CRYPTO' });
+  const pattern = new Element({ patternText: closing ? 'Kale Riders' : 'CRYPTO' });
   const motif = new Element({ x: '400', y: '220', size: '.8', angle: '0', color: '0', arrival: '5' });
   const motion = new Element(); motif.single = { '[data-motif-motion]': motion };
   const color = new Element();

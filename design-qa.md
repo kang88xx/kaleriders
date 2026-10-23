@@ -46,3 +46,15 @@ The first asset pass exposed excess transparent canvas, corrected with proportio
 - No separate lint, typecheck or build script exists in this static project.
 
 final result: passed
+
+## Closing wordmark and interface simplification — 2026-10-23
+
+Approved reference: `/Users/henry/Desktop/kaleriders/previews/closing-wordmark/kale-riders-preview.png`. Applied the Kale Riders wording and proportions within the existing animated artwork, retaining procedural patterns, two torch characters, pointer placement, and reduced-motion behavior. The reference is a composition guide; pattern details and actor positions change throughout the existing animation.
+
+Additional requested changes: removed the hero location/coordinates, slogan, bottom rule and down-link; removed the reference-section slogan; replaced four service tab numbers with Lucide icons; removed all four service-panel contact buttons and decorative bottom captions. Header/mobile-menu and closing contact entry points remain.
+
+Verification: native Chrome captures in this conversation cover the complete changed artwork, services, and hero at desktop 1280px and mobile 390px widths using a local iframe review sheet. No clipped wordmark or horizontal page overflow was visible. All four service panels switched correctly using a click and ArrowRight. Decorative icons are excluded from accessible names and inherit selected-tab color. The mobile tab row keeps horizontal scrolling and suppresses incidental vertical overflow. Removed elements and their dedicated styles were deleted rather than hidden. No new application dependency was introduced. Icon provenance and license are included.
+
+Automated verification: all 65 existing tests pass, including the renamed artwork label, drag placement, mobile beam alignment, reduced motion, translation coverage, and contact behavior. `node --check public/pattern-art.js` and `git diff --check` pass. No lint/typecheck/build command exists. No new console audit is claimed for this bounded text/CSS/icon change.
+
+final result: passed
