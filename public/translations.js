@@ -74,7 +74,6 @@ export const english = Object.freeze({
   '같은 방식으로 닿지는 않으니까.': 'doesn’t land the same way everywhere.',
   '좋은 제품이 있어도, 새로운 시장에서는 다른 질문을 만나게 됩니다. 어디서 대화가 시작되는지, 어떤 이야기에 마음이 움직이는지.': 'Even a great product faces new questions in a new market. Where do conversations begin? What stories move people?',
   '는 한국의 문화와 사람들의 관심에서 출발합니다. 당신의 가치를 이곳의 맥락으로 풀어내고, 자연스럽게 참여할 이유를 만듭니다.': ' starts with Korean culture and what people care about. We bring your value into the local context and create a natural reason to take part.',
-  '우리가 연결하는 방식': 'How we connect',
   '가능성에 방향을.': 'Direction for possibility.',
   '아이디어에 움직임을.': 'Momentum for ideas.',
   '필요한 일을, 필요한 순간에.': 'The right support, at the right moment.',

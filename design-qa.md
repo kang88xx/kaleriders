@@ -58,3 +58,11 @@ Verification: native Chrome captures in this conversation cover the complete cha
 Automated verification: all 65 existing tests pass, including the renamed artwork label, drag placement, mobile beam alignment, reduced motion, translation coverage, and contact behavior. `node --check public/pattern-art.js` and `git diff --check` pass. No lint/typecheck/build command exists. No new console audit is claimed for this bounded text/CSS/icon change.
 
 final result: passed
+
+## Redundant navigation and outer rules — 2026-10-23
+
+Removed the context-section `How we connect` link and its underline, its now-unused styles and translation, and the final paragraph's trailing margin. Removed only the top rule on the service tab row. Process list now draws borders between adjacent items, leaving its top and bottom open.
+
+Native Chrome reviewed the process section in 1280px and 390px frames: interior separators remain, the outer top/bottom rules are absent, and text layout is intact. The accessibility tree no longer includes How we connect. Source review confirms the service tab selection indicator and bottom rule remain. All 65 tests pass; translation syntax and `git diff --check` pass. Footer alternatives are image-only previews outside the production repository and have not been applied.
+
+final result: passed
