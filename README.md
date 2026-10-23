@@ -32,7 +32,7 @@ Vercel project: `kaleriders`, under `kang88xxs-projects`.
 - Official mailbox and fixed inquiry recipient: `hello@kaleriders.com`
 - `public/contact.js` sends inquiries through the FormSubmit AJAX endpoint. The visitor’s email is the Reply-To address.
 - A successful provider acknowledgement is required before the form shows success. Errors, timeouts, and activation-required responses preserve the visitor’s input and offer a direct email link.
-- FormSubmit requires the mailbox owner to activate the form through its confirmation email. Until this is completed, delivery is pending. Verify actual inbox receipt after activation; an HTTP success response alone is not delivery evidence.
+- FormSubmit requires mailbox activation. The owner completed activation on 2026-10-23. At 12:16 KST, test `KALE-20261023-02` was submitted from the production website in Chrome and received in the `hello@kaleriders.com` inbox; the Korean message and Reply-To header matched the submitted values. If the recipient or form URL changes, repeat activation and verify inbox receipt; an HTTP success response alone is not delivery evidence.
 - The form does not save visitor messages in browser storage. FormSubmit processes the submission; its privacy policy is linked beside the submit button.
 - No npm dependencies, API keys, SMTP credentials, or changes to the existing Google Workspace MX/SPF records are needed.
 - Automated tests use stubbed HTTP responses and do not send real emails. Test production delivery deliberately with clearly labeled test content.
