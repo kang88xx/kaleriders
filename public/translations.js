@@ -4,8 +4,6 @@ export const english = Object.freeze({
   '본문으로 바로가기': 'Skip to content',
   'Kale Riders 홈': 'Kale Riders home',
   'Kale Riders 맨 위로': 'Kale Riders — back to top',
-  'Kale Riders | 좋은 가능성이, 한국에 닿는 방식.': 'Kale Riders | Bringing new possibilities to Korea.',
-  'Kale Riders — 시장을 읽고, 사람을 잇고, 다음을 만듭니다. 글로벌 프로젝트의 한국 시장 진출 파트너.': 'Kale Riders — Read the market. Connect people. Create what comes next. Your local partner for bringing global projects to Korea.',
   '주 메뉴': 'Main navigation',
   '우리가 하는 일': 'What we do',
   '일하는 방식': 'Our approach',

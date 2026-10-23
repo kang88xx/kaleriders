@@ -20,3 +20,11 @@ Riders의 설명은 사전적 번역이 아닌 이름에 담은 브랜드 이야
 - `kaky/`와 `http://127.0.0.1:4174/#brand`의 이전 프로토타입은 사용자가 제외한 작업이다. 그 레이아웃이나 변경 사항을 운영 사이트에 그대로 이식하지 않는다.
 - 현재 레퍼런스 로고 작업은 Renaiss를 제외한다. 나머지 브랜드는 공식 출처의 원본 로고를 사용하고, 파일과 출처를 함께 기록한다.
 - 홈페이지 미리보기와 화면 검수는 사용자가 선호하는 **Google Chrome**에서 진행한다.
+## 영문 외부 표기 및 심볼
+
+- 브라우저 탭 제목과 검색·링크 공유 제목/설명은 화면 언어와 무관하게 영문으로 유지한다.
+- 영문 탭 제목: **KALE Riders | Your Local Partner in Korea**.
+- 공유 이미지: `public/assets/kale-riders-social-en-v1.png` (1736 × 906). 영문 헤드라인, 서비스 설명, KALE의 풀네임, 도메인을 포함한다.
+- Google 계정 프로필은 배경이 투명한 기존 leaf 심볼 `favicon-kale-rider.png`를 사용한다. Gmail 서명은 영문으로만 구성한다.
+- 영문 브랜드 의미: **Turning authentic engagement into lasting fan relationships.**
+- Buidlpad는 공식 홈페이지 헤더에서 추출한 원본 가로형 SVG를 사용한다. 추출 근거와 해시는 `reference-logo-sources.json`에 기록한다.

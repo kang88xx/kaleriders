@@ -72,7 +72,7 @@ function fixture({ search = '?campaign=share', saved = 'ko', denied = false } = 
   const tab = new Element({ 'aria-selected': 'true' });
   const heading = new Element();
   const label = new Element({ 'aria-label': '주 메뉴' });
-  const meta = new Element({ content: '좋은 가능성이, 한국에 닿는 방식.' });
+  const meta = new Element({ content: 'KALE Riders helps global projects take root in Korea.' });
   const nodes = [
     { parentElement: heading, nodeValue: '\n  우리가 하는 일  ' },
     { parentElement: option, nodeValue: '리서치 & 전략' },
@@ -110,7 +110,7 @@ test('switching round-trips copy and attributes while retaining nodes and active
   assert.equal(f.nodes[1].nodeValue, 'Research & Strategy');
   assert.equal(f.input.getAttribute('placeholder'), 'What should we call you?');
   assert.equal(f.label.getAttribute('aria-label'), 'Main navigation');
-  assert.equal(f.meta.getAttribute('content'), 'Bringing new possibilities to Korea.');
+  assert.equal(f.meta.getAttribute('content'), 'KALE Riders helps global projects take root in Korea.');
   assert.deepEqual(f.buttons.map(button => button.getAttribute('aria-pressed')), ['false', 'true']);
   assert.equal(translate('우리가 하는 일'), 'What we do');
   f.buttons[0].click();
@@ -118,7 +118,7 @@ test('switching round-trips copy and attributes while retaining nodes and active
   assert.equal(f.nodes[1].nodeValue, '리서치 & 전략');
   assert.equal(f.input.getAttribute('placeholder'), '어떻게 불러드릴까요?');
   assert.equal(f.label.getAttribute('aria-label'), '주 메뉴');
-  assert.equal(f.meta.getAttribute('content'), '좋은 가능성이, 한국에 닿는 방식.');
+  assert.equal(f.meta.getAttribute('content'), 'KALE Riders helps global projects take root in Korea.');
   assert.deepEqual(f.buttons.map(button => button.getAttribute('aria-pressed')), ['true', 'false']);
   f.nodes.forEach((node, index) => assert.equal(node, originalNodes[index]));
   assert.equal(f.input.value, '작성 중인 사용자 이름');

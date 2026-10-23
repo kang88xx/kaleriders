@@ -43,14 +43,14 @@
     },
     {
       "name": "Buidlpad",
-      "file": "buidlpad-profile.jpg",
-      "url": "https://pbs.twimg.com/profile_images/2008020590763094016/mlbtOhMQ_400x400.jpg",
-      "page": "https://x.com/buidlpad",
-      "provenance": "Official homepage https://buidlpad.com/ links to X account https://x.com/buidlpad; account HTML includes this image with alt @buidlpad.",
-      "notes": "Official X profile logo, 400x400 JPEG. The homepage wordmark was not available as a downloadable asset. Original colors and background are preserved.",
-      "bytes": 7205,
-      "sha256": "3169db0dc2becb245e4725724dd77390053fbebba7011aa2055cc8cdd8f273f9",
-      "retrieved_at": "2026-10-23T02:17:57.048601+00:00"
+      "file": "buidlpad-wordmark.svg",
+      "url": "https://buidlpad.com/",
+      "page": "https://buidlpad.com/",
+      "extraction": "Second <svg...>...</svg> block in the official homepage saved by Chrome; desktop header home link a.hidden.md:block. Extracted the complete SVG bytes verbatim, including all original paths and attributes.",
+      "notes": "Official horizontal stacked-symbol and Buidlpad wordmark matching the supplied screenshot. Native width 144 height 32; viewBox 0 0 130 29. Original black colors preserved; no redraw, recoloring, or screenshot crop.",
+      "bytes": 10211,
+      "sha256": "eb4abdc02d31b9eb7cb39cb2288a357f82dac66eac1d5fa183bbb5ae47757b65",
+      "retrieved_at": "2026-10-23T05:39:52.698429+00:00"
     }
   ]
 }

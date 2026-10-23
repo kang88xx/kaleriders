@@ -20,15 +20,16 @@ export function initLanguage(doc = document, view = window) {
   const walker = doc.createTreeWalker(doc.documentElement, 4);
   while (walker.nextNode()) {
     const node = walker.currentNode;
-    if (node.parentElement.closest('script, style, svg, noscript, [data-motion-toggle], #route-description')) continue;
+    // Tab titles and sharing metadata stay in English in both page languages.
+    if (node.parentElement.closest('head, script, style, svg, noscript, [data-motion-toggle], #route-description')) continue;
     const original = node.nodeValue;
     const key = original.trim();
     if (Object.hasOwn(english, key)) textNodes.push({ node, original, key });
   }
 
   const attributes = [];
-  doc.querySelectorAll('[aria-label], [placeholder], meta[name="description"]').forEach(element => {
-    for (const name of ['aria-label', 'placeholder', 'content']) {
+  doc.querySelectorAll('[aria-label], [placeholder]').forEach(element => {
+    for (const name of ['aria-label', 'placeholder']) {
       const original = element.getAttribute(name);
       if (original && Object.hasOwn(english, original)) attributes.push({ element, name, original });
     }
