@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { resolveLanguage, translate, formatBrief, initLanguage } from '../public/i18n.js';
+import { resolveLanguage, translate, initLanguage } from '../public/i18n.js';
 import { english } from '../public/translations.js';
 
 for (const [search, saved, expected] of [
@@ -13,17 +13,6 @@ for (const [search, saved, expected] of [
 ]) {
   test(`locale precedence: ${JSON.stringify({ search, saved })} resolves to ${expected}`, () => {
     assert.equal(resolveLanguage(search, saved), expected);
-  });
-}
-
-for (const language of ['ko', 'en']) {
-  test(`${language} brief uses localized labels and preserves user-supplied content`, () => {
-    const data = { name: '이름/팀명', project: '프로젝트', service: 'Custom service / 직접 입력', message: '프로젝트 이야기\nSecond line & <raw>' };
-    const output = formatBrief(data, language);
-    const labels = language === 'en'
-      ? ['Name/team', 'Project', 'How we can help', 'About your project', 'This brief is a draft saved on your device. It has not been sent as an inquiry.']
-      : ['이름/팀명', '프로젝트', '함께하고 싶은 일', '프로젝트 이야기', '이 브리프는 기기에 저장한 초안이며, 상담 요청으로 전송되지 않았습니다.'];
-    assert.equal(output, ['KALE RIDERS — PROJECT BRIEF', '', `${labels[0]}: ${data.name}`, `${labels[1]}: ${data.project}`, `${labels[2]}: ${data.service}`, '', labels[3], data.message, '', labels[4]].join('\n'));
   });
 }
 

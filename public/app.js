@@ -1,5 +1,6 @@
 import { initMemberArt } from './member-art.js';
-import { initLanguage, translate, formatBrief } from './i18n.js';
+import { initLanguage, translate } from './i18n.js';
+import { initInquiryForm } from './contact.js';
 
 initLanguage();
 
@@ -117,6 +118,7 @@ document.querySelectorAll('[data-open-brief]').forEach(button => button.addEvent
   closeMenu();
   form.hidden = false;
   result.hidden = true;
+  document.querySelector('#brief-error').hidden = true;
   dialog.showModal();
   document.body.classList.add('modal-open');
 }));
@@ -130,25 +132,9 @@ dialog.addEventListener('close', () => {
   if (dialogTrigger && dialogTrigger.getClientRects().length) dialogTrigger.focus({ preventScroll: true });
   else menuButton.focus({ preventScroll: true });
 });
-form.addEventListener('submit', event => {
-  event.preventDefault();
-  if (!form.reportValidity()) return;
-  const data = new FormData(form);
-  const text = formatBrief({ name: data.get('name'), project: data.get('project'), service: form.elements.service.selectedOptions[0].textContent, message: data.get('message') });
-  const url = URL.createObjectURL(new Blob(['\uFEFF', text], { type: 'text/plain;charset=utf-8' }));
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = 'kale-riders-project-brief.txt';
-  document.body.append(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  form.hidden = true;
-  result.hidden = false;
-  result.focus();
-});
+initInquiryForm({ form, result, dialog });
 document.querySelector('#brief-again').addEventListener('click', () => {
   result.hidden = true;
   form.hidden = false;
-  form.querySelector('input').focus();
+  form.elements.name.focus();
 });

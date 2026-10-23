@@ -11,15 +11,6 @@ export const resolveLanguage = (search, saved) => {
 export const translate = (text, language = currentLanguage) =>
   language === 'en' ? (english[text] ?? text) : text;
 
-export const formatBrief = ({ name, project, service, message }, language = currentLanguage) => [
-  'KALE RIDERS — PROJECT BRIEF', '',
-  `${translate('이름/팀명', language)}: ${name}`,
-  `${translate('프로젝트', language)}: ${project}`,
-  `${translate('함께하고 싶은 일', language)}: ${service}`, '',
-  translate('프로젝트 이야기', language), message, '',
-  translate('이 브리프는 기기에 저장한 초안이며, 상담 요청으로 전송되지 않았습니다.', language),
-].join('\n');
-
 export function initLanguage(doc = document, view = window) {
   let saved;
   try { saved = view.localStorage.getItem(storageKey); } catch { /* Storage can be unavailable. */ }
