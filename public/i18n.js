@@ -21,7 +21,7 @@ export function initLanguage(doc = document, view = window) {
   while (walker.nextNode()) {
     const node = walker.currentNode;
     // Tab titles and sharing metadata stay in English in both page languages.
-    if (node.parentElement.closest('head, script, style, svg, noscript, [data-motion-toggle], #route-description')) continue;
+    if (node.parentElement.closest('head, script, style, svg, noscript, #route-description')) continue;
     const original = node.nodeValue;
     const key = original.trim();
     if (Object.hasOwn(english, key)) textNodes.push({ node, original, key });

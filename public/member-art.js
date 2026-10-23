@@ -62,7 +62,7 @@ export function initMemberArt() {
       halos: [...pattern.querySelectorAll('[data-light-halo]')],
       atmosphere: [...pattern.querySelectorAll('[data-light-atmosphere]')],
       actors: [...container.querySelectorAll('[data-flight-member]')].map((element, index) => ({
-        element, index, elapsed: 0, hovered: false, focused: false,
+        element, index, elapsed: 0, hovered: false, focused: false, manual: null, drag: null,
         duration: closing ? 26 + index * 9 : 32 + index * 7,
         offset: closing ? index * .47 : index * .27,
         route: FLIGHT_ROUTES[index],
@@ -94,10 +94,10 @@ export function initMemberArt() {
     const position = sampleFlight(actor.route, progress);
     let x = 12 + position.x * Math.max(0, scene.width - actor.width - 24);
     let y = 15 + position.y * Math.max(0, scene.height - actor.height - 30);
-    const interactive = actor.hovered || actor.focused;
+    const interactive = actor.hovered || actor.focused || Boolean(actor.drag);
     const tangent = sampleFlight(actor.route, progress + .002);
     const bank = Math.atan2((tangent.y - position.y) * scene.height, Math.abs(tangent.x - position.x) * scene.width) * 180 / Math.PI;
-    const angle = clamp(bank * .18, -12, 12) + Math.sin(actor.elapsed * 1.8 + actor.index) * 3;
+    const angle = actor.manual?.angle ?? (clamp(bank * .18, -12, 12) + Math.sin(actor.elapsed * 1.8 + actor.index) * 3);
     const radians = angle * Math.PI / 180;
     const ox = actor.originX * Math.cos(radians) - actor.originY * Math.sin(radians);
     const oy = actor.originX * Math.sin(radians) + actor.originY * Math.cos(radians);
@@ -122,6 +122,15 @@ export function initMemberArt() {
       x += (1 - intro) * (actor.index % 2 ? 65 : -65);
       y += (1 - intro) * 35;
     }
+    if (actor.manual) {
+      // Keep the rotated character inside the stage, including after resizing.
+      const cornersX = [0, actor.width * Math.cos(radians), -actor.height * Math.sin(radians), actor.width * Math.cos(radians) - actor.height * Math.sin(radians)];
+      const cornersY = [0, actor.width * Math.sin(radians), actor.height * Math.cos(radians), actor.width * Math.sin(radians) + actor.height * Math.cos(radians)];
+      const minX = 12 - Math.min(...cornersX), minY = 12 - Math.min(...cornersY);
+      x = clamp(actor.manual.x * scene.width, minX, Math.max(minX, scene.width - 12 - Math.max(...cornersX)));
+      y = clamp(actor.manual.y * scene.height, minY, Math.max(minY, scene.height - 12 - Math.max(...cornersY)));
+    }
+    actor.pose = { x, y, angle };
     // Briefly soften layer crossings so occlusion does not switch at full opacity.
     const depthVisibility = scene.closing || interactive || reduced.matches ? 1 : Math.min(1, Math.abs(Math.sin(progress * Math.PI * 4 + actor.index * 1.7) + .58) / .05);
     const visibility = depthVisibility * (scene.closing || interactive ? 1 : intro);
@@ -130,6 +139,7 @@ export function initMemberArt() {
     actor.element.style.transform = `translate3d(${x.toFixed(2)}px,${y.toFixed(2)}px,0) rotate(${angle.toFixed(2)}deg)${scale}`;
     actor.element.style.zIndex = interactive ? '6' : String(scene.closing ? 4 : flightDepth(progress, actor.index));
     actor.element.setAttribute('data-frozen', String(interactive));
+    if (scene.closing) actor.element.setAttribute('data-placed', String(Boolean(actor.manual)));
     scene.probes[actor.index] = scene.scale ? { x: (x + actor.width * .35 - scene.svgX) / scene.scale, y: (y + actor.height * .5 - scene.svgY) / scene.scale } : null;
     if (!scene.closing || !scene.scale) return;
 
@@ -253,12 +263,80 @@ export function initMemberArt() {
   }) : null;
   const resize = () => scenes.forEach(scene => { measure(scene); render(scene, 0); });
 
+  function bindPlacement(scene, actor) {
+    const element = actor.element;
+    const point = event => {
+      const bounds = scene.container.getBoundingClientRect();
+      return { x: (event.clientX - bounds.left) * scene.width / bounds.width, y: (event.clientY - bounds.top) * scene.height / bounds.height };
+    };
+    const place = (x, y) => {
+      actor.manual = { x: x / scene.width, y: y / scene.height, angle: actor.pose.angle };
+      renderActor(scene, actor);
+      // Store the clamped position so dragging back from an edge responds at once.
+      actor.manual.x = actor.pose.x / scene.width;
+      actor.manual.y = actor.pose.y / scene.height;
+    };
+    const finish = (event, cancelled = false) => {
+      if (!actor.drag || event.pointerId !== actor.drag.id) return;
+      const drag = actor.drag;
+      actor.drag = null;
+      if (cancelled) actor.manual = drag.previous;
+      element.setAttribute('data-dragging', 'false');
+      if (element.hasPointerCapture(drag.id)) element.releasePointerCapture(drag.id);
+      renderActor(scene, actor);
+    };
+    const reset = () => {
+      if (actor.drag) finish({ pointerId: actor.drag.id }, true);
+      actor.manual = null;
+      renderActor(scene, actor);
+    };
+    const handlers = {
+      pointerdown(event) {
+        if (event.button !== 0 || event.isPrimary === false || actor.drag) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const cursor = point(event);
+        actor.drag = { id: event.pointerId, offsetX: cursor.x - actor.pose.x, offsetY: cursor.y - actor.pose.y, previous: actor.manual && { ...actor.manual } };
+        scene.pointer.active = false;
+        place(actor.pose.x, actor.pose.y);
+        element.setAttribute('data-dragging', 'true');
+        element.setPointerCapture(event.pointerId);
+        element.focus({ preventScroll: true });
+      },
+      pointermove(event) {
+        if (!actor.drag || event.pointerId !== actor.drag.id) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const cursor = point(event);
+        place(cursor.x - actor.drag.offsetX, cursor.y - actor.drag.offsetY);
+      },
+      pointerup: event => finish(event),
+      pointercancel: event => finish(event, true),
+      lostpointercapture: event => finish(event, true),
+      dblclick: reset,
+      keydown(event) {
+        if (event.key === 'Escape') { event.preventDefault(); reset(); return; }
+        const direction = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[event.key];
+        if (!direction || actor.drag) return;
+        event.preventDefault();
+        const step = event.shiftKey ? 36 : 12;
+        place(actor.pose.x + direction[0] * step, actor.pose.y + direction[1] * step);
+      },
+      click(event) { if (event.detail === 0) reset(); },
+    };
+    for (const [event, handler] of Object.entries(handlers)) element.addEventListener(event, handler);
+    listeners.push(() => {
+      for (const [event, handler] of Object.entries(handlers)) element.removeEventListener(event, handler);
+      if (actor.drag) finish({ pointerId: actor.drag.id }, true);
+    });
+  }
+
   for (const scene of scenes) {
     scene.container.classList.add('flight-ready');
     measure(scene);
     render(scene, 0);
     const pointerMove = event => {
-      if (event.pointerType === 'touch' || paused || reduced.matches || !scene.scale) return;
+      if (event.pointerType === 'touch' || paused || reduced.matches || !scene.scale || scene.actors.some(actor => actor.drag)) return;
       const bounds = scene.container.getBoundingClientRect();
       scene.pointer = { active: true, x: (event.clientX - bounds.left - scene.svgX) / scene.scale, y: (event.clientY - bounds.top - scene.svgY) / scene.scale };
     };
@@ -276,6 +354,7 @@ export function initMemberArt() {
     resizeObserver?.observe(scene.container);
     scene.actors.forEach(actor => {
       resizeObserver?.observe(actor.element);
+      if (scene.closing) bindPlacement(scene, actor);
       if (!actor.element.matches('a')) return;
       for (const [event, property, value] of [['pointerenter','hovered',true],['pointerleave','hovered',false],['focus','focused',true],['blur','focused',false]]) {
         const handler = () => { actor[property] = value; renderActor(scene, actor); };

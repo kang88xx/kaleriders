@@ -42,6 +42,11 @@ class Element extends EventTarget {
   querySelector(selector) { return this.selectors?.[selector] ?? null; }
   querySelectorAll(selector) { return this.collections?.[selector] ?? []; }
   matches(selector) { return selector === 'a' && this.isAnchor; }
+  getBoundingClientRect() { return { left: 30, top: 50, width: this.clientWidth, height: this.clientHeight }; }
+  setPointerCapture(id) { this.capturedPointer = id; }
+  hasPointerCapture(id) { return this.capturedPointer === id; }
+  releasePointerCapture() { this.capturedPointer = null; }
+  focus() {}
 }
 
 function fixture({ reduced = false } = {}) {
@@ -131,6 +136,102 @@ function fixture({ reduced = false } = {}) {
     },
   };
 }
+
+function fire(element, type, properties = {}) {
+  const event = new Event(type, { cancelable: true });
+  Object.assign(event, { pointerId: 1, pointerType: 'mouse', button: 0, isPrimary: true }, properties);
+  element.dispatchEvent(event);
+  return event;
+}
+
+function pose(element) {
+  const [, x, y, angle] = element.style.transform.match(/translate3d\(([-\d.]+)px,([-\d.]+)px,0\) rotate\(([-\d.]+)deg\)/);
+  return { x: Number(x), y: Number(y), angle: Number(angle) };
+}
+
+test('a dragged closing character stays where placed while the other character and lights keep moving', () => {
+  const f = fixture();
+  try {
+    f.step(100);
+    const actor = f.actor(1), before = pose(actor);
+    const start = { clientX: before.x + 60, clientY: before.y + 80 };
+    fire(actor, 'pointerdown', start);
+    assert.equal(actor.capturedPointer, 1);
+    fire(actor, 'pointermove', { clientX: start.clientX + 100, clientY: start.clientY + 40 });
+    const dragged = pose(actor);
+    assert(Math.abs(dragged.x - before.x - 100) < .02);
+    assert(Math.abs(dragged.y - before.y - 40) < .02);
+    const beam = f.scenes[1].querySelector('[data-member-pattern]').querySelectorAll('[data-light-beam]')[0];
+    assert(beam.attributes.get('d').startsWith('M'));
+    fire(actor, 'pointerup');
+    const other = f.actor(1, 1).style.transform;
+    const light = beam.attributes.get('d');
+    f.step(100);
+    assert.deepEqual(pose(actor), dragged, 'Drop remains pinned across animation frames');
+    assert.notEqual(f.actor(1, 1).style.transform, other);
+    assert.notEqual(beam.attributes.get('d'), light, 'Torch continues aiming at the moving light path');
+    assert.equal(actor.capturedPointer, null);
+    fire(actor, 'dblclick');
+    assert.equal(actor.attributes.get('data-placed'), 'false');
+    const automatic = actor.style.transform;
+    f.step(10);
+    assert.notEqual(actor.style.transform, automatic);
+  } finally { f.restore(); }
+});
+
+test('touch placement works with reduced motion and stays inside the resized stage', () => {
+  const f = fixture({ reduced: true });
+  try {
+    const actor = f.actor(1), before = pose(actor), scene = f.scenes[1];
+    fire(actor, 'pointerdown', { pointerType: 'touch', clientX: before.x + 60, clientY: before.y + 80 });
+    fire(actor, 'pointermove', { pointerType: 'touch', clientX: 9999, clientY: 9999 });
+    fire(actor, 'pointerup', { pointerType: 'touch' });
+    scene.clientWidth = 360;
+    scene.clientHeight = 205;
+    f.window.dispatchEvent(new Event('resize'));
+    const p = pose(actor), a = p.angle * Math.PI / 180;
+    for (const [x, y] of [[0, 0], [100, 0], [0, 80], [100, 80]]) {
+      const screenX = p.x + x * Math.cos(a) - y * Math.sin(a);
+      const screenY = p.y + x * Math.sin(a) + y * Math.cos(a);
+      assert(screenX >= 11.98 && screenX <= scene.clientWidth - 11.98);
+      assert(screenY >= 11.98 && screenY <= scene.clientHeight - 11.98);
+    }
+    assert.equal(f.pending.size, 0, 'Explicit dragging does not start background animation');
+    const moved = pose(actor);
+    fire(actor, 'keydown', { key: 'ArrowLeft' });
+    assert(Math.abs(pose(actor).x - moved.x + 12) < .02);
+    fire(actor, 'keydown', { key: 'Escape' });
+    assert.equal(actor.attributes.get('data-placed'), 'false');
+  } finally { f.restore(); }
+});
+
+test('cancelled and foreign pointer gestures do not corrupt placement, and cleanup releases capture', () => {
+  const f = fixture({ reduced: true });
+  try {
+    const actor = f.actor(1);
+    fire(actor, 'keydown', { key: 'ArrowRight' });
+    const placed = actor.style.transform, before = pose(actor);
+    const start = { clientX: before.x + 60, clientY: before.y + 80 };
+    fire(actor, 'pointerdown', { ...start, button: 2 });
+    assert.equal(actor.capturedPointer, undefined);
+    fire(actor, 'pointerdown', start);
+    fire(actor, 'pointermove', { pointerId: 2, clientX: 9999, clientY: 9999 });
+    assert.equal(actor.style.transform, placed);
+    fire(actor, 'pointermove', { clientX: start.clientX + 60, clientY: start.clientY + 20 });
+    assert.notEqual(actor.style.transform, placed);
+    fire(actor, 'pointercancel');
+    assert.equal(actor.style.transform, placed);
+    fire(actor, 'pointerdown', start);
+    fire(actor, 'lostpointercapture');
+    assert.equal(actor.attributes.get('data-dragging'), 'false');
+    fire(actor, 'pointerdown', start);
+    f.dispose();
+    assert.equal(actor.capturedPointer, null);
+    const disposed = actor.style.transform;
+    fire(actor, 'pointermove', { clientX: 900, clientY: 300 });
+    assert.equal(actor.style.transform, disposed);
+  } finally { f.restore(); }
+});
 
 test('pause, reduced motion and document visibility stop the scheduler without resume jumps', () => {
   const f = fixture({ reduced: true });

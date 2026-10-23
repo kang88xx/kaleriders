@@ -1,25 +1,17 @@
 import { initMemberArt } from './member-art.js';
 import { initLanguage, translate } from './i18n.js';
 import { initInquiryForm } from './contact.js';
+import { initFaq } from './faq.js';
 
 initLanguage();
+initFaq();
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const motionButtons = [...document.querySelectorAll('[data-motion-toggle]')];
-let motionPaused = reducedMotion.matches;
-let userPaused = false;
 const applyMotion = () => {
-  motionPaused = userPaused || reducedMotion.matches;
+  const motionPaused = reducedMotion.matches;
   document.documentElement.classList.toggle('motion-paused', motionPaused);
-  motionButtons.forEach(button => {
-    button.setAttribute('aria-pressed', String(motionPaused));
-    const label = reducedMotion.matches ? '기기 설정으로 모션 줄임' : motionPaused ? '모션 재생' : '모션 일시정지';
-    button.innerHTML = `<span aria-hidden="true">${motionPaused && !reducedMotion.matches ? '▷' : 'Ⅱ'}</span> ${translate(label)}`;
-    button.disabled = reducedMotion.matches;
-  });
   document.dispatchEvent(new CustomEvent('kaky:motion', { detail: { paused: motionPaused } }));
 };
-motionButtons.forEach(button => button.addEventListener('click', () => { userPaused = !userPaused; applyMotion(); }));
 reducedMotion.addEventListener('change', applyMotion);
 initMemberArt();
 applyMotion();
@@ -104,7 +96,6 @@ stageButtons.forEach(button => button.addEventListener('click', () => {
 updateStageDescription();
 
 document.addEventListener('languagechange', () => {
-  applyMotion();
   updateStageDescription();
   menuButton.setAttribute('aria-label', translate(menu.hidden ? '메뉴 열기' : '메뉴 닫기'));
 });
