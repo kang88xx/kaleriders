@@ -66,3 +66,24 @@ Removed the context-section `How we connect` link and its underline, its now-unu
 Native Chrome reviewed the process section in 1280px and 390px frames: interior separators remain, the outer top/bottom rules are absent, and text layout is intact. The accessibility tree no longer includes How we connect. Source review confirms the service tab selection indicator and bottom rule remain. All 65 tests pass; translation syntax and `git diff --check` pass. Footer alternatives are image-only previews outside the production repository and have not been applied.
 
 final result: passed
+
+
+## Compact footer, approved option 1 — 2026-10-23
+
+Source visual truth: `/Users/henry/Desktop/kaleriders/previews/footer-options-v2/option-1.png`, the first displayed result in the revised small-logo set (`exec-1714b78f-28de-4188-9bee-7e5895c14995.png`). Scope is the footer; existing header, closing illustration, animation and contact form retain their production implementation.
+
+Evidence: Native Chrome screenshot captures in this conversation show the source and implementation together on `/Users/henry/Desktop/kaleriders/previews/footer-options-v2/qa.html`. The full comparison and subsequent scrolled focused comparison both show the two footer rows. Captures were returned inline by CUA; no separate screenshot export file was produced. The source raster is 1586 × 992, normalized to 720px wide; the implementation viewport is 1440 × 900 CSS pixels, displayed at 0.5 scale alongside it. Chrome capture density is 2x. A 390 × 780 CSS-pixel frame was also inspected at natural CSS scale. Both implementations use English and the closing route. The animated illustration varies with time and is outside this footer change.
+
+Findings: no actionable P0/P1/P2 issue in the changed footer. First comparison passed, with no subsequent visual changes needed.
+
+- Typography: existing Kaky Sans retained, navigation 14px on desktop and 13px on mobile, copyright 11px, email 13px. No truncation or overlap.
+- Layout: original logo is approximately 135px wide with a 44px link target. Desktop aligns small logo left and four links right, then copyright left and email right. Footer and header retain the same shared container edges. Mobile stacks logo and navigation, retaining a compact bottom row.
+- Tokens: existing cream, brand blue and muted text tokens retained; repeated slogan, location line, domain and footer borders removed.
+- Assets: official raster logo is reused through its existing proportion-preserving image viewports. No generated replacement logo or white-background rectangle introduced.
+- Content: four localized menu links and direct email remain. FAQ navigation was clicked in the mobile frame and reached `#faq`; the email link exposes the correct `mailto:hello@kaleriders.com` destination.
+
+Validation: all 65 existing tests pass, translation JavaScript syntax and `git diff --check` pass. Static comparison confirms every non-footer CSS rule is unchanged. No separate lint, typecheck or build script exists. No new JavaScript or dependency was added; no fresh clean-profile console audit is claimed.
+
+Implementation checklist: small logo, two desktop rows, mobile arrangement, original menu anchors and email, shared outer alignment — complete.
+
+final result: passed
