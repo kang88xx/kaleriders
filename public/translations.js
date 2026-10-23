@@ -1,4 +1,18 @@
 export const english = Object.freeze({
+  '글로벌 프로젝트가 한국에 뿌리내리고, 오래가는 팬 관계를 만들도록 함께합니다.': 'We help global projects take root in Korea and build lasting fan relationships.',
+  '함께하는 과정': 'Our process',
+  '이해에서': 'From insight',
+  '참여까지.': 'to engagement.',
+  '프로젝트가 한국에 뿌리내리는': 'Explore how we help',
+  '과정을 살펴보세요.': 'your project take root.',
+  '시장의 접점을 찾고': 'Find your fit',
+  '현지의 신뢰를 쌓고': 'Build local trust',
+  '참여를 키우고': 'Grow engagement',
+  '한국의 이용자와 커뮤니티를 살펴 프로젝트의 포지셔닝과 시장 진입 계획을 세웁니다.': 'We study Korean audiences and communities to shape your positioning and market entry plan.',
+  '프로젝트에 맞는 크리에이터, KOL, 채널을 연결해 현지에서 공감할 이야기를 만듭니다.': 'We bring together the right creators, KOLs and channels to tell your story with local relevance.',
+  '콘텐츠, 캠페인, 커뮤니티 프로그램으로 첫 관심을 오래가는 팬 관계로 발전시킵니다.': 'We launch content, campaigns and community programs that turn initial interest into lasting fan relationships.',
+  '진정성 있는 참여를 오래가는 팬 관계로 이어갑니다.': 'Turning authentic engagement into lasting fan relationships.',
+
   '시장을 읽고, 사람을 잇고, 다음을 만듭니다. 글로벌 프로젝트의 한국 시장 진출 파트너.': 'Read the market. Connect people. Create what comes next. Your local partner for bringing global projects to Korea.',
   '좋은 가능성이, 한국에 닿는 방식.': 'Bringing new possibilities to Korea.',
   '본문으로 바로가기': 'Skip to content',

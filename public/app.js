@@ -75,9 +75,9 @@ tabs.forEach((tab, index) => {
 });
 
 const stageDescriptions = [
-  '한국의 대화와 커뮤니티를 읽고, 프로젝트가 시작할 지점을 찾습니다.',
-  '프로젝트를 이해하는 크리에이터와 채널을 연결하고, 함께 전할 이야기를 만듭니다.',
-  '콘텐츠와 캠페인을 실행하고, 사람들의 반응을 다음 움직임으로 이어갑니다.',
+  '한국의 이용자와 커뮤니티를 살펴 프로젝트의 포지셔닝과 시장 진입 계획을 세웁니다.',
+  '프로젝트에 맞는 크리에이터, KOL, 채널을 연결해 현지에서 공감할 이야기를 만듭니다.',
+  '콘텐츠, 캠페인, 커뮤니티 프로그램으로 첫 관심을 오래가는 팬 관계로 발전시킵니다.',
 ];
 const stageButtons = [...document.querySelectorAll('[data-stage]')];
 const updateStageDescription = () => {
@@ -85,12 +85,10 @@ const updateStageDescription = () => {
   document.querySelector('#route-description').textContent = translate(stageDescriptions[index]);
 };
 stageButtons.forEach(button => button.addEventListener('click', () => {
-  const index = Number(button.dataset.stage);
   stageButtons.forEach(item => {
     item.classList.toggle('active', item === button);
     item.setAttribute('aria-pressed', String(item === button));
   });
-  document.querySelector('#route-count').textContent = `0${index + 1} — 03`;
   updateStageDescription();
 }));
 updateStageDescription();

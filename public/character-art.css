@@ -16,53 +16,48 @@
 .character-art--kalya .character-body { animation-delay: -.8s; }
 .character-art--mascot .character-body { animation-delay: -1.5s; }
 
-/* The flag's free edge flexes more than its pole; typography only tilts slightly. */
+/* Each ribbon is a single image: face, folded return, tail and shadow move together. */
+.floating-member { flex-direction: column; align-items: center; }
 .floating-member .member-flag {
-  --flag-color: #d8ee7a;
   position: relative;
-  isolation: isolate;
-  clip-path: none;
-  border-radius: 2px;
-  transform-origin: 0 50%;
-  animation: character-flag 3.2s steps(38,end) infinite;
+  z-index: 2;
+  display: block;
+  width: 138px;
+  aspect-ratio: var(--ribbon-ratio, 3.7);
+  overflow: hidden;
+  margin-top: -9px;
+  flex-shrink: 0;
+  transform-origin: 45% 20%;
+  animation: character-flag 3.2s ease-in-out infinite;
 }
-.member-kalya .member-flag { --flag-color: #254ad8; animation-delay: -.9s; }
-.member-mascot .member-flag { --flag-color: #e8b58d; animation-delay: -1.8s; }
-.floating-member .member-flag::after {
-  content: '';
+.member-flag img {
   position: absolute;
-  z-index: -1;
-  left: calc(100% - 2px);
-  top: -1px;
-  width: 15px;
-  height: calc(100% + 2px);
-  background: var(--flag-color);
-  border-block: 1px solid var(--blue, #254ad8);
-  clip-path: polygon(0 0,100% 0,55% 50%,100% 100%,0 100%);
-  transform-origin: left center;
-  animation: character-tail 3.2s steps(38,end) infinite;
-  animation-delay: inherit;
-}
-.floating-member .member-flag::before {
-  content: '';
-  position: absolute;
-  right: 3px;
-  top: 0;
-  bottom: 0;
-  width: 8px;
-  background: #f4f3eb;
-  opacity: .13;
-  transform: skewY(-7deg);
+  display: block;
+  width: var(--ribbon-image-width, 100%);
+  height: auto;
+  left: var(--ribbon-image-left, 0);
+  top: var(--ribbon-image-top, 0);
   pointer-events: none;
 }
-.character-art g,.floating-member .member-flag,.floating-member .member-flag::after { animation-play-state: paused; }
+.member-kang .member-flag { --ribbon-ratio: 2114 / 579; --ribbon-image-width: 102.743614%; --ribbon-image-left: -1.466414%; --ribbon-image-top: -16.925734%; }
+.member-kalya .member-flag { --ribbon-ratio: 2116 / 587; --ribbon-image-width: 102.646503%; --ribbon-image-left: -1.417769%; --ribbon-image-top: -16.013629%; }
+.member-mascot .member-flag { --ribbon-ratio: 2115 / 597; --ribbon-image-width: 102.695035%; --ribbon-image-left: -1.418440%; --ribbon-image-top: -15.577889%; }
+.member-kalya .member-flag { animation-delay: -.9s; }
+.member-mascot .member-flag { animation-delay: -1.8s; }
+.floating-member .flight-shadow { left: calc(50% - var(--actor-size) / 2 + 13px); }
+@media(max-width:1200px) { .floating-member .member-flag { width: 128px; } }
+@media(max-width:900px) { .floating-member .member-flag { width: 116px; } }
+@media(max-width:600px) {
+  .floating-member .member-flag { width: 96px; margin-top: -5px; }
+  .floating-member .flight-shadow { left: calc(50% - var(--actor-size) / 2 + 7px); }
+}
+.character-art g,.floating-member .member-flag { animation-play-state: paused; }
 .flight-ready.is-flight-visible .character-art g,
-.flight-ready.is-flight-visible .member-flag,
-.flight-ready.is-flight-visible .member-flag::after { animation-play-state: running; }
+.flight-ready.is-flight-visible .member-flag { animation-play-state: running; }
 .motion-paused .character-art g,
-.motion-paused .member-flag,.motion-paused .member-flag::after,
+.motion-paused .member-flag,
 [data-frozen="true"] .character-art g,
-[data-frozen="true"] .member-flag,[data-frozen="true"] .member-flag::after { animation-play-state: paused!important; }
+[data-frozen="true"] .member-flag { animation-play-state: paused!important; }
 
 @keyframes character-breathe { 0%,100%{transform:scale(1,1)} 50%{transform:translateY(-.8px) scale(1.025,.975)} }
 @keyframes character-look { 0%,25%,85%,100%{transform:translateX(0)} 35%,65%{transform:translate(1.4px,-.4px)} 75%{transform:translateX(-.7px)} }
@@ -73,9 +68,7 @@
 @keyframes character-coil { 0%,100%{transform:scaleY(.96)} 50%{transform:scaleY(1.035)} }
 @keyframes character-star { 0%,100%{transform:rotate(-2deg)} 50%{transform:rotate(2deg)} }
 @keyframes character-spark { 0%,100%{transform:translateY(0) scale(.9)} 50%{transform:translateY(-2px) scale(1.08)} }
-@keyframes character-flag { 0%,100%{transform:rotate(1deg) skewY(-1deg)} 50%{transform:rotate(-1deg) skewY(1.5deg)} }
-@keyframes character-tail { 0%,100%{transform:skewY(-7deg) scaleX(.92)} 50%{transform:skewY(8deg) scaleX(1.04)} }
-@media(max-width:600px) { .floating-member .member-flag::after{width:10px} }
+@keyframes character-flag { 0%,100%{transform:rotate(1deg)} 50%{transform:rotate(-1deg)} }
 @media(prefers-reduced-motion:reduce) {
-  .character-art g,.floating-member .member-flag,.floating-member .member-flag::after { animation:none!important; }
+  .character-art g,.floating-member .member-flag { animation:none!important; }
 }
