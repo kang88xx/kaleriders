@@ -1,0 +1,7 @@
+@import url('./botanical-options.css');
+.overview{grid-template-columns:repeat(2,minmax(0,1fr))}
+.overview img{aspect-ratio:3}
+.hero-sample{margin-top:38px;padding-top:22px;border-top:1px solid var(--line)}
+.hero-sample figcaption{margin:0 0 12px}
+.hero-sample img{display:block;width:100%;height:auto;max-height:240px;object-fit:contain}
+@media(max-width:600px){.overview{grid-template-columns:1fr}.hero-sample{margin-top:28px;padding-top:18px}.hero-sample img{max-height:150px}}

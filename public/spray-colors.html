@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Kale Riders · 스프레이 컬러 3안</title>
+  <style>
+    :root { color-scheme:light; --blue:#254ad8; --paper:#f4f3eb; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--paper); color:var(--blue); font-family:Arial,"Apple SD Gothic Neo",sans-serif; }
+    main { width:min(1360px,calc(100% - 64px)); margin:40px auto; }
+    header { display:flex; justify-content:space-between; align-items:end; gap:24px; padding-bottom:24px; }
+    .eyebrow { margin:0 0 10px; font-size:11px; letter-spacing:.16em; }
+    h1 { font-size:30px; letter-spacing:-.04em; margin:0; }
+    .intro { margin:10px 0 0; color:#59647c; font-size:14px; line-height:1.6; }
+    .controls { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+    button { border:1px solid #254ad842; border-radius:24px; padding:10px 17px; background:transparent; color:var(--blue); cursor:pointer; font:inherit; font-size:13px; }
+    button:hover { background:#254ad80a; }
+    button:focus-visible,input:focus-visible { outline:2px solid var(--blue); outline-offset:4px; }
+    .timeline { display:flex; align-items:center; gap:12px; }
+    input { width:150px; accent-color:var(--blue); }
+    output { min-width:42px; font-size:12px; font-variant-numeric:tabular-nums; }
+    .variants { border-top:1px solid #254ad82b; }
+    article { display:grid; grid-template-columns:190px minmax(0,1fr); align-items:center; gap:8px; border-bottom:1px solid #254ad82b; padding:10px 0; }
+    .label { padding:18px 0; }
+    .number { font:italic 18px Georgia,serif; opacity:.6; }
+    h2 { margin:10px 0 14px; font-size:21px; letter-spacing:-.03em; }
+    .swatch { display:flex; align-items:center; gap:9px; font-size:13px; }
+    .swatch i { width:20px; height:20px; border-radius:50%; background:var(--spray); border:1px solid #254ad820; }
+    .note { color:#59647c; font-size:12px; line-height:1.7; margin:12px 0 0; }
+    .stage { position:relative; min-width:0; height:clamp(190px,17vw,255px); overflow:hidden; }
+    .pattern { position:absolute; inset:0; }
+    .closing-spray-canvas { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:block; }
+    .actor { position:absolute; left:0; top:0; visibility:hidden; }
+    footer { display:flex; justify-content:space-between; gap:20px; padding:20px 0; color:#59647c; font-size:12px; }
+    footer a { color:var(--blue); text-underline-offset:3px; }
+    @media(max-width:760px) {
+      main { width:calc(100% - 36px); margin:26px auto; }
+      header { align-items:start; flex-direction:column; gap:20px; }
+      h1 { font-size:26px; }
+      article { grid-template-columns:1fr; padding:18px 0 8px; }
+      .label { display:flex; align-items:center; flex-wrap:wrap; column-gap:12px; padding:0; }
+      h2 { margin:0; font-size:18px; }
+      .note { width:100%; margin-top:8px; }
+      .stage { height:175px; }
+      footer { flex-direction:column; gap:8px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <p class="eyebrow">KALE RIDERS · COLOR STUDY</p>
+      <h1>스프레이 컬러 3안</h1>
+      <p class="intro">같은 장면에서 색상만 비교해 보세요. 세 모션이 함께 움직입니다.</p>
+    </div>
+    <div class="controls" aria-label="모션 재생 설정">
+      <button id="play" type="button" disabled>준비 중</button>
+      <button id="restart" type="button" disabled>처음부터</button>
+      <div class="timeline"><input id="timeline" type="range" min="0" max="14.99" step="0.01" value="4" aria-label="모션 시점" disabled><output id="time" for="timeline">4.0초</output></div>
+    </div>
+  </header>
+  <section class="variants" aria-label="스프레이 색상 비교">
+    <article style="--spray:#d8ee7a" data-color="#d8ee7a">
+      <div class="label"><span class="number">01</span><h2>라임</h2><div class="swatch"><i aria-hidden="true"></i><span>#D8EE7A</span></div><p class="note">브랜드의 초록과 연결되는<br>밝고 산뜻한 색감</p></div>
+      <div class="stage" role="img" aria-label="라임색 스프레이 모션"><div class="pattern"></div></div>
+    </article>
+    <article style="--spray:#b8c6f3" data-color="#b8c6f3">
+      <div class="label"><span class="number">02</span><h2>라벤더 블루</h2><div class="swatch"><i aria-hidden="true"></i><span>#B8C6F3</span></div><p class="note">메인 블루와 자연스럽게 어울리는<br>차분하고 부드러운 색감</p></div>
+      <div class="stage" role="img" aria-label="라벤더 블루 스프레이 모션"><div class="pattern"></div></div>
+    </article>
+    <article style="--spray:#e8b58d" data-color="#e8b58d">
+      <div class="label"><span class="number">03</span><h2>살구</h2><div class="swatch"><i aria-hidden="true"></i><span>#E8B58D</span></div><p class="note">블루 위에 따뜻한 대비를 만드는<br>포근하고 생기 있는 색감</p></div>
+      <div class="stage" role="img" aria-label="살구색 스프레이 모션"><div class="pattern"></div></div>
+    </article>
+  </section>
+  <footer><span>캐릭터 · 분사 모션 · 글자 · 패턴은 동일합니다.</span><a href="/?lang=ko#contact">현재 웹사이트 보기</a></footer>
+</main>
+<script type="module" src="./spray-colors.js"></script>
+</body>
+</html>

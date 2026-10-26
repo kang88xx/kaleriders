@@ -1,5 +1,6 @@
 import { avatarMarkup } from './character-art.js';
-import { patternMarkup, PALETTE, footerFrame, lightPoint, bloomProgress, waveColor } from './pattern-art.js';
+import { patternMarkup, PALETTE, bloomProgress, waveColor } from './pattern-art.js?v=garden-bloom-20261026';
+import { createClosingSpray } from './closing-spray.js?v=garden-bloom-20261026';
 
 const clamp = (value, low, high) => Math.max(low, Math.min(high, value));
 const smooth = value => { const t = clamp(value, 0, 1); return t * t * (3 - 2 * t); };
@@ -46,28 +47,21 @@ export function initMemberArt() {
     return {
       container, pattern, closing, elapsed: 0, lastPatternTime: -Infinity, visible: true,
       pointer: { active: false, x: 0, y: 0 }, pulse: null, probes: [],
-      colorLayer: pattern.querySelector('[data-pattern-color]'),
       motifs: [...pattern.querySelectorAll('[data-pattern-motif]')].map(element => ({
         element, motion: element.querySelector('[data-motif-motion]'),
         x: Number(element.dataset.x), y: Number(element.dataset.y),
         size: Number(element.dataset.size), angle: Number(element.dataset.angle),
-        color: Number(element.dataset.color), arrival: Number(element.dataset.arrival),
+        color: Number(element.dataset.color),
         dx: 0, dy: 0, vx: 0, vy: 0, lastColor: -1,
       })),
       drift: pattern.querySelector('[data-pattern-drift]'),
       spins: [...pattern.querySelectorAll('[data-pattern-spin]')],
-      beams: [...pattern.querySelectorAll('[data-light-beam]')],
-      gradients: [...pattern.querySelectorAll('[data-beam-gradient]')],
-      spots: [...pattern.querySelectorAll('[data-light-spot]')],
-      halos: [...pattern.querySelectorAll('[data-light-halo]')],
-      atmosphere: [...pattern.querySelectorAll('[data-light-atmosphere]')],
       actors: [...container.querySelectorAll('[data-flight-member]')].map((element, index) => ({
         element, index, elapsed: 0, hovered: false, focused: false, manual: null, drag: null,
         duration: closing ? 26 + index * 9 : 32 + index * 7,
         offset: closing ? index * .47 : index * .27,
         route: FLIGHT_ROUTES[index],
         avatar: element.querySelector('.member-avatar'),
-        torch: element.querySelector('.character-torch'),
       })),
     };
   });
@@ -83,13 +77,12 @@ export function initMemberArt() {
     for (const actor of scene.actors) {
       actor.width = actor.element.offsetWidth;
       actor.height = actor.element.offsetHeight;
-      actor.originX = actor.avatar.offsetLeft + actor.avatar.offsetWidth * .72;
-      actor.originY = actor.avatar.offsetTop + actor.avatar.offsetHeight * .72;
-      actor.torchLength = actor.torch ? actor.torch.offsetWidth + 4 : 0;
     }
+    scene.spray?.measure();
   }
 
   function renderActor(scene, actor) {
+    if (scene.closing) { scene.spray.renderActor(actor, reduced.matches); return; }
     const progress = actor.offset + actor.elapsed / actor.duration;
     const position = sampleFlight(actor.route, progress);
     let x = 12 + position.x * Math.max(0, scene.width - actor.width - 24);
@@ -99,29 +92,9 @@ export function initMemberArt() {
     const bank = Math.atan2((tangent.y - position.y) * scene.height, Math.abs(tangent.x - position.x) * scene.width) * 180 / Math.PI;
     const angle = actor.manual?.angle ?? (clamp(bank * .18, -12, 12) + Math.sin(actor.elapsed * 1.8 + actor.index) * 3);
     const radians = angle * Math.PI / 180;
-    const ox = actor.originX * Math.cos(radians) - actor.originY * Math.sin(radians);
-    const oy = actor.originX * Math.sin(radians) + actor.originY * Math.cos(radians);
     const intro = reduced.matches ? 1 : smooth((actor.elapsed - actor.index * .3) / 1.7);
-    let beamTarget;
-    if (scene.closing && scene.scale) {
-      const cycle = footerFrame(scene.elapsed);
-      const point = lightPoint(actor.index, cycle.paint);
-      const start = lightPoint(actor.index, 0);
-      beamTarget = { x: point.x + (start.x - point.x) * cycle.reset, y: point.y + (start.y - point.y) * cycle.reset };
-      if (scene.pointer.active && !reduced.matches) {
-        beamTarget.x += clamp(scene.pointer.x - beamTarget.x, -160, 160) * .2;
-        beamTarget.y += clamp(scene.pointer.y - beamTarget.y, -100, 100) * .25;
-      }
-      x = scene.svgX + (beamTarget.x + (actor.index ? 42 : -42) + Math.sin(actor.elapsed * 1.2) * 10) * scene.scale - ox;
-      // Keep a physical torch-length clearance as well as SVG-space light reach.
-      // This keeps small-screen beams aimed into the letters instead of outwards.
-      y = scene.svgY + (beamTarget.y - 100) * scene.scale - actor.torchLength - oy + Math.sin(actor.elapsed * 2.8 + actor.index) * 4;
-      x = clamp(x, 12, Math.max(12, scene.width - actor.width - 12));
-      y = clamp(y, 12, Math.max(12, scene.height - actor.height - 12));
-    } else {
-      x += (1 - intro) * (actor.index % 2 ? 65 : -65);
-      y += (1 - intro) * 35;
-    }
+    x += (1 - intro) * (actor.index % 2 ? 65 : -65);
+    y += (1 - intro) * 35;
     if (actor.manual) {
       // Keep the rotated character inside the stage, including after resizing.
       const cornersX = [0, actor.width * Math.cos(radians), -actor.height * Math.sin(radians), actor.width * Math.cos(radians) - actor.height * Math.sin(radians)];
@@ -141,50 +114,15 @@ export function initMemberArt() {
     actor.element.setAttribute('data-frozen', String(interactive));
     if (scene.closing) actor.element.setAttribute('data-placed', String(Boolean(actor.manual)));
     scene.probes[actor.index] = scene.scale ? { x: (x + actor.width * .35 - scene.svgX) / scene.scale, y: (y + actor.height * .5 - scene.svgY) / scene.scale } : null;
-    if (!scene.closing || !scene.scale) return;
-
-    // Convert the moving torch origin into the letterboxed SVG coordinate space.
-    // DOM actors rotate about their top-left corner, so the light follows it exactly.
-    const handX = (x + ox - scene.svgX) / scene.scale;
-    const handY = (y + oy - scene.svgY) / scene.scale;
-    let aimX = beamTarget.x;
-    let aimY = beamTarget.y;
-    const direction = Math.atan2(aimY - handY, aimX - handX);
-    // Keep the target beyond the lens, including at small mobile SVG scales.
-    const reach = Math.max(Math.hypot(aimX - handX, aimY - handY), actor.torchLength / scene.scale + 80);
-    aimX = handX + Math.cos(direction) * reach;
-    aimY = handY + Math.sin(direction) * reach;
-    if (actor.torch) actor.torch.style.transform = `rotate(${direction * 180 / Math.PI - angle}deg)`;
-    const originX = handX + Math.cos(direction) * actor.torchLength / scene.scale;
-    const originY = handY + Math.sin(direction) * actor.torchLength / scene.scale;
-    const dx = aimX - originX, dy = aimY - originY;
-    const distance = Math.max(1, Math.hypot(dx, dy));
-    const spread = 80 + Math.sin(actor.elapsed * 1.6 + actor.index) * 9;
-    const sideX = -dy / distance * spread, sideY = dx / distance * spread;
-    scene.beams[actor.index].setAttribute('d', `M${originX},${originY} L${aimX + sideX},${aimY + sideY} Q${aimX + dx * .15},${aimY + dy * .15} ${aimX - sideX},${aimY - sideY} Z`);
-    const gradient = scene.gradients[actor.index];
-    Object.entries({ x1: originX, y1: originY, x2: aimX, y2: aimY }).forEach(([key, value]) => gradient.setAttribute(key, String(value)));
-    scene.spots[actor.index].setAttribute('cx', String(aimX));
-    scene.spots[actor.index].setAttribute('cy', String(aimY));
-    const halo = scene.halos[actor.index];
-    halo?.setAttribute('cx', String(aimX));
-    halo?.setAttribute('cy', String(aimY));
-    const atmosphere = scene.atmosphere[actor.index];
-    if (atmosphere) atmosphere.style.opacity = String(footerFrame(scene.elapsed).light * (.94 + Math.sin(actor.elapsed * 5 + actor.index) * .04));
   }
 
   function renderMotifs(scene, time, delta) {
-    const cycle = footerFrame(time);
     const still = reduced.matches;
-    if (scene.colorLayer) {
-      scene.colorLayer.style.opacity = String(scene.closing && !still ? 1 - cycle.reset : 1);
-      scene.colorLayer.setAttribute('transform', `translate(0 ${scene.closing && !still ? cycle.reset * -32 : 0})`);
-    }
     const step = Math.min(.064, Math.max(0, delta));
     const sources = still ? [] : [...scene.probes.filter(Boolean), ...(scene.pointer.active ? [scene.pointer] : [])];
     scene.motifs.forEach((tile, index) => {
-      const arrival = scene.closing ? tile.arrival : .1 + Math.hypot(tile.x - 70, tile.y - 410) / 1400 * 2.1;
-      const bloom = still ? { opacity: 1, scale: 1 } : bloomProgress(scene.closing ? cycle.time : time, arrival);
+      const arrival = .1 + Math.hypot(tile.x - 70, tile.y - 410) / 1400 * 2.1;
+      const bloom = still ? { opacity: 1, scale: 1 } : bloomProgress(time, arrival);
       let tx = 0, ty = 0;
       for (const source of sources) {
         const dx = tile.x - source.x, dy = tile.y - source.y;
@@ -201,7 +139,7 @@ export function initMemberArt() {
         pulse = Math.max(0, 1 - Math.abs(distance - age * 520) / 85) * Math.exp(-age * .6);
         recolor = distance <= age * 520 ? 1 : 0;
       }
-      const color = scene.closing ? (tile.color + Math.floor(time / 16)) % 4 : (waveColor(time, tile.x, tile.y, tile.color) + recolor) % 4;
+      const color = (waveColor(time, tile.x, tile.y, tile.color) + recolor) % 4;
       if (tile.lastColor !== color) { tile.element.style.color = PALETTE[color]; tile.lastColor = color; }
       tile.element.style.opacity = String(bloom.opacity);
       const sway = still ? 0 : Math.sin(time * 1.1 + index * 1.7) * 4 + pulse * 16;
@@ -216,6 +154,7 @@ export function initMemberArt() {
       if (!actor.hovered && !actor.focused) actor.elapsed += delta;
       renderActor(scene, actor);
     }
+    if (scene.closing) { scene.spray.render(reduced.matches); return; }
     // The subtle pattern moves at 24 Hz; characters and light stay at display rate.
     if (delta === 0 || time - scene.lastPatternTime >= 1 / 24) {
       const patternDelta = Number.isFinite(scene.lastPatternTime) ? time - scene.lastPatternTime : 0;
@@ -270,8 +209,9 @@ export function initMemberArt() {
       return { x: (event.clientX - bounds.left) * scene.width / bounds.width, y: (event.clientY - bounds.top) * scene.height / bounds.height };
     };
     const place = (x, y) => {
-      actor.manual = { x: x / scene.width, y: y / scene.height, angle: actor.pose.angle };
+      actor.manual = { x: x / scene.width, y: y / scene.height, angle: actor.pose.angle, scale: actor.sprayScale };
       renderActor(scene, actor);
+      scene.spray?.render(reduced.matches);
       // Store the clamped position so dragging back from an edge responds at once.
       actor.manual.x = actor.pose.x / scene.width;
       actor.manual.y = actor.pose.y / scene.height;
@@ -284,11 +224,13 @@ export function initMemberArt() {
       element.setAttribute('data-dragging', 'false');
       if (element.hasPointerCapture(drag.id)) element.releasePointerCapture(drag.id);
       renderActor(scene, actor);
+      scene.spray?.render(reduced.matches);
     };
     const reset = () => {
       if (actor.drag) finish({ pointerId: actor.drag.id }, true);
       actor.manual = null;
       renderActor(scene, actor);
+      scene.spray?.render(reduced.matches);
     };
     const handlers = {
       pointerdown(event) {
@@ -332,6 +274,7 @@ export function initMemberArt() {
   }
 
   for (const scene of scenes) {
+    if (scene.closing) scene.spray = createClosingSpray(scene, () => { if (!disposed) { scene.elapsed = 0; render(scene, 0); } });
     scene.container.classList.add('flight-ready');
     measure(scene);
     render(scene, 0);
@@ -378,5 +321,6 @@ export function initMemberArt() {
     document.removeEventListener('visibilitychange', sync);
     reduced.removeEventListener('change', onReducedMotion);
     listeners.forEach(remove => remove());
+    scenes.forEach(scene => scene.spray?.dispose());
   };
 }

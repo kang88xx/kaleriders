@@ -24,7 +24,6 @@ export const english = Object.freeze({
   '레퍼런스': 'References',
   '팀 소개': 'Our team',
   '프로젝트 이야기하기': 'Let’s talk projects',
-  '프로젝트 이야기하기 ↗': 'Let’s talk projects ↗',
   '메뉴 열기': 'Open menu',
   '메뉴 닫기': 'Close menu',
   '모바일 메뉴': 'Mobile navigation',

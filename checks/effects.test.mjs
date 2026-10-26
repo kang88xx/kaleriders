@@ -1,25 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { PALETTE, PAINT_LOOP, footerFrame, lightPoint, paintArrival, bloomProgress, waveColor, buildMotifs, patternMarkup } from '../public/pattern-art.js';
+import { DEFAULT_ARTWORK, PALETTE, bloomProgress, waveColor, buildMotifs, patternMarkup } from '../public/pattern-art.js';
+import { wordReset, flowerGrowth } from '../public/closing-spray.js';
+import { PAINT_END } from '../public/reference-spray.js';
 import { initMemberArt } from '../public/member-art.js';
-
-test('paint arrives along both light paths progressively rather than appearing together', () => {
-  for (const side of [0, 1]) {
-    const arrivals = [0, .2, .4, .6, .8, 1].map(progress => {
-      const point = lightPoint(side, progress);
-      const arrival = paintArrival(point.x, point.y);
-      assert(Math.abs(arrival - (.45 + progress * 10.4)) < .12, 'A path point paints near its beam arrival');
-      return arrival;
-    });
-    assert(arrivals.every((value, index) => index === 0 || value > arrivals[index - 1]));
-  }
-  const motifs = buildMotifs();
-  for (const item of motifs) assert(item.arrival >= .45 && item.arrival <= 11.6);
-  const counts = [0, 3, 6, 9, 12].map(time => motifs.filter(item => bloomProgress(time, item.arrival).opacity === 1).length);
-  assert.equal(counts[0], 0);
-  assert.equal(counts.at(-1), motifs.length);
-  assert(counts.every((count, index) => index === 0 || count > counts[index - 1]));
-});
 
 test('bloom is continuous, gently overshoots, then retains its painted state', () => {
   const arrival = 4;
@@ -39,30 +23,26 @@ test('bloom is continuous, gently overshoots, then retains its painted state', (
   for (const time of [5, 8, 12, 13.2]) assert.deepEqual(bloomProgress(time, arrival), { opacity: 1, scale: 1 });
 });
 
-test('paint clears through a bounded fade and is visually continuous across loop reset', () => {
-  const motifs = buildMotifs();
-  let lastReset = 0;
+test('footer flowers grow only after beam arrival and retain their completed size', () => {
+  assert.equal(flowerGrowth(.4, .5), 0);
+  assert.equal(flowerGrowth(.5, .5), 0);
+  assert(Math.abs(flowerGrowth(.54, .5) - .875) < 1e-10);
+  assert.equal(flowerGrowth(.6, .5), 1);
+  assert.equal(flowerGrowth(1, .5), 1);
+  assert.equal(flowerGrowth(1, Infinity), 0, 'Unreachable motifs stay unpainted');
+});
+
+test('footer reset is staggered over 1.05 seconds with a symmetric ease', () => {
+  assert.equal(wordReset(PAINT_END, 0), 0);
+  assert(wordReset(PAINT_END + .0067, 0) > 0);
+  assert.equal(wordReset(PAINT_END + .0067, 1), 0);
+  assert(Math.abs(wordReset(PAINT_END + .035, 0) - .5) < 1e-9);
+  assert.equal(wordReset(PAINT_END + .07, 0), 1);
+  let previous = 0;
   for (let i = 0; i <= 1000; i++) {
-    const time = 13.2 + i / 1000 * 2.79999;
-    const frame = footerFrame(time);
-    assert(frame.reset >= lastReset && frame.reset <= 1);
-    lastReset = frame.reset;
-  }
-  for (const time of [-32.5, 0, 3, 13, 15.999, 16, 99]) {
-    const frame = footerFrame(time);
-    assert(frame.time >= 0 && frame.time < PAINT_LOOP);
-    assert(frame.paint >= 0 && frame.paint <= 1);
-    assert(frame.reset >= 0 && frame.reset <= 1);
-  }
-  const effectiveOpacity = (seconds, item) => {
-    const frame = footerFrame(seconds);
-    return bloomProgress(frame.time, item.arrival).opacity * (1 - frame.reset);
-  };
-  for (const item of motifs) {
-    assert.equal(effectiveOpacity(12, item), 1, 'Completed paint stays visible before reset');
-    assert(effectiveOpacity(15.99, item) < .001);
-    assert.equal(effectiveOpacity(16, item), 0);
-    assert(Math.abs(effectiveOpacity(15.999, item) - effectiveOpacity(16.001, item)) < .00001);
+    const value = wordReset(PAINT_END + .07 * i / 1000, 0);
+    assert(value >= previous && value <= 1);
+    previous = value;
   }
 });
 
@@ -81,7 +61,8 @@ test('hero colors propagate spatially and do not all change at a cycle boundary'
   }
 });
 
-test('artwork is deterministic, richly varied and has exactly two footer lighting layers', () => {
+test('artwork is deterministic, richly varied and uses isolated wordmark masks', () => {
+  assert.equal(DEFAULT_ARTWORK.id, 'garden-bloom', 'Use the selected second mixed direction');
   assert.deepEqual(buildMotifs(), buildMotifs());
   const motifs = buildMotifs();
   assert.equal(new Set(motifs.map(item => item.variant)).size, 8);
@@ -92,11 +73,11 @@ test('artwork is deterministic, richly varied and has exactly two footer lightin
   assert.equal(one.replace(/member-letter-\d+/g, 'scene'), two.replace(/member-letter-\d+/g, 'scene'));
   const ids = [...(one + two).matchAll(/\bid="([^"]+)"/g)].map(match => match[1]);
   assert.equal(new Set(ids).size, ids.length, 'Separate scenes cannot collide in SVG IDs');
-  for (const selector of ['data-light-atmosphere', 'data-light-beam ', 'data-beam-gradient', 'data-light-halo', 'data-light-spot']) {
-    assert.equal(one.split(selector).length - 1, 2, selector);
-  }
-  assert(!patternMarkup('CRYPTO', false).includes('data-light-atmosphere'));
   assert.equal((one.match(/data-pattern-motif /g) || []).length, motifs.length);
+  for (const markup of [one, patternMarkup('CRYPTO', false)]) {
+    assert(markup.includes('data-pattern-artwork="garden-bloom"'), 'Both main wordmarks use the selected artwork');
+    for (let variant = 0; variant < 8; variant++) assert(markup.includes(DEFAULT_ARTWORK.motif(variant)));
+  }
 });
 
 class Element extends EventTarget {
@@ -158,17 +139,16 @@ test('pointer displaces motifs with a bounded spring which settles after leaving
 });
 
 test('initial reduced motion displays completed paint with no scheduled frames', () => {
-  const f = effectsFixture({ reduced: true, closing: true });
+  const f = effectsFixture({ reduced: true });
   try {
     assert.equal(f.pending.size, 0);
     assert.equal(f.motif.style.opacity, '1');
-    assert.equal(f.color.style.opacity, '1');
     assert(f.motion.attributes.get('transform').includes('scale(0.8)'));
   } finally { f.restore(); }
 });
 
 test('live reduced motion completes an unfinished bloom instead of freezing invisible paint', () => {
-  const f = effectsFixture({ closing: true });
+  const f = effectsFixture();
   try {
     f.step(10);
     assert.equal(f.motif.style.opacity, '0');
@@ -176,6 +156,5 @@ test('live reduced motion completes an unfinished bloom instead of freezing invi
     f.media.dispatchEvent(new Event('change'));
     assert.equal(f.pending.size, 0);
     assert.equal(f.motif.style.opacity, '1', 'Reduced-motion state reveals all motifs immediately');
-    assert.equal(f.color.style.opacity, '1');
   } finally { f.restore(); }
 });

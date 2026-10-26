@@ -1,4 +1,4 @@
-import { initMemberArt } from './member-art.js';
+import { initMemberArt } from './member-art.js?v=garden-bloom-20261026';
 import { initLanguage, translate } from './i18n.js';
 import { initInquiryForm } from './contact.js';
 import { initFaq } from './faq.js';

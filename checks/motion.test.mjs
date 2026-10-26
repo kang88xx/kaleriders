@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { sampleFlight, FLIGHT_ROUTES, flightDepth, initMemberArt } from '../public/member-art.js';
+import { MIXED_BOTANICAL_VARIANTS } from '../public/mixed-botanical-art.js';
 
 for (const [index, route] of FLIGHT_ROUTES.entries()) {
   test(`route ${index}: closed, smooth, bounded and travels across both axes`, () => {
@@ -33,7 +34,9 @@ class Element extends EventTarget {
     this.dataset = dataset;
     this.style = {};
     this.attributes = new Map();
-    this.classList = { add() {}, contains: () => false };
+    this.classes = new Set();
+    this.classList = { add: name => this.classes.add(name), contains: name => this.classes.has(name) };
+    this.children = [];
     this.offsetLeft = this.offsetTop = 0;
     this.offsetWidth = 100;
     this.offsetHeight = 80;
@@ -47,12 +50,63 @@ class Element extends EventTarget {
   hasPointerCapture(id) { return this.capturedPointer === id; }
   releasePointerCapture() { this.capturedPointer = null; }
   focus() {}
+  appendChild(element) { this.children.push(element); element.parent = this; }
+  remove() { if (this.parent) this.parent.children = this.parent.children.filter(child => child !== this); }
 }
 
-function fixture({ reduced = false } = {}) {
+class CanvasContext {
+  constructor(canvas) {
+    this.canvas = canvas; this.calls = []; this.stack = [];
+    this.matrix = [1, 0, 0, 1, 0, 0]; this.globalCompositeOperation = 'source-over'; this.globalAlpha = 1;
+  }
+  save() { this.stack.push([this.matrix.slice(), this.globalCompositeOperation, this.globalAlpha]); }
+  restore() { [this.matrix, this.globalCompositeOperation, this.globalAlpha] = this.stack.pop(); }
+  setTransform(...args) {
+    this.matrix = args.length === 1 ? ['a','b','c','d','e','f'].map(key => args[0][key]) : args;
+  }
+  getTransform() { return Object.fromEntries(['a','b','c','d','e','f'].map((key, index) => [key, this.matrix[index]])); }
+  multiply([a,b,c,d,e,f]) {
+    const [u,v,w,x,y,z] = this.matrix;
+    this.matrix = [u*a+w*b,v*a+x*b,u*c+w*d,v*c+x*d,u*e+w*f+y,v*e+x*f+z];
+  }
+  translate(x,y) { this.multiply([1,0,0,1,x,y]); }
+  scale(x,y) { this.multiply([x,0,0,y,0,0]); }
+  rotate(angle) { const c=Math.cos(angle), s=Math.sin(angle); this.multiply([c,s,-s,c,0,0]); }
+  measureText(text) { return { width: text === 'Kale' ? 520 : 780 }; }
+  clearRect() { this.calls = []; }
+  drawImage(image, ...args) {
+    assert(args.every(Number.isFinite), 'Drawing coordinates stay finite');
+    this.calls.push({ image, args, matrix: this.matrix.slice(), alpha: this.globalAlpha, composite: this.globalCompositeOperation, beam: image.context?.gradient?.slice() });
+    if (image.kind === 'character') this.canvas.kind = 'character';
+  }
+  createLinearGradient(...args) { assert(args.every(Number.isFinite)); this.gradient = args; return { addColorStop() {} }; }
+  beginPath() {} closePath() {} moveTo() {} lineTo() {} arc() {} stroke() {} fill() {} fillRect() {}
+}
+
+async function fixture({ reduced = false, decodeFailure = false } = {}) {
   const document = new Element();
   document.documentElement = new Element();
   document.hidden = false;
+  const canvases = [];
+  document.createElement = tag => {
+    assert.equal(tag, 'canvas');
+    const canvas = new Element();
+    canvas.width = 300; canvas.height = 150;
+    canvas.context = new CanvasContext(canvas);
+    canvas.getContext = () => canvas.context;
+    canvases.push(canvas);
+    return canvas;
+  };
+  class Image {
+    complete = true;
+    naturalWidth = 380;
+    decode() { return decodeFailure ? Promise.reject(new Error('Artwork decode failed')) : Promise.resolve(); }
+    set src(value) {
+      this.url = value;
+      const svg = decodeURIComponent(value.split(',')[1]);
+      this.kind = svg.includes('character-body') ? 'character' : svg.includes('<text') ? 'mask' : 'flower';
+    }
+  }
   const window = new EventTarget();
   const media = new EventTarget();
   media.matches = reduced;
@@ -73,12 +127,10 @@ function fixture({ reduced = false } = {}) {
     const pattern = new Element({ patternText: kind === 'hero' ? 'CRYPTO' : 'Kale Riders' });
     pattern.clientWidth = 1200;
     pattern.clientHeight = 400;
-    pattern.selectors = { '[data-pattern-drift]': new Element() };
+    pattern.selectors = { '[data-pattern-drift]': new Element(), '[data-pattern-color]': new Element() };
     pattern.collections = {
       '[data-pattern-spin]': [new Element({ angle: '23' })],
-      '[data-light-beam]': kind === 'closing' ? [new Element(), new Element()] : [],
-      '[data-beam-gradient]': kind === 'closing' ? [new Element(), new Element()] : [],
-      '[data-light-spot]': kind === 'closing' ? [new Element(), new Element()] : [],
+
     };
     const actors = Array.from({ length: kind === 'hero' ? 3 : 2 }, () => {
       const actor = new Element();
@@ -99,16 +151,20 @@ function fixture({ reduced = false } = {}) {
     return scene;
   });
   document.collections = { '[data-member-avatar]': [], '[data-flight-scene]': scenes };
-  const globals = { document, window, IntersectionObserver, matchMedia: () => media,
+  const errors = [];
+  const globals = { document, window, Image, IntersectionObserver, console: { ...console, error: (...args) => errors.push(args) }, matchMedia: () => media,
     requestAnimationFrame: callback => { pending.set(++nextFrame, callback); return nextFrame; },
     cancelAnimationFrame: id => pending.delete(id),
   };
   const originals = new Map(Object.keys(globals).map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   Object.assign(globalThis, globals);
   const cleanup = initMemberArt();
+  await new Promise(resolve => setImmediate(resolve));
+  assert.equal(scenes[1].classes.has('spray-ready'), !decodeFailure, 'Fallback is replaced only after successful decoding');
   const actor = (scene = 0, index = 0) => scenes[scene].collections['[data-flight-member]'][index];
   return {
-    scenes, actor, document, window, media, observers, pending,
+    scenes, actor, document, window, media, observers, pending, canvases, errors,
+    canvas: canvases[0],
     step(count = 1) {
       for (let i = 0; i < count; i++) {
         now += 16;
@@ -149,27 +205,28 @@ function pose(element) {
   return { x: Number(x), y: Number(y), angle: Number(angle) };
 }
 
-test('a dragged closing character stays where placed while the other character and lights keep moving', () => {
-  const f = fixture();
+test('a dragged closing character stays where placed while the other character and lights keep moving', async () => {
+  const f = await fixture();
   try {
     f.step(100);
     const actor = f.actor(1), before = pose(actor);
     const start = { clientX: before.x + 60, clientY: before.y + 80 };
     fire(actor, 'pointerdown', start);
     assert.equal(actor.capturedPointer, 1);
+    const beforeBeam = f.canvas.context.calls.find(call => call.composite === 'overlay').beam;
     fire(actor, 'pointermove', { clientX: start.clientX + 100, clientY: start.clientY + 40 });
     const dragged = pose(actor);
     assert(Math.abs(dragged.x - before.x - 100) < .02);
     assert(Math.abs(dragged.y - before.y - 40) < .02);
-    const beam = f.scenes[1].querySelector('[data-member-pattern]').querySelectorAll('[data-light-beam]')[0];
-    assert(beam.attributes.get('d').startsWith('M'));
+    const movedBeam = f.canvas.context.calls.find(call => call.composite === 'overlay').beam;
+    const scale = 1200 / 1400;
+    assert(Math.abs((movedBeam[0] - beforeBeam[0]) * scale - 100) < .02, 'The drawn spray origin follows horizontal dragging');
+    assert(Math.abs((movedBeam[1] - beforeBeam[1]) * scale - 40) < .02, 'The drawn spray origin follows vertical dragging');
     fire(actor, 'pointerup');
     const other = f.actor(1, 1).style.transform;
-    const light = beam.attributes.get('d');
     f.step(100);
     assert.deepEqual(pose(actor), dragged, 'Drop remains pinned across animation frames');
     assert.notEqual(f.actor(1, 1).style.transform, other);
-    assert.notEqual(beam.attributes.get('d'), light, 'Torch continues aiming at the moving light path');
     assert.equal(actor.capturedPointer, null);
     fire(actor, 'dblclick');
     assert.equal(actor.attributes.get('data-placed'), 'false');
@@ -179,8 +236,8 @@ test('a dragged closing character stays where placed while the other character a
   } finally { f.restore(); }
 });
 
-test('touch placement works with reduced motion and stays inside the resized stage', () => {
-  const f = fixture({ reduced: true });
+test('touch placement works with reduced motion and stays inside the resized stage', async () => {
+  const f = await fixture({ reduced: true });
   try {
     const actor = f.actor(1), before = pose(actor), scene = f.scenes[1];
     fire(actor, 'pointerdown', { pointerType: 'touch', clientX: before.x + 60, clientY: before.y + 80 });
@@ -190,7 +247,8 @@ test('touch placement works with reduced motion and stays inside the resized sta
     scene.clientHeight = 205;
     f.window.dispatchEvent(new Event('resize'));
     const p = pose(actor), a = p.angle * Math.PI / 180;
-    for (const [x, y] of [[0, 0], [100, 0], [0, 80], [100, 80]]) {
+    const width = parseFloat(actor.style.width), height = parseFloat(actor.style.height);
+    for (const [x, y] of [[0, 0], [width, 0], [0, height], [width, height]]) {
       const screenX = p.x + x * Math.cos(a) - y * Math.sin(a);
       const screenY = p.y + x * Math.sin(a) + y * Math.cos(a);
       assert(screenX >= 11.98 && screenX <= scene.clientWidth - 11.98);
@@ -205,8 +263,8 @@ test('touch placement works with reduced motion and stays inside the resized sta
   } finally { f.restore(); }
 });
 
-test('cancelled and foreign pointer gestures do not corrupt placement, and cleanup releases capture', () => {
-  const f = fixture({ reduced: true });
+test('cancelled and foreign pointer gestures do not corrupt placement, and cleanup releases capture', async () => {
+  const f = await fixture({ reduced: true });
   try {
     const actor = f.actor(1);
     fire(actor, 'keydown', { key: 'ArrowRight' });
@@ -233,8 +291,8 @@ test('cancelled and foreign pointer gestures do not corrupt placement, and clean
   } finally { f.restore(); }
 });
 
-test('pause, reduced motion and document visibility stop the scheduler without resume jumps', () => {
-  const f = fixture({ reduced: true });
+test('pause, reduced motion and document visibility stop the scheduler without resume jumps', async () => {
+  const f = await fixture({ reduced: true });
   try {
     assert.equal(f.pending.size, 0);
     const initial = f.actor().style.transform;
@@ -270,8 +328,8 @@ test('pause, reduced motion and document visibility stop the scheduler without r
   } finally { f.restore(); }
 });
 
-test('hover and focus jointly freeze one link while other actors continue', () => {
-  const f = fixture();
+test('hover and focus jointly freeze one link while other actors continue', async () => {
+  const f = await fixture();
   try {
     f.step(10);
     const actor = f.actor();
@@ -299,22 +357,16 @@ test('hover and focus jointly freeze one link while other actors continue', () =
   } finally { f.restore(); }
 });
 
-test('offscreen scenes preserve their clock; beams follow moving footer actors', () => {
-  const f = fixture();
+test('offscreen scenes preserve their clock while the visible footer continues', async () => {
+  const f = await fixture();
   try {
     f.step(10);
     f.visibility(0, false);
     const hiddenPose = f.actor().style.transform;
     const footerPose = f.actor(1).style.transform;
-    const beams = f.scenes[1].querySelector('[data-member-pattern]').collections['[data-light-beam]'];
-    const paths = beams.map(beam => beam.attributes.get('d'));
     f.step(50);
     assert.equal(f.actor().style.transform, hiddenPose);
     assert.notEqual(f.actor(1).style.transform, footerPose);
-    beams.forEach((beam, i) => {
-      assert.notEqual(beam.attributes.get('d'), paths[i]);
-      assert(!/NaN|Infinity/.test(beam.attributes.get('d')));
-    });
     f.visibility(1, false);
     assert.equal(f.pending.size, 0, 'All scenes offscreen stop rAF');
     f.step(100);
@@ -326,8 +378,8 @@ test('offscreen scenes preserve their clock; beams follow moving footer actors',
   } finally { f.restore(); }
 });
 
-test('cleanup cancels frames, disconnects observers and removes interaction listeners', () => {
-  const f = fixture();
+test('cleanup cancels frames, disconnects observers and removes interaction listeners', async () => {
+  const f = await fixture();
   try {
     f.step(5);
     const pose = { ...f.actor().style };
@@ -345,76 +397,9 @@ test('cleanup cancels frames, disconnects observers and removes interaction list
   } finally { f.restore(); }
 });
 
-test('footer beam starts at the rendered torch tip and tracks its axis through desktop/mobile letterboxing', () => {
-  const f = fixture();
-  try {
-    const scene = f.scenes[1];
-    const pattern = scene.querySelector('[data-member-pattern]');
-    for (const mobile of [false, true]) {
-      if (mobile) {
-        scene.clientWidth = 375;
-        scene.clientHeight = 205;
-        pattern.clientWidth = 359;
-        pattern.clientHeight = 220;
-        pattern.offsetLeft = 8;
-        pattern.offsetTop = 38;
-        scene.collections['[data-flight-member]'].forEach(actor => {
-          actor.offsetWidth = actor.offsetHeight = 50;
-          const avatar = actor.querySelector('.member-avatar');
-          avatar.offsetWidth = avatar.offsetHeight = 50;
-          const torch = actor.querySelector('.character-torch');
-          torch.offsetWidth = 17;
-          torch.offsetHeight = 9;
-          torch.offsetLeft = 36;
-          torch.offsetTop = 31.5;
-        });
-        f.window.dispatchEvent(new Event('resize'));
-      }
-      // Reconstruct the visible nested CSS transforms, independently of route math.
-      const scale = Math.min(pattern.clientWidth / 1400, pattern.clientHeight / 450);
-      const svgLeft = pattern.offsetLeft + (pattern.clientWidth - 1400 * scale) / 2;
-      const svgTop = pattern.offsetTop + (pattern.clientHeight - 450 * scale) / 2;
-      for (let sample = 0; sample < 2300; sample++) {
-        f.step();
-        scene.collections['[data-flight-member]'].forEach((actor, index) => {
-          const transform = actor.style.transform.match(/translate3d\(([-\d.]+)px,([-\d.]+)px,0\) rotate\(([-\d.]+)deg\)/);
-          assert(transform, 'Actor exposes a valid CSS transform');
-          const [, tx, ty, degrees] = transform.map(Number);
-          const rotation = degrees * Math.PI / 180;
-          const torch = actor.querySelector('.character-torch');
-          const torchAngle = Number(torch.style.transform.match(/rotate\(([-\d.e+]+)deg\)/)[1]) * Math.PI / 180;
-          const avatar = actor.querySelector('.member-avatar');
-          const pivotX = avatar.offsetLeft + torch.offsetLeft;
-          const pivotY = avatar.offsetTop + torch.offsetTop + torch.offsetHeight / 2;
-          const localTipX = pivotX + Math.cos(torchAngle) * (torch.offsetWidth + 4);
-          const localTipY = pivotY + Math.sin(torchAngle) * (torch.offsetWidth + 4);
-          const tipX = tx + localTipX * Math.cos(rotation) - localTipY * Math.sin(rotation);
-          const tipY = ty + localTipX * Math.sin(rotation) + localTipY * Math.cos(rotation);
-          const gradient = pattern.collections['[data-beam-gradient]'][index];
-          const beamX = Number(gradient.attributes.get('x1')) * scale + svgLeft;
-          const beamY = Number(gradient.attributes.get('y1')) * scale + svgTop;
-          const aimX = Number(gradient.attributes.get('x2')) * scale + svgLeft;
-          const aimY = Number(gradient.attributes.get('y2')) * scale + svgTop;
-          assert([beamX, beamY, aimX, aimY].every(Number.isFinite));
-          assert(Math.hypot(beamX - tipX, beamY - tipY) < .025, 'Beam begins at actual nested-transform torch tip');
-          const beam = pattern.collections['[data-light-beam]'][index].attributes.get('d');
-          const origin = beam.match(/^M([^,]+),([^ ]+)/).slice(1).map(Number);
-          assert(Math.abs(origin[0] - Number(gradient.attributes.get('x1'))) < 1e-8);
-          assert(Math.abs(origin[1] - Number(gradient.attributes.get('y1'))) < 1e-8);
-          const length = Math.hypot(aimX - beamX, aimY - beamY);
-          const direction = rotation + torchAngle;
-          const cross = Math.abs(Math.cos(direction) * (aimY - beamY) - Math.sin(direction) * (aimX - beamX));
-          assert(cross / Math.max(length, 1) < .0001, 'Beam and visible torch are collinear');
-          assert(Math.cos(direction) * (aimX - beamX) + Math.sin(direction) * (aimY - beamY) >= 0,
-            `Light projects forward from the torch (mobile=${mobile}, actor=${index}, frame=${sample})`);
-        });
-      }
-    }
-  } finally { f.restore(); }
-});
 
-test('hero layer changes happen near transparent poses and focused links remain fully visible', () => {
-  const f = fixture();
+test('hero layer changes happen near transparent poses and focused links remain fully visible', async () => {
+  const f = await fixture();
   try {
     const actors = f.scenes[0].collections['[data-flight-member]'];
     const previous = actors.map(actor => ({ ...actor.style }));
@@ -450,18 +435,16 @@ test('hero layer changes happen near transparent poses and focused links remain 
   } finally { f.restore(); }
 });
 
-test('pattern cadence is throttled independently of per-frame actors and beams', () => {
-  const f = fixture();
+test('hero pattern cadence is throttled independently of per-frame actors', async () => {
+  const f = await fixture();
   try {
     f.step();
-    const pattern = f.scenes[1].querySelector('[data-member-pattern]');
+    const pattern = f.scenes[0].querySelector('[data-member-pattern]');
     const drift = pattern.querySelector('[data-pattern-drift]');
     const spin = pattern.collections['[data-pattern-spin]'][0];
-    const beam = pattern.collections['[data-light-beam]'][0];
     let oldPattern = drift.attributes.get('transform');
     let oldSpin = spin.attributes.get('transform');
-    let oldActor = f.actor(1).style.transform;
-    let oldBeam = beam.attributes.get('d');
+    let oldActor = f.actor(0).style.transform;
     let updates = 0;
     for (let frame = 0; frame < 120; frame++) {
       f.step();
@@ -470,13 +453,95 @@ test('pattern cadence is throttled independently of per-frame actors and beams',
         updates++;
         assert.notEqual(spin.attributes.get('transform'), oldSpin);
       } else assert.equal(spin.attributes.get('transform'), oldSpin);
-      assert.notEqual(f.actor(1).style.transform, oldActor, 'Actor continues on every display tick');
-      assert.notEqual(beam.attributes.get('d'), oldBeam, 'Beam continues on every display tick');
+      assert.notEqual(f.actor(0).style.transform, oldActor, 'Actor continues on every display tick');
       oldPattern = current;
       oldSpin = spin.attributes.get('transform');
-      oldActor = f.actor(1).style.transform;
-      oldBeam = beam.attributes.get('d');
+      oldActor = f.actor(0).style.transform;
     }
     assert(updates >= 30 && updates <= 47, 'Pattern runs at a bounded lower cadence over 1.92s');
+  } finally { f.restore(); }
+});
+
+
+
+
+test('footer composites wordmark, spray and existing characters on the same canvas', async () => {
+  const f = await fixture();
+  try {
+    f.step(120);
+    const draws = f.canvas.context.calls;
+    const overlays = draws.filter(call => call.composite === 'overlay');
+    assert.equal(overlays.length, 2, 'Both original spray beams use the wordmark destination');
+    assert(draws.indexOf(overlays[0]) >= 2, 'Wordmark is drawn before overlay blending');
+    assert.equal(draws.filter(call => call.image.kind === 'character' && call.composite === 'source-over').length, 2);
+    const before = f.actor(1).style.transform;
+    f.step(20);
+    assert.notEqual(f.actor(1).style.transform, before);
+    const painted = f.canvas.context.calls.map(call => [call.args, call.matrix, call.composite]);
+    f.motion(true); f.step(30);
+    assert.deepEqual(f.canvas.context.calls.map(call => [call.args, call.matrix, call.composite]), painted);
+  } finally { f.restore(); }
+});
+
+test('footer repeats its reference path after exactly fifteen seconds', async () => {
+  const f = await fixture();
+  try {
+    f.step(101);
+    const first = [f.actor(1).style.transform, f.actor(1, 1).style.transform];
+    // Each simulated display frame advances 16ms. 1,875 frames is two loops.
+    f.step(1875);
+    assert.deepEqual([f.actor(1).style.transform, f.actor(1, 1).style.transform], first);
+  } finally { f.restore(); }
+});
+
+test('footer lettering stays fixed throughout painting, reset and replay', async () => {
+  const f = await fixture();
+  try {
+    let sawFade = false;
+    for (let frame = 0; frame < 1100; frame++) {
+      f.step();
+      const [base, ...words] = f.canvas.context.calls.slice(0, 3);
+      assert.deepEqual(base.args, [0, 0], 'The blue wordmark remains anchored');
+      assert.equal(base.alpha, 1);
+      for (const word of words) {
+        assert.deepEqual(word.args.slice(0, 4), word.args.slice(4), 'Paint source and destination rectangles never slide');
+        if (word.alpha > 0 && word.alpha < 1) sawFade = true;
+      }
+    }
+    assert(sawFade, 'Only the painted pattern fades for the next spray loop');
+  } finally { f.restore(); }
+});
+
+test('reduced motion reveals the selected flowering garden after image decoding without starting animation', async () => {
+  const f = await fixture({ reduced: true });
+  try {
+    assert.equal(f.pending.size, 0);
+    const paint = f.canvases[2].context.calls;
+    const garden = MIXED_BOTANICAL_VARIANTS.find(artwork => artwork.id === 'garden-bloom');
+    const leaves = paint.filter(call => call.image.kind === 'flower');
+    assert.equal(leaves.length, garden.buildMotifs().length);
+    const shapes = Array.from({ length: 8 }, (_, index) => garden.motif(index));
+    assert(leaves.every(call => shapes.some(shape => decodeURIComponent(call.image.url).includes(shape))), 'Decoded tiles match the selected garden artwork');
+    assert.equal(f.canvas.attributes.get('aria-hidden'), 'true');
+    const snapshot = f.actor(1).style.transform;
+    f.step(40);
+    assert.equal(f.actor(1).style.transform, snapshot);
+    fire(f.actor(1), 'keydown', { key: 'ArrowRight' });
+    assert.notEqual(f.actor(1).style.transform, snapshot, 'Explicit placement remains available');
+    assert.equal(f.pending.size, 0);
+  } finally { f.restore(); }
+});
+
+test('failed artwork decoding keeps the existing SVG fallback and placement controls usable', async () => {
+  const f = await fixture({ decodeFailure: true });
+  try {
+    assert.equal(f.errors.length, 1, 'One preparation error is reported');
+    assert.equal(f.scenes[1].classes.has('spray-ready'), false, 'Fallback must not be hidden');
+    assert.equal(f.canvas.context.calls.length, 0, 'Undecoded assets are never drawn');
+    const previous = f.actor(1).style.transform;
+    fire(f.actor(1), 'keydown', { key: 'ArrowRight' });
+    assert.notEqual(f.actor(1).style.transform, previous);
+    f.step(20);
+    assert.equal(f.errors.length, 1, 'Animation does not repeatedly retry broken assets');
   } finally { f.restore(); }
 });
