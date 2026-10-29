@@ -15,6 +15,16 @@ npm test
 
 Open http://127.0.0.1:4173. English is the default on a first visit. `?lang=ko` or `?lang=en` overrides the saved language preference.
 
+## Event sample
+
+`https://kaleriders.com/sample` serves the event portfolio draft separately from the homepage. Vercel rewrites `/sample` and `/sample/` to `public/sample.html`. For the simple local Python server, open `/sample.html?lang=ko#work`. The page is marked `noindex` and retains the existing Korean/English switch.
+
+The five cases use 14 original photos and three videos from the owner's Drive. All 15 metrics and unverified delivery descriptions are illustrative and visibly labeled as drafts. Replace bilingual copy and values in `public/case-studies-data.js`; review the sample labels in `public/case-studies.js` before treating any values as verified. `docs/case-study-sources.json` records the source files.
+
+`sample-app.js` initializes the case section before the shared app handles localization; the homepage HTML, shared app entry and styles are unchanged by this addition. Native video controls do not autoplay or preload.
+
+Run `npm test` for content, routes and existing behavior. With a local server and disposable headless Chrome listening on debug port 9227, run `CASES_BASE_URL=http://127.0.0.1:4173/sample.html node scripts/check-case-studies.mjs` for both languages at 360/390/768/1440px, photo decoding, video playback, keyboard expansion and locale-state preservation. Screenshots/results are written to the OS temporary directory under `kale-cases-qa/` (override with `CASES_QA_DIR`).
+
 ## Deployment
 
 Vercel project: `kaleriders`, under `kang88xxs-projects`.

@@ -1,0 +1,126 @@
+{
+  "reviewedAt": "2026-10-29",
+  "account": "hello@kaleriders.com",
+  "usage": "Local preview authorized by owner. Real media; outcome metrics and unverified delivery scope are illustrative drafts.",
+  "sources": [
+    {
+      "group": "Kaito",
+      "name": "photo_2026-10-02_18-22-23.jpg",
+      "url": "https://drive.google.com/file/d/1FUHh3JKM2rov70qipI_CvV4Z_D6vfQ84/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 185814
+    },
+    {
+      "group": "Kaito",
+      "name": "photo_2026-10-02_18-22-22.jpg",
+      "url": "https://drive.google.com/file/d/1X8uNMymSq7YCWCVREuV1w-MNyc3WvUy-/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 149669
+    },
+    {
+      "group": "Kaito",
+      "name": "photo_2026-10-02_18-22-21.jpg",
+      "url": "https://drive.google.com/file/d/1wxIqGfNkmvYvN6QvSg9N9wgwZZdAOa6w/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 131701
+    },
+    {
+      "group": "Kaito",
+      "name": "photo_2026-10-02_11-38-00.jpg",
+      "url": "https://drive.google.com/file/d/1-PedZsJZeM0RcAwQcdmo1GXsCV_2B_OP/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 158749
+    },
+    {
+      "group": "Kaito",
+      "name": "DSC05825.jpg",
+      "url": "https://drive.google.com/file/d/1HsH4jn_02oTwErhfVHQ_oQ2Wf5PMCjda/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 1008073
+    },
+    {
+      "group": "Kaito",
+      "name": "DSC05662.jpg",
+      "url": "https://drive.google.com/file/d/1CaD1vbW16b8kNbDQ5BDXMwEAwdWiftao/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 680609
+    },
+    {
+      "group": "OpenAGI",
+      "name": "DSC02137.jpg",
+      "url": "https://drive.google.com/file/d/1ZfbCtllAv5ZJ600FIBxE534oDPYUpHvE/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 892091
+    },
+    {
+      "group": "OpenAGI",
+      "name": "DSC01787.jpg",
+      "url": "https://drive.google.com/file/d/1wdMmszKky7GRg83D4RL18M8iEuYwDdSu/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 579050
+    },
+    {
+      "group": "OpenAGI",
+      "name": "DSC01659.jpg",
+      "url": "https://drive.google.com/file/d/1kWnb1BzmJluuvmzeNC3Ud3_6i053ds47/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 1109705
+    },
+    {
+      "group": "OpenAGI",
+      "name": "DSC01536.jpg",
+      "url": "https://drive.google.com/file/d/1grybjX-wrwVOaV5Q5_UxVyl0nY2_BIEJ/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 970336
+    },
+    {
+      "group": "OpenAGI",
+      "name": "DSC01503.jpg",
+      "url": "https://drive.google.com/file/d/1KpuzcC7qRfNTByNn04fLaLefI9OWxaQp/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 977303
+    },
+    {
+      "group": "OpenAGI",
+      "name": "DSC01781.jpg",
+      "url": "https://drive.google.com/file/d/1YSfprHx_D4euQSQRfjPlQIfT5iFhyCDO/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 742943
+    },
+    {
+      "group": "OpenAGI",
+      "name": "DSC01774.jpg",
+      "url": "https://drive.google.com/file/d/1FEZ1Yb2qPkLGizoNMejzU0lCprBdamSb/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 793081
+    },
+    {
+      "group": "OpenAGI",
+      "name": "DSC01614.jpg",
+      "url": "https://drive.google.com/file/d/1NlkIe7kih1EAnSg_wZZxK2cqbLFVLLb5/view?usp=drivesdk",
+      "mimeType": "image/jpeg",
+      "bytes": 936812
+    },
+    {
+      "group": "Fogo",
+      "name": "fogo2",
+      "url": "https://drive.google.com/file/d/1-_ggHgUWQn_tQW5gA9fHZwupPmfnOegd/view?usp=drivesdk",
+      "mimeType": "video/mp4",
+      "bytes": 4681336
+    },
+    {
+      "group": "Fogo",
+      "name": "fogo1.mp4",
+      "url": "https://drive.google.com/file/d/1alQ4Fn0LkmtNE_innZmsXeRMc8gu_Hjz/view?usp=drivesdk",
+      "mimeType": "video/mp4",
+      "bytes": 8631928
+    },
+    {
+      "group": "르네",
+      "name": "르네1",
+      "url": "https://drive.google.com/file/d/1vVcdISow8BU50nDNPcfNxMJC4T8unY2u/view?usp=drivesdk",
+      "mimeType": "video/mp4",
+      "bytes": 8196188
+    }
+  ]
+}

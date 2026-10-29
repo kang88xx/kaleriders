@@ -1,4 +1,9 @@
 export const english = Object.freeze({
+  '진행 사례': 'Our work',
+  '진행 사례 보기 ↗': 'Explore our work ↗',
+  '행사에서 시작된 연결.': 'Connections that start in the room.',
+  '사례를 불러오는 중입니다. 표시되지 않으면 페이지를 새로고침해 주세요.': 'Loading event stories. Refresh the page if they do not appear.',
+
   '글로벌 프로젝트가 한국에 뿌리내리고, 오래가는 팬 관계를 만들도록 함께합니다.': 'We help global projects take root in Korea and build lasting fan relationships.',
   '함께하는 과정': 'Our process',
   '이해에서': 'From insight',

@@ -16,5 +16,35 @@
       "destination": "https://kaleriders.com/:path*",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/sample",
+      "destination": "/sample.html"
+    },
+    {
+      "source": "/sample/",
+      "destination": "/sample.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sample",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/sample/",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    }
   ]
 }
