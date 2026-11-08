@@ -18,7 +18,6 @@ const copy = {
   '리포트 예시': 'Example report',
   '분석 방식과 리포트 구성을 보여주는 가상 데이터입니다. 실제 고객 성과가 아닙니다.': 'Fictional data used to show our report format and analysis. These are not client results.',
   '보고 기간별 변화': 'Compare reporting periods',
-  '완료율은 완료 행동 ÷ 추적 방문으로 계산합니다.': 'Action rate is completed actions divided by tracked visits.',
   '시장 분석과 채널·콘텐츠별 반응을 정리해 다음 실행의 우선순위를 제안합니다.': 'We review the market, channel performance and content response, then recommend where to focus next.',
   '예시 데이터': 'Illustrative data',
   '누적 보고 기간': 'Cumulative reporting period',
@@ -81,8 +80,7 @@ export function initRefreshInsights() {
         <div class="ri-report-foot"><span data-ri-period-label></span><strong data-ri-rate></strong></div>
         <details class="ri-table-details"><summary>그래프 데이터 보기</summary><div class="ri-table-scroll" tabindex="0" role="region" aria-label="그래프 데이터 보기"><table><thead><tr><th scope="col">주차</th><th scope="col">노출</th><th scope="col">방문</th><th scope="col">완료 행동 수</th></tr></thead><tbody data-ri-table></tbody></table></div></details>
       </article>
-    </div>
-    <p class="ri-calculation-note">완료율은 완료 행동 ÷ 추적 방문으로 계산합니다.</p>`;
+    </div>`;
 
   function renderReport() {
     const summary = getPerformanceSummary(period);

@@ -3,7 +3,7 @@ import { initLanguage, translate } from './i18n.js?v=flow-en-20261108';
 import { initInquiryForm } from './contact.js';
 import { initFaq } from './faq.js';
 import { initRefreshServices } from './refresh-services.js?v=type-20261108';
-import { initRefreshInsights } from './refresh-insights.js?v=type-20261108';
+import { initRefreshInsights } from './refresh-insights.js?v=notes-20261108';
 import { initRefreshMedia } from './refresh-media.js?v=type-20261108';
 import { initRefreshTeam } from './refresh-team.js?v=type-20261108';
 

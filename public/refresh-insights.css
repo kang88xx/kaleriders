@@ -112,5 +112,3 @@
   .ri-chart svg { height: 210px; }
   .ri-layout > article { padding-inline: 18px; }
 }
-
-.ri-calculation-note { margin-top: 14px; font-size: 12px; line-height: 1.8; color: var(--muted); }
