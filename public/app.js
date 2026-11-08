@@ -2,6 +2,7 @@ import { initMemberArt } from './member-art.js?v=garden-bloom-20261026';
 import { initLanguage, translate } from './i18n.js?v=flow-en-20261108';
 import { initInquiryForm } from './contact.js';
 import { initFaq } from './faq.js';
+import { initRouteMotion } from './route-motion.js?v=route-flow-20261108';
 import { initRefreshServices } from './refresh-services.js?v=type-20261108';
 import { initRefreshInsights } from './refresh-insights.js?v=notes-20261108';
 import { initRefreshMedia } from './refresh-media.js?v=type-20261108';
@@ -92,13 +93,17 @@ const updateStageDescription = () => {
   const index = Number(stageButtons.find(button => button.getAttribute('aria-pressed') === 'true').dataset.stage);
   document.querySelector('#route-description').textContent = translate(stageDescriptions[index]);
 };
-stageButtons.forEach(button => button.addEventListener('click', () => {
-  stageButtons.forEach(item => {
-    item.classList.toggle('active', item === button);
-    item.setAttribute('aria-pressed', String(item === button));
+const selectStage = (index, { automatic = false } = {}) => {
+  stageButtons.forEach((button, buttonIndex) => {
+    const selected = buttonIndex === index;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
   });
+  // Announce a visitor's choice without repeatedly announcing autoplay updates.
+  document.querySelector('.route-detail').setAttribute('aria-live', automatic ? 'off' : 'polite');
   updateStageDescription();
-}));
+};
+initRouteMotion(document.querySelector('.route-board'), { onStageChange: selectStage });
 updateStageDescription();
 
 document.addEventListener('languagechange', () => {

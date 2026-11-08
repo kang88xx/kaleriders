@@ -30,6 +30,8 @@ html[lang="en"] h4 { letter-spacing: -.01em; }
 .hero-eyebrow { width: fit-content; max-width: 100%; margin-inline: auto; gap: 8px; color: var(--blue); font-size: 13px; letter-spacing: .01em; margin-bottom: 22px; }
 .map-coordinates { opacity: 1; }
 .desktop-nav, .team-link { font-size: 14px; }
+/* The logo now has an alpha channel; show its original colors directly. */
+.header .wordmark, .footer .wordmark { mix-blend-mode: normal; }
 
 #refresh-services-root .services-heading h2,
 html[lang="en"] #refresh-services-root .services-heading h2,
@@ -71,7 +73,9 @@ html[lang="en"] :is(.services-heading, .ri-heading, .rm-heading, .rt-heading, .s
 .route-stop small { font-size: 11px; line-height: 1.4; letter-spacing: .04em; }
 .route-stop strong { font-size: 14px; font-weight: 500; line-height: 1.5; white-space: normal; letter-spacing: -.02em; }
 html[lang="en"] .route-stop strong { font-size: 14px; letter-spacing: 0; }
-.route-detail { font-size: 14px; line-height: 1.8; min-height: 88px; padding-block: 18px; }
+.route-detail { border-top: 0; font-size: 14px; line-height: 1.8; min-height: 88px; padding-block: 18px; }
+.map-track .moving-line { animation-duration: 5s; }
+.route-board[data-route-motion] .moving-line { animation: none; }
 .board-footer { font-size: 12px; line-height: 1.75; gap: 20px; }
 .board-footer > span:last-child { font-size: 10px; flex-shrink: 0; }
 .context-coordinate { font-size: 10px; }

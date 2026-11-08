@@ -23,6 +23,8 @@ The latest typography pass uses self-hosted Pretendard for Korean and English, a
 
 The compact two-row footer has no divider between rows. Its KALE expansion uses small text with only K, A, L and E bold; the extra supporting sentence is removed. Desktop and mobile spacing follows the final approved local preview.
 
+The process diagram advances its connector and highlighted stage together every five seconds. Visitors can select a stage directly; focus, hover and reduced-motion settings keep its description readable.
+
 Only approved runtime modules and assets are included from the local preview. New comparison pages and withdrawn design variants are excluded. The production homepage allows indexing; the existing `/sample` draft remains `noindex`.
 
 ## Event sample
