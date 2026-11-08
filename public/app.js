@@ -2,10 +2,10 @@ import { initMemberArt } from './member-art.js?v=garden-bloom-20261026';
 import { initLanguage, translate } from './i18n.js?v=flow-en-20261108';
 import { initInquiryForm } from './contact.js';
 import { initFaq } from './faq.js';
-import { initRefreshServices } from './refresh-services.js?v=flow-copy-20261108';
-import { initRefreshInsights } from './refresh-insights.js?v=flow-copy-20261108';
-import { initRefreshMedia } from './refresh-media.js?v=flow-copy-20261108';
-import { initRefreshTeam } from './refresh-team.js?v=flow-copy-20261108';
+import { initRefreshServices } from './refresh-services.js?v=type-20261108';
+import { initRefreshInsights } from './refresh-insights.js?v=type-20261108';
+import { initRefreshMedia } from './refresh-media.js?v=type-20261108';
+import { initRefreshTeam } from './refresh-team.js?v=type-20261108';
 
 initRefreshServices();
 initRefreshInsights();

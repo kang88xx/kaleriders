@@ -50,12 +50,11 @@ export function initRefreshInsights() {
 
   root.innerHTML = `
     <div class="ri-heading">
-      <div><p class="eyebrow">RESEARCH & REPORTING</p><h2 id="growth-title"><span>시장을 읽고,</span><br><span>다음 움직임을 만듭니다.</span></h2></div>
+      <div><h2 id="growth-title"><span>시장을 읽고,</span><br><span>다음 움직임을 만듭니다.</span></h2></div>
       <p class="ri-intro">시장 분석과 채널·콘텐츠별 반응을 정리해 다음 실행의 우선순위를 제안합니다.</p>
     </div>
     <div class="ri-layout">
       <article class="ri-research" aria-labelledby="ri-research-title">
-        <p class="eyebrow">01 / MARKET RESEARCH</p>
         <h3 id="ri-research-title">한국 시장 리서치</h3>
         <p class="ri-research-intro">어디에서, 누구와, 어떤 이야기로 시작할까요?</p>
         <ol class="ri-research-list">
@@ -66,7 +65,7 @@ export function initRefreshInsights() {
         <p class="ri-handoff">리서치 브리프 → 실행 우선순위 → 성과 리포트</p>
       </article>
       <article class="ri-report" aria-labelledby="ri-report-title">
-        <div class="ri-report-top"><p class="eyebrow">02 / CAMPAIGN REPORTING</p><span class="ri-sample">리포트 예시</span></div>
+        <div class="ri-report-top"><span class="ri-sample">리포트 예시</span></div>
         <h3 id="ri-report-title">캠페인 리포트 구성 예시</h3>
         <p class="ri-example-note">분석 방식과 리포트 구성을 보여주는 가상 데이터입니다. 실제 고객 성과가 아닙니다.</p>
         <div class="ri-report-toolbar"><p>보고 기간별 변화</p><div class="ri-periods" role="group" aria-label="누적 보고 기간">${performanceData.periods.map(value => `<button type="button" data-ri-period="${value}" aria-pressed="${value === period}">${value}주</button>`).join('')}</div></div>

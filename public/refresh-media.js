@@ -106,7 +106,6 @@ export function initRefreshMedia(doc = document) {
 
   const heading = element('div', 'rm-heading', galleryRoot);
   const headingCopy = element('div', '', heading);
-  element('p', 'eyebrow', headingCopy, 'EVENTS & COMMUNITY');
   const galleryTitle = element('h2', '', headingCopy, copy('함께 만든 순간들.', 'People we brought together.'));
   galleryTitle.id = 'work-title';
   const grid = element('div', 'rm-gallery', galleryRoot);
@@ -145,7 +144,6 @@ export function initRefreshMedia(doc = document) {
   films.setAttribute('aria-labelledby', 'rm-films-title');
   const filmsHeading = element('div', 'rm-heading rm-films-heading', films);
   const filmsHeadingCopy = element('div', '', filmsHeading);
-  element('p', 'eyebrow', filmsHeadingCopy, 'EVENT VIDEOS');
   const filmsTitle = element('h3', '', filmsHeadingCopy, copy('현장의 온도, 그대로.', 'A look inside the events.'));
   filmsTitle.id = 'rm-films-title';
   const filmsGrid = element('div', 'rm-event-videos', films);
@@ -164,7 +162,6 @@ export function initRefreshMedia(doc = document) {
   const friendsShell = element('div', 'rm-friends-shell', friendsRoot);
   const friendsHeading = element('div', 'rm-heading', friendsShell);
   const friendsHeadingCopy = element('div', '', friendsHeading);
-  element('p', 'eyebrow', friendsHeadingCopy, 'FRIENDS OF KALE');
   const friendsTitle = element('h2', '', friendsHeadingCopy, copy('함께 달려온 친구들.', 'People we’ve worked with.'));
   friendsTitle.id = 'friends-title';
   element('p', 'rm-intro', friendsHeading, copy('같은 목표로 만나, 함께 만든 이야기.\n응원 영상과 후기 예시를 담았습니다.', 'Example video messages and testimonials\nfrom project partners and participants.'));

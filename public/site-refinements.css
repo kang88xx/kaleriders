@@ -1,13 +1,24 @@
 /* Shared type and spacing for the current homepage. */
-:root { --section-title: clamp(32px, 3.4vw, 48px); }
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-style: normal;
+  font-weight: 45 920;
+  font-display: swap;
+  src: url('assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+}
+:root {
+  --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --section-title: clamp(32px, 3.4vw, 48px);
+}
+.eyebrow, .board-bar, .map-heading, .ri-list-number { font-family: var(--sans); }
 h2, h3 { font-weight: 500; }
 .hero h1 { letter-spacing: -.055em; }
 html[lang="en"] :is(h1, h2, h3) { letter-spacing: -.025em; }
 html[lang="en"] .hero h1 { letter-spacing: -.035em; line-height: 1.15; }
 html[lang="en"] h4 { letter-spacing: -.01em; }
 .hero-description { font-size: 16px; line-height: 1.8; }
-.brand-signature-hero { margin-top: 28px; }
-.hero-eyebrow { font-size: 11px; }
+.brand-signature-hero { margin-top: 20px; }
+.hero-eyebrow { font-size: 13px; font-weight: 400; letter-spacing: .01em; margin-bottom: 22px; }
 .desktop-nav, .team-link { font-size: 14px; }
 
 #refresh-services-root .services-heading h2,
@@ -43,7 +54,7 @@ html[lang="en"] :is(.services-heading, .ri-heading, .rm-heading, .rt-heading, .s
 .board-bar { font-size: 11px; letter-spacing: .04em; gap: 12px; }
 .example-label { font-size: 12px; flex-shrink: 0; }
 .route-intro .eyebrow { font-size: 11px; line-height: 1.65; }
-.route-intro h3 { font-size: 26px; line-height: 1.35; }
+.route-intro h3 { font-size: 26px; line-height: 1.35; margin-top: 0; }
 .route-intro p { font-size: 14px; line-height: 1.8; }
 .map-heading { font-size: 10px; line-height: 1.6; letter-spacing: .025em; gap: 12px; }
 .route-stop { min-height: 140px; }
@@ -62,6 +73,8 @@ html[lang="en"] .route-stop strong { font-size: 14px; letter-spacing: 0; }
 .ri-research-list p { font-size: 15px; line-height: 1.75; }
 .ri-research-intro { font-size: 15px; line-height: 1.75; }
 .ri-layout h3 { font-size: 26px; }
+.ri-research > h3 { margin-top: 0; }
+.ri-report-top { justify-content: flex-end; }
 .rm-records > h3 { font-size: 24px; }
 .rm-films-heading h3 { font-size: clamp(26px, 2.5vw, 34px); line-height: 1.35; }
 .rm-record-copy p { font-size: 14px; line-height: 1.75; }
@@ -96,6 +109,11 @@ html[lang="en"] .route-stop strong { font-size: 14px; letter-spacing: 0; }
   .hero-description { max-width: 620px; margin-top: 18px; }
   .hero .member-stage { margin-top: 18px; }
 }
+@media (min-width: 601px) {
+  html[lang="en"] .hero-copy { max-width: 1320px; }
+  html[lang="en"] .hero h1 { font-size: clamp(28px, 4.6vw, 70px); white-space: nowrap; }
+  html[lang="en"] .hero h1 > br { display: none; }
+}
 @media (max-width: 900px) {
   .context { gap: 40px; }
   .route-intro { padding-inline: 20px; }
@@ -116,10 +134,10 @@ html[lang="en"] .route-stop strong { font-size: 14px; letter-spacing: 0; }
     --brand-gap: 5px;
   }
   .menu-toggle { flex: 0 0 44px; }
-  .hero-eyebrow { font-size: 10px; letter-spacing: .08em; }
+  .hero-eyebrow { font-size: 12px; letter-spacing: .01em; }
+  html[lang="en"] .hero h1 { font-size: clamp(28px, 8vw, 40px); }
   .hero-description { font-size: 15px; max-width: 330px; }
-  .brand-signature-hero { margin-top: 24px; }
-  .brand-signature-label { font-size: 10px; }
+  .brand-signature-hero { margin-top: 18px; }
   .hero .member-stage { margin-top: 8px; height: 220px; }
   .references { padding-block: 20px 32px; }
   #services:has(#refresh-services-root) { padding-block: 36px 24px; }

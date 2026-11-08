@@ -46,7 +46,6 @@ export function initRefreshTeam(doc = document) {
 
   const heading = element('div', 'rt-heading', root);
   const headingCopy = element('div', '', heading);
-  element('p', 'eyebrow', headingCopy, 'MEET THE TEAM');
   const title = element('h2', '', headingCopy);
   title.id = 'team-title';
   element('span', '', title, copy('함께 만드는 세 사람.', 'Three people.'));

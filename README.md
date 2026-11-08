@@ -17,7 +17,9 @@ Open http://127.0.0.1:4173. English is the default whenever the URL has no langu
 
 ## Homepage release — 2026-11-08
 
-The approved homepage presents services and work before the Korea context and three-stage approach, then research, team, FAQ and inquiry sections. English appears first in the language switch and loads by default.
+The approved homepage presents services and work before the Korea context and three-stage approach, then research, team and inquiry sections. The FAQ and its footer link are hidden for later restoration. English appears first in the language switch and loads by default.
+
+The latest typography pass uses self-hosted Pretendard for Korean and English, a single-line English headline on larger screens, a smaller light-weight KALE expansion and fewer decorative section labels.
 
 The compact two-row footer has no divider between rows. Its KALE expansion uses small text with only K, A, L and E bold; the extra supporting sentence is removed. Desktop and mobile spacing follows the final approved local preview.
 

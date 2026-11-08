@@ -1,23 +1,18 @@
-/* Selected brand signatures: hero concept 1 and footer concept 3. */
+/* Quiet hero signature and compact footer brand treatment. */
 .hero-copy .member-stage-caption {
   position: static;
   transform: none;
   margin-top: 24px;
 }
 .brand-signature-hero { margin-top: 36px; }
-.brand-signature-label { margin-bottom: 8px; letter-spacing: .2em; }
 .brand-signature-hero .brand-signature-words {
-  font: 400 clamp(26px, 2.45vw, 36px)/1.4 var(--serif);
-  letter-spacing: -.025em;
+  font: 300 clamp(17px, 1.6vw, 22px)/1.6 var(--sans);
+  letter-spacing: -.015em;
   text-wrap: balance;
 }
 .brand-signature-hero .brand-signature-words > span { display: inline-block; }
 .brand-signature-hero strong {
-  font-weight: 700;
-  text-decoration: underline;
-  text-decoration-color: var(--lime);
-  text-decoration-thickness: 3px;
-  text-underline-offset: 9px;
+  font-weight: 500;
 }
 .footer { border-top: 1px solid var(--line); padding-top: 36px; }
 .footer-main { grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 40px; }
@@ -42,9 +37,7 @@
 @media (max-width: 600px) {
   .hero-copy .member-stage-caption { margin-top: 20px; }
   .brand-signature-hero { margin-top: 24px; }
-  .brand-signature-label { font-size: 9px; margin-bottom: 10px; }
-  .brand-signature-hero .brand-signature-words { max-width: 330px; margin-inline: auto; font-size: 22px; line-height: 1.8; }
-  .brand-signature-hero strong { text-underline-offset: 6px; text-decoration-thickness: 2px; }
+  .brand-signature-hero .brand-signature-words { max-width: 330px; margin-inline: auto; font-size: 16px; line-height: 1.7; }
   .footer { padding-top: 26px; }
   .footer-brand .wordmark { --brand-icon: 30px; --brand-type: 20px; --brand-gap: 8px; }
   .brand-signature-footer .brand-signature-words { font-size: 18px; }
