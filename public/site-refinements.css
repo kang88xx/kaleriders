@@ -18,7 +18,17 @@ html[lang="en"] .hero h1 { letter-spacing: -.035em; line-height: 1.15; }
 html[lang="en"] h4 { letter-spacing: -.01em; }
 .hero-description { font-size: 16px; line-height: 1.8; }
 .brand-signature-hero { margin-top: 20px; }
-.hero-eyebrow { font-size: 13px; font-weight: 400; letter-spacing: .01em; margin-bottom: 22px; }
+.hero-eyebrow, .example-label, .ri-sample, .map-coordinates {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font: 400 12px/1.4 var(--sans);
+  letter-spacing: 0;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+.hero-eyebrow { width: fit-content; max-width: 100%; margin-inline: auto; gap: 8px; color: var(--blue); font-size: 13px; letter-spacing: .01em; margin-bottom: 22px; }
+.map-coordinates { opacity: 1; }
 .desktop-nav, .team-link { font-size: 14px; }
 
 #refresh-services-root .services-heading h2,
