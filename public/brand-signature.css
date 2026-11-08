@@ -1,0 +1,53 @@
+/* Selected brand signatures: hero concept 1 and footer concept 3. */
+.hero-copy .member-stage-caption {
+  position: static;
+  transform: none;
+  margin-top: 24px;
+}
+.brand-signature-hero { margin-top: 36px; }
+.brand-signature-label { margin-bottom: 8px; letter-spacing: .2em; }
+.brand-signature-hero .brand-signature-words {
+  font: 400 clamp(26px, 2.45vw, 36px)/1.4 var(--serif);
+  letter-spacing: -.025em;
+  text-wrap: balance;
+}
+.brand-signature-hero .brand-signature-words > span { display: inline-block; }
+.brand-signature-hero strong {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--lime);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 9px;
+}
+.footer { border-top: 1px solid var(--line); padding-top: 36px; }
+.footer-main { grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 40px; }
+.footer-brand { min-width: 0; }
+.footer-brand .wordmark { --brand-icon: 36px; --brand-type: 24px; --brand-gap: 9px; }
+.brand-signature-footer { margin-top: 14px; }
+.brand-signature-footer .brand-signature-words { font-size: 19px; line-height: 1.5; }
+.brand-signature-footer .brand-signature-words > span { display: block; }
+.brand-signature-meaning { max-width: 510px; margin-top: 8px; font-size: 13px; line-height: 1.8; color: var(--muted); }
+.footer-links { display: grid; justify-items: end; gap: 12px; }
+.footer-links .footer-email { color: var(--muted); }
+.footer-bottom { margin-top: 22px; }
+@media (min-width: 901px) {
+  .hero { min-height: 620px; }
+  .hero .member-pattern { inset: 12px 8px 10px; }
+}
+@media (max-width: 900px) {
+  .footer-main { grid-template-columns: 1fr; gap: 22px; }
+  .footer-links { justify-items: start; gap: 0; }
+  .footer-links .footer-nav { justify-self: start; flex-wrap: wrap; }
+}
+@media (max-width: 600px) {
+  .hero-copy .member-stage-caption { margin-top: 20px; }
+  .brand-signature-hero { margin-top: 24px; }
+  .brand-signature-label { font-size: 9px; margin-bottom: 10px; }
+  .brand-signature-hero .brand-signature-words { max-width: 330px; margin-inline: auto; font-size: 22px; line-height: 1.8; }
+  .brand-signature-hero strong { text-underline-offset: 6px; text-decoration-thickness: 2px; }
+  .footer { padding-top: 26px; }
+  .footer-brand .wordmark { --brand-icon: 30px; --brand-type: 20px; --brand-gap: 8px; }
+  .brand-signature-footer .brand-signature-words { font-size: 18px; }
+  .brand-signature-meaning { font-size: 12px; }
+  .footer-bottom { margin-top: 12px; }
+}

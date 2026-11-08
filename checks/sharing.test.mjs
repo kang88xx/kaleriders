@@ -11,7 +11,8 @@ test('initial HTML supplies English titles and descriptions to sharing crawlers'
   assert.equal(title, 'KALE Riders | Your Local Partner in Korea');
   for (const key of ['og:title', 'twitter:title']) assert.equal(metadata[key], title);
   for (const key of ['description', 'og:description', 'twitter:description']) {
-    assert.match(metadata[key], /KALE Riders.*Korea.*lasting fan relationships/);
+    assert.equal(metadata[key], metadata.description, 'Sharing descriptions match the page description');
+    assert.match(metadata[key], /KALE Riders.*Korean market.*KOL campaigns.*press outreach.*community programs.*local events/);
     assert.doesNotMatch(metadata[key], /[\u3131-\u318e\uac00-\ud7a3]/);
   }
   assert.equal(metadata['og:locale'], 'en_US');

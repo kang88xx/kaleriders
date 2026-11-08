@@ -13,15 +13,23 @@ python3 -m http.server 4173 --bind 127.0.0.1 --directory public
 npm test
 ```
 
-Open http://127.0.0.1:4173. English is the default on a first visit. `?lang=ko` or `?lang=en` overrides the saved language preference.
+Open http://127.0.0.1:4173. English is the default whenever the URL has no language parameter, including for returning visitors. `?lang=ko` or `?lang=en` selects the language; the switch updates that parameter without saving a browser preference.
+
+## Homepage release — 2026-11-08
+
+The approved homepage presents services and work before the Korea context and three-stage approach, then research, team, FAQ and inquiry sections. English appears first in the language switch and loads by default.
+
+The compact two-row footer has no divider between rows. Its KALE expansion uses small text with only K, A, L and E bold; the extra supporting sentence is removed. Desktop and mobile spacing follows the final approved local preview.
+
+Only approved runtime modules and assets are included from the local preview. New comparison pages and withdrawn design variants are excluded. The production homepage allows indexing; the existing `/sample` draft remains `noindex`.
 
 ## Event sample
 
 `https://kaleriders.com/sample` serves the event portfolio draft separately from the homepage. Vercel rewrites `/sample` and `/sample/` to `public/sample.html`. For the simple local Python server, open `/sample.html?lang=ko#work`. The page is marked `noindex` and retains the existing Korean/English switch.
 
-The five cases use 14 original photos and three videos from the owner's Drive. All 15 metrics and unverified delivery descriptions are illustrative and visibly labeled as drafts. Replace bilingual copy and values in `public/case-studies-data.js`; review the sample labels in `public/case-studies.js` before treating any values as verified. `docs/case-study-sources.json` records the source files.
+The six cases use 19 original photos and three videos from the owner's Drive. Metrics and unverified delivery descriptions are illustrative and visibly labeled as drafts. Replace bilingual copy and values in `public/case-studies-data.js`; review the sample labels in `public/case-studies.js` before treating any values as verified. `docs/case-study-sources.json` records the source files.
 
-`sample-app.js` initializes the case section before the shared app handles localization; the homepage HTML, shared app entry and styles are unchanged by this addition. Native video controls do not autoplay or preload.
+`sample-app.js` initializes the case section before the shared app handles localization. The homepage refresh modules skip roots that are absent from this draft page. Native video controls do not autoplay or preload.
 
 Run `npm test` for content, routes and existing behavior. With a local server and disposable headless Chrome listening on debug port 9227, run `CASES_BASE_URL=http://127.0.0.1:4173/sample.html node scripts/check-case-studies.mjs` for both languages at 360/390/768/1440px, photo decoding, video playback, keyboard expansion and locale-state preservation. Screenshots/results are written to the OS temporary directory under `kale-cases-qa/` (override with `CASES_QA_DIR`).
 

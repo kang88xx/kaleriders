@@ -8,7 +8,7 @@ import { english } from '../public/translations.js';
 for (const [search, saved, expected] of [
   ['?lang=en', 'ko', 'en'], ['?lang=ko', 'en', 'ko'],
   ['?lang=invalid', 'en', 'en'], ['?lang=', 'en', 'en'],
-  ['', 'en', 'en'], ['', 'ko', 'ko'], ['', undefined, 'en'],
+  ['', 'en', 'en'], ['', 'ko', 'en'], ['', undefined, 'en'],
   ['?lang=EN', 'invalid', 'en'], ['?other=en', null, 'en'],
 ]) {
   test(`locale precedence: ${JSON.stringify({ search, saved })} resolves to ${expected}`, () => {
@@ -102,6 +102,9 @@ test('switching round-trips copy and attributes while retaining nodes and active
   const f = fixture();
   const originalNodes = [...f.nodes];
   initLanguage(f.doc, f.view);
+  assert.equal(f.doc.documentElement.lang, 'en', 'An old saved Korean preference does not override the English default');
+  f.buttons[0].click();
+  assert.equal(f.doc.documentElement.lang, 'ko');
   let clicks = 0;
   f.heading.addEventListener('click', () => clicks++);
   f.buttons[1].click();
@@ -130,20 +133,23 @@ test('switching round-trips copy and attributes while retaining nodes and active
   assert.equal(f.tab.getAttribute('aria-selected'), 'true');
   f.heading.click();
   assert.equal(clicks, 1, 'Existing element listeners remain attached');
-  assert.deepEqual(f.events, ['ko', 'en', 'ko']);
+  assert.deepEqual(f.events, ['en', 'ko', 'en', 'ko']);
 });
 
-test('explicit switching remembers locale and preserves shared URL query and anchor', () => {
+test('explicit switching stores locale in the URL and preserves its query and anchor', () => {
   const f = fixture({ search: '?campaign=share&lang=ko', saved: 'en' });
   initLanguage(f.doc, f.view);
   assert.equal(f.doc.documentElement.lang, 'ko', 'URL takes precedence at startup');
-  assert.deepEqual(f.writes, [], 'Initialization does not overwrite saved preference');
+  assert.deepEqual(f.writes, [], 'Initialization does not write a storage preference');
   f.buttons[1].click();
-  assert.deepEqual(f.writes, [['agency-language', 'en']]);
+  assert.deepEqual(f.writes, [], 'Switching uses the URL without saving a storage preference');
   assert.equal(f.view.location.href, 'https://example.test/preview?campaign=share&lang=en#services');
   f.view.location.search = '?campaign=share&lang=ko';
   f.view.dispatchEvent(new Event('popstate'));
   assert.equal(f.doc.documentElement.lang, 'ko', 'Browser history navigation applies URL locale');
+  f.view.location.search = '?campaign=share';
+  f.view.dispatchEvent(new Event('popstate'));
+  assert.equal(f.doc.documentElement.lang, 'en', 'Returning to a URL without a locale restores English');
 });
 
 test('denied storage still allows URL initialization and language switching', () => {

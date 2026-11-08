@@ -80,4 +80,22 @@ export const caseStudies = [
     metrics: [{ value: '60', label: { ko: '참석자', en: 'Attendees' } }, { value: '4', label: { ko: '참여 프로그램', en: 'Activities' } }, { value: '96%', label: { ko: '참가자 만족도', en: 'Attendee satisfaction' } }],
     media: { type: 'video', src: 'assets/cases/vinci-world.mp4', poster: 'assets/cases/vinci-world.jpg', alt: { ko: 'VINCI WORLD의 식사와 카드 활동, 단체 촬영 영상', en: 'Dining, card activities and group photography at the VINCI WORLD gathering' } }, gallery: [],
   },
+  {
+    id: 'kgen', status: 'draft', featured: true, title: 'KGEN · VeriFi Korea',
+    category: { ko: 'Web3 · 참여형 행사', en: 'Web3 & Live Experiences' },
+    date: { ko: '커뮤니티 이벤트', en: 'Community event' },
+    summary: { ko: '무대 위 소개에서 직접 해보는 미션까지. KGEN의 이야기를 듣고, 참여하고, 함께 즐기는 한국 커뮤니티 행사를 구성했습니다.', en: 'From on-stage introductions to hands-on missions. A Korean community event built around discovering KGEN, taking part and sharing the experience.' },
+    goal: { ko: '프로젝트를 처음 접하는 참가자도 소개와 체험을 통해 자연스럽게 이해하고, 커뮤니티의 다음 활동에 관심을 갖도록 만드는 것.', en: 'Help first-time attendees understand the project through introductions and shared activities, and discover ways to stay involved in the community.' },
+    approach: { ko: '행사장 브랜딩과 무대 진행, 참여형 미션과 케이터링을 하나의 동선으로 연결했습니다. 초청 안내부터 현장 참여 유도, 사진 기록과 후속 안내까지 함께 설계했습니다.', en: 'We connected venue branding, stage hosting, participatory missions and catering into one attendee journey, from invitations and on-site engagement to photography and follow-up communication.' },
+    outcome: { ko: '소개를 듣는 관객이 직접 참여하는 순간을 현장 사진으로 남겼습니다. 참석·미션 참여·후속 반응을 구분해 정리하고, 다음 커뮤니티 프로그램의 개선 방향을 전달하는 방식으로 구성했습니다.', en: 'Event photos capture the transition from listening to taking part. The proposed reporting separates attendance, mission participation and follow-up response to inform the next community program.' },
+    services: [{ ko: '행사 기획·현장 운영', en: 'Event planning & operations' }, { ko: '참여 미션 진행', en: 'Mission facilitation' }, { ko: '브랜딩·케이터링', en: 'Branding & catering' }, { ko: '현장 기록·성과 정리', en: 'Event coverage & reporting' }],
+    metrics: [{ value: '120', label: { ko: '참석자', en: 'Attendees' } }, { value: '4', label: { ko: '참여 프로그램', en: 'Activities' } }, { value: '90%', label: { ko: '현장 미션 참여율', en: 'On-site mission participation' } }],
+    media: { type: 'image', src: 'assets/cases/kgen/stage-and-audience.jpg', alt: { ko: 'KGEN VeriFi Korea 무대와 발표를 듣는 객석', en: 'The KGEN VeriFi Korea stage and audience watching a presentation' } },
+    gallery: [
+      { src: 'assets/cases/kgen/venue-branding.jpg', alt: { ko: '행사장 벽면의 KGEN과 VeriFi Korea 배너', en: 'KGEN and VeriFi Korea banners on the venue walls' } },
+      { src: 'assets/cases/kgen/stage-participation.jpg', alt: { ko: '관객 앞 무대에서 테이블 활동에 참여하는 사람들', en: 'Attendees taking part in a table activity on stage in front of the audience' } },
+      { src: 'assets/cases/kgen/community-mission.jpg', alt: { ko: '무대에서 콩 옮기기 미션에 참여하는 참가자들', en: 'Attendees taking part in a bean-moving mission on stage' } },
+      { src: 'assets/cases/kgen/catering.jpg', alt: { ko: '꽃과 음식이 놓인 케이터링 테이블을 이용하는 참가자들', en: 'Attendees serving food at a catering table with flowers' } },
+    ],
+  },
 ];

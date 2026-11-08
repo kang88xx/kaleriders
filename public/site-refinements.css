@@ -1,0 +1,201 @@
+/* Shared type and spacing for the current homepage. */
+:root { --section-title: clamp(32px, 3.4vw, 48px); }
+h2, h3 { font-weight: 500; }
+.hero h1 { letter-spacing: -.055em; }
+html[lang="en"] :is(h1, h2, h3) { letter-spacing: -.025em; }
+html[lang="en"] .hero h1 { letter-spacing: -.035em; line-height: 1.15; }
+html[lang="en"] h4 { letter-spacing: -.01em; }
+.hero-description { font-size: 16px; line-height: 1.8; }
+.brand-signature-hero { margin-top: 28px; }
+.hero-eyebrow { font-size: 11px; }
+.desktop-nav, .team-link { font-size: 14px; }
+
+#refresh-services-root .services-heading h2,
+html[lang="en"] #refresh-services-root .services-heading h2,
+.ri-heading h2, .rm-heading h2, .rt-heading h2,
+#approach h2, .context-copy h2, .faq h2 {
+  font-size: var(--section-title); line-height: 1.3; letter-spacing: -.045em;
+}
+html[lang="en"] :is(.services-heading, .ri-heading, .rm-heading, .rt-heading, .section-heading, .context-copy, .faq) h2 { letter-spacing: -.025em; }
+.services-heading > p, .ri-intro, .rt-intro, .rm-intro,
+.section-heading > p:last-child { font-size: 15px; line-height: 1.8; }
+.context-copy > p:not(.eyebrow):not(.large-copy) { font-size: 16px; line-height: 1.8; max-width: 44ch; }
+.context-copy .large-copy { font-size: 22px; line-height: 1.6; margin: 24px 0 20px; }
+.context-copy .eyebrow, .rm-heading .eyebrow, .rt-heading .eyebrow,
+.ri-heading .eyebrow, .services-heading .eyebrow, .section-heading .eyebrow,
+.faq .eyebrow { font-size: 11px; line-height: 1.6; margin-bottom: 16px; }
+.section-heading { margin-bottom: 32px; }
+#refresh-services-root .services-heading, .ri-heading, .rm-heading, .rt-heading { margin-bottom: 32px; }
+
+/* Keep related explanations together without delaying the services and work. */
+.section-space { padding-block: 64px; }
+.references { padding-block: 24px 40px; }
+.reference-strip { padding-block: 0; }
+#services:has(#refresh-services-root) { padding-block: 56px 40px; }
+#work:has(#refresh-gallery-root) { padding-block: 72px 56px; }
+.context { padding-block: 56px 40px; gap: 72px; }
+#approach { padding-block: 56px 40px; }
+#growth { padding-block: 56px 64px; }
+#team:has(#refresh-team-root) { padding-block: 56px 64px; }
+.faq { padding-block: 40px 64px; }
+
+/* The process board uses the original diagram with readable labels. */
+.board-bar { font-size: 11px; letter-spacing: .04em; gap: 12px; }
+.example-label { font-size: 12px; flex-shrink: 0; }
+.route-intro .eyebrow { font-size: 11px; line-height: 1.65; }
+.route-intro h3 { font-size: 26px; line-height: 1.35; }
+.route-intro p { font-size: 14px; line-height: 1.8; }
+.map-heading { font-size: 10px; line-height: 1.6; letter-spacing: .025em; gap: 12px; }
+.route-stop { min-height: 140px; }
+.route-stop small { font-size: 11px; line-height: 1.4; letter-spacing: .04em; }
+.route-stop strong { font-size: 14px; font-weight: 500; line-height: 1.5; white-space: normal; letter-spacing: -.02em; }
+html[lang="en"] .route-stop strong { font-size: 14px; letter-spacing: 0; }
+.route-detail { font-size: 14px; line-height: 1.8; min-height: 88px; padding-block: 18px; }
+.board-footer { font-size: 12px; line-height: 1.75; gap: 20px; }
+.board-footer > span:last-child { font-size: 10px; flex-shrink: 0; }
+.context-coordinate { font-size: 10px; }
+.context-art .context-bottom { font-size: 11px; }
+
+#refresh-services-root .panel-copy h3 { font-size: clamp(28px, 2.5vw, 36px); line-height: 1.35; }
+#refresh-services-root .panel-copy > p:not(.eyebrow) { font-size: 16px; line-height: 1.8; }
+#refresh-services-root .panel-copy li { font-size: 13px; }
+.ri-research-list p { font-size: 15px; line-height: 1.75; }
+.ri-research-intro { font-size: 15px; line-height: 1.75; }
+.ri-layout h3 { font-size: 26px; }
+.rm-records > h3 { font-size: 24px; }
+.rm-films-heading h3 { font-size: clamp(26px, 2.5vw, 34px); line-height: 1.35; }
+.rm-record-copy p { font-size: 14px; line-height: 1.75; }
+.rt-caption h3 { font-size: 22px; letter-spacing: -.02em; }
+.rt-role { font-weight: 500; }
+.rt-description { line-height: 1.75; }
+.faq summary { font-size: 16px; }
+.faq details p { font-size: 15px; line-height: 1.8; }
+.footer-nav a, .footer-email { min-height: 44px; display: inline-flex; align-items: center; font-size: 14px; }
+.brand-signature-meaning { font-size: 14px; }
+.footer-bottom { font-size: 12px; }
+.closing { padding-bottom: 36px; }
+.closing-copy > p:not(.eyebrow) { font-size: 16px; line-height: 1.8; }
+
+/* Keep the close button available while the form itself scrolls. */
+#brief-dialog { max-height: calc(100dvh - 40px); overflow: hidden; }
+#brief-dialog[open] { display: flex; flex-direction: column; }
+.brief-toolbar { display: flex; justify-content: flex-end; flex: none; padding: 12px 16px 4px; }
+.dialog-close { position: static; width: 44px; height: 44px; flex: none; background: var(--paper); }
+.brief-shell { padding: 8px 36px 32px; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+.brief-shell .eyebrow { font-size: 11px; }
+.brief-intro { font-size: 14px; line-height: 1.8; margin-bottom: 12px; }
+.brief-next { margin-bottom: 26px; font-size: 13px; line-height: 1.8; color: var(--ink); }
+.brief-shell label { font-size: 14px; }
+.brief-shell input, .brief-shell textarea, .brief-shell select { font-size: 16px; min-height: 48px; }
+.brief-shell select { padding-right: 26px; }
+.form-note, .form-error { font-size: 12px; }
+#brief-result p { font-size: 15px; }
+
+@media (min-width: 901px) {
+  .hero { height: min(860px, calc(100svh - 86px)); min-height: 620px; }
+  .hero-description { max-width: 620px; margin-top: 18px; }
+  .hero .member-stage { margin-top: 18px; }
+}
+@media (max-width: 900px) {
+  .context { gap: 40px; }
+  .route-intro { padding-inline: 20px; }
+  .route-stages { gap: 12px; }
+  .route-stop { padding: 14px 10px; }
+  .route-stop strong, html[lang="en"] .route-stop strong { font-size: 13px; }
+  .route-stop small { font-size: 10px; }
+  .route-detail { font-size: 14px; }
+}
+@media (max-width: 600px) {
+  :root { --section-title: clamp(30px, 8.2vw, 32px); }
+  .section-space { padding-block: 40px; }
+  .header-inner { gap: 8px; }
+  .header-right { gap: 6px; }
+  .header .wordmark {
+    --brand-icon: clamp(24px, calc(15vw - 24px), 31.92px);
+    --brand-type: clamp(15px, calc(12vw - 23.4px), 21.28px);
+    --brand-gap: 5px;
+  }
+  .menu-toggle { flex: 0 0 44px; }
+  .hero-eyebrow { font-size: 10px; letter-spacing: .08em; }
+  .hero-description { font-size: 15px; max-width: 330px; }
+  .brand-signature-hero { margin-top: 24px; }
+  .brand-signature-label { font-size: 10px; }
+  .hero .member-stage { margin-top: 8px; height: 220px; }
+  .references { padding-block: 20px 32px; }
+  #services:has(#refresh-services-root) { padding-block: 36px 24px; }
+  #work:has(#refresh-gallery-root) { padding-block: 40px; }
+  .context { padding-block: 40px 24px; gap: 32px; }
+  .context-copy { padding-inline: 0; }
+  #approach { padding-block: 40px 24px; }
+  #growth { padding-block: 40px; }
+  #team:has(#refresh-team-root) { padding-block: 40px; }
+  .faq { padding-block: 32px 40px; }
+  .services-heading > p, .ri-intro, .rt-intro, .rm-intro,
+  .section-heading > p:last-child { font-size: 14px; line-height: 1.8; }
+  .context-copy > p:not(.eyebrow):not(.large-copy) { font-size: 15px; line-height: 1.8; }
+  .context-copy .large-copy { font-size: 20px; margin-top: 22px; }
+  .section-heading, #refresh-services-root .services-heading,
+  .ri-heading, .rm-heading, .rt-heading { margin-bottom: 28px; }
+  .board-bar { padding: 14px; font-size: 10px; letter-spacing: 0; }
+  .board-bar > span:first-child { gap: 8px; }
+  .example-label { font-size: 11px; padding-inline: 8px; }
+  .route-intro { padding: 24px 20px; }
+  .route-intro .eyebrow { font-size: 10px; }
+  .route-intro h3 { font-size: 24px; }
+  .route-intro p { font-size: 14px; margin-top: 14px; }
+  .route-map { padding: 20px 12px 0; }
+  .map-heading { font-size: 10px; }
+  .map-heading > span:first-child { gap: 6px; }
+  .route-stages { min-height: 235px; gap: 8px; padding-top: 32px; }
+  .route-stop { width: calc((100% - 16px) / 3); min-height: 140px; padding: 14px 8px; }
+  .route-stop small { font-size: 10px; letter-spacing: 0; }
+  .route-stop strong, html[lang="en"] .route-stop strong { font-size: 13px; line-height: 1.45; white-space: normal; letter-spacing: -.02em; }
+  html[lang="en"] .route-stop strong { letter-spacing: 0; }
+  .route-detail { font-size: 14px; min-height: 100px; padding-block: 16px; }
+  .board-footer { font-size: 12px; padding: 14px; }
+  #refresh-services-root .panel-copy h3 { font-size: 27px; }
+  #refresh-services-root .panel-copy > p:not(.eyebrow) { font-size: 15px; }
+  .ri-layout h3 { font-size: 24px; }
+  .ri-research-list p, .ri-research-intro { font-size: 14px; }
+  .faq summary { font-size: 15px; line-height: 1.7; gap: 12px; }
+  .faq details p { font-size: 14px; }
+  .closing-stage { height: 170px; }
+  .closing-copy > p:not(.eyebrow) { font-size: 15px; }
+  .brand-signature-meaning { font-size: 13px; }
+  .footer-links .footer-nav { gap: 4px 18px; }
+  .brief-shell { padding: 8px 22px 26px; }
+  .brief-shell h2 { font-size: 28px; }
+  .brief-next { font-size: 12px; }
+}
+
+
+/* Revised footer option 2: compact brand/navigation and contact rows. */
+.footer-compact { padding-block:18px 14px; scroll-margin-top:100px; }
+.footer-compact .footer-main { grid-template-columns:auto minmax(0,1fr); align-items:center; gap:24px; padding-bottom:4px; }
+.footer-compact .footer-brand .wordmark { --brand-icon:30px; --brand-type:20px; --brand-gap:8px; }
+.footer-compact .footer-nav { justify-self:end; gap:28px; }
+.footer-compact .footer-nav a { font-size:14px; }
+.footer-compact .footer-bottom { display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr); gap:16px 32px; align-items:center; min-height:44px; margin:0; padding-top:4px; }
+.footer-compact .brand-signature-footer { margin:0; min-width:0; }
+.footer-compact .brand-signature-words { color:var(--blue); font-size:13px; font-weight:400; line-height:1.7; }
+.footer-compact .brand-signature-words > span { display:inline-block; }
+.footer-compact .brand-signature-words strong { font-weight:700; }
+.footer-compact .footer-email { justify-self:center; color:var(--blue); font-size:14px; white-space:nowrap; }
+.footer-compact .footer-copyright { justify-self:end; font-size:12px; white-space:nowrap; }
+@media(max-width:900px) {
+  .footer-compact .footer-bottom { grid-template-columns:1fr auto; gap:0 24px; padding-top:6px; }
+  .footer-compact .brand-signature-footer { grid-column:1/-1; margin-bottom:4px; }
+  .footer-compact .footer-email { justify-self:start; }
+}
+@media(max-width:600px) {
+  .footer-compact { padding-block:18px 14px; }
+  .footer-compact .footer-main { grid-template-columns:1fr; gap:8px; padding-bottom:4px; }
+  .footer-compact .footer-nav { justify-self:start; flex-wrap:wrap; gap:0 24px; }
+  .footer-compact .footer-bottom { grid-template-columns:1fr; gap:0; padding-top:4px; }
+  .footer-compact .brand-signature-footer { grid-column:auto; margin-bottom:2px; }
+  .footer-compact .footer-copyright { justify-self:start; margin-top:4px; }
+}
+
+@media(max-width:360px) {
+  .footer-compact .footer-nav { gap:0 14px; }
+}

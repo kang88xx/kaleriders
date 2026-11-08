@@ -5,8 +5,8 @@ import { caseStudies, contentStatus } from '../public/case-studies-data.js';
 
 test('illustrative cases remain explicitly marked as drafts', () => {
   assert.equal(contentStatus, 'draft');
-  assert.equal(caseStudies.length, 5);
-  assert.equal(new Set(caseStudies.map(item => item.id)).size, 5);
+  assert.equal(caseStudies.length, 6);
+  assert.equal(new Set(caseStudies.map(item => item.id)).size, 6);
   assert(caseStudies.every(item => item.status === 'draft'));
 });
 
@@ -32,7 +32,7 @@ test('every gallery image, video and poster resolves to a nonempty local asset',
     }
   }
   assert.equal(caseStudies.filter(item => item.media.type === 'video').length, 3);
-  assert.equal(caseStudies.reduce((total, item) => total + item.gallery.length + (item.media.type === 'image' ? 1 : 0), 0), 14);
+  assert.equal(caseStudies.reduce((total, item) => total + item.gallery.length + (item.media.type === 'image' ? 1 : 0), 0), 19);
 });
 
 test('original video sources are MP4 containers and posters are JPEG images', () => {

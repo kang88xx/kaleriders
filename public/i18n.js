@@ -1,20 +1,16 @@
-import { english } from './translations.js';
+import { english } from './translations.js?v=flow-en-20261108';
 
-const storageKey = 'agency-language';
 let currentLanguage = 'en';
 
-export const resolveLanguage = (search, saved) => {
+export const resolveLanguage = search => {
   const requested = new URLSearchParams(search).get('lang');
-  return [requested, saved].find(value => value === 'ko' || value === 'en') || 'en';
+  return requested === 'ko' || requested === 'en' ? requested : 'en';
 };
 
 export const translate = (text, language = currentLanguage) =>
   language === 'en' ? (english[text] ?? text) : text;
 
 export function initLanguage(doc = document, view = window) {
-  let saved;
-  try { saved = view.localStorage.getItem(storageKey); } catch { /* Storage can be unavailable. */ }
-
   // Keep the original text nodes, controls and artwork intact across switches.
   const textNodes = [];
   const walker = doc.createTreeWalker(doc.documentElement, 4);
@@ -36,7 +32,7 @@ export function initLanguage(doc = document, view = window) {
   });
   const buttons = [...doc.querySelectorAll('[data-language]')];
 
-  const applyLanguage = (language, remember = false) => {
+  const applyLanguage = (language, updateUrl = false) => {
     if (language !== 'ko' && language !== 'en') return;
     currentLanguage = language;
     doc.documentElement.lang = language;
@@ -45,8 +41,7 @@ export function initLanguage(doc = document, view = window) {
     });
     attributes.forEach(({ element, name, original }) => element.setAttribute(name, translate(original)));
     buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.language === language)));
-    if (remember) {
-      try { view.localStorage.setItem(storageKey, language); } catch { /* Switching still works without storage. */ }
+    if (updateUrl) {
       const url = new URL(view.location.href);
       url.searchParams.set('lang', language);
       try { view.history.replaceState(null, '', url); } catch { /* Local file previews may block history. */ }
@@ -55,6 +50,6 @@ export function initLanguage(doc = document, view = window) {
   };
 
   buttons.forEach(button => button.addEventListener('click', () => applyLanguage(button.dataset.language, true)));
-  view.addEventListener('popstate', () => applyLanguage(resolveLanguage(view.location.search, currentLanguage)));
-  applyLanguage(resolveLanguage(view.location.search, saved));
+  view.addEventListener('popstate', () => applyLanguage(resolveLanguage(view.location.search)));
+  applyLanguage(resolveLanguage(view.location.search));
 }
