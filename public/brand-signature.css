@@ -6,7 +6,7 @@
 }
 .brand-signature-hero { margin-top: 36px; }
 .brand-signature-hero .brand-signature-words {
-  font: 300 clamp(17px, 1.6vw, 22px)/1.6 var(--sans);
+  font: italic 300 clamp(17px, 1.6vw, 22px)/1.6 var(--sans);
   letter-spacing: -.015em;
   text-wrap: balance;
 }

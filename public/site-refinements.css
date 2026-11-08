@@ -123,6 +123,8 @@ html[lang="en"] .route-stop strong { font-size: 14px; letter-spacing: 0; }
   html[lang="en"] .hero-copy { max-width: 1320px; }
   html[lang="en"] .hero h1 { font-size: clamp(28px, 4.6vw, 70px); white-space: nowrap; }
   html[lang="en"] .hero h1 > br { display: none; }
+  html[lang="en"] #approach-title { white-space: nowrap; }
+  html[lang="en"] #approach-title > br { display: none; }
 }
 @media (max-width: 900px) {
   .context { gap: 40px; }
