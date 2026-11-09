@@ -69,18 +69,6 @@ export const caseStudies = [
     media: { type: 'video', src: 'assets/cases/fogo-meetup.mp4', poster: 'assets/cases/fogo-meetup.jpg', alt: { ko: 'Korea FOGO Meet Up 참가자 교류와 단체 촬영 영상', en: 'Networking and group photography at Korea FOGO Meet Up' } }, gallery: [],
   },
   {
-    id: 'vinci-world', status: 'draft', title: 'VINCI WORLD Community Gathering',
-    category: { ko: '게임 · 커뮤니티', en: 'Gaming & Community' },
-    date: { ko: '커뮤니티 이벤트', en: 'Community event' },
-    summary: { ko: '함께 먹고, 카드를 나누고, 웃으며 가까워지는 시간. 직접 참여하는 활동으로 커뮤니티의 만남을 구성했습니다.', en: 'Sharing a meal, exchanging cards and getting to know one another. A community gathering built around hands-on participation.' },
-    goal: { ko: '처음 만나는 참가자도 쉽게 대화에 참여하고, 함께한 경험을 기억할 수 있는 편안한 모임을 만드는 것.', en: 'Create a welcoming gathering where even first-time attendees can join the conversation and share a memorable experience.' },
-    approach: { ko: '식사와 카드 활동, 참가자 교류를 자연스럽게 연결하고 현장 진행과 단체 촬영을 준비했습니다.', en: 'We connected dining, card activities and conversations, coordinating the event flow and group photography.' },
-    outcome: { ko: '카드와 대화를 매개로 참가자들이 직접 어울리는 장면을 담았습니다. 활동과 단체 촬영을 엮은 영상으로 모임의 친밀한 분위기를 전달합니다.', en: 'Cards and conversation brought people together. The recap combines shared activities and a group portrait to capture the gathering’s friendly atmosphere.' },
-    services: [{ ko: '참여형 프로그램', en: 'Participatory program' }, { ko: '현장 진행', en: 'On-site facilitation' }, { ko: '커뮤니티 영상', en: 'Community video' }],
-    metrics: [{ value: '60', label: { ko: '참석자', en: 'Attendees' } }, { value: '4', label: { ko: '참여 프로그램', en: 'Activities' } }, { value: '96%', label: { ko: '참가자 만족도', en: 'Attendee satisfaction' } }],
-    media: { type: 'video', src: 'assets/cases/vinci-world.mp4', poster: 'assets/cases/vinci-world.jpg', alt: { ko: 'VINCI WORLD의 식사와 카드 활동, 단체 촬영 영상', en: 'Dining, card activities and group photography at the VINCI WORLD gathering' } }, gallery: [],
-  },
-  {
     id: 'kgen', status: 'draft', featured: true, title: 'KGEN · VeriFi Korea',
     category: { ko: 'Web3 · 참여형 행사', en: 'Web3 & Live Experiences' },
     date: { ko: '커뮤니티 이벤트', en: 'Community event' },

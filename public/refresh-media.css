@@ -16,7 +16,7 @@
 .rm-films{padding-top:62px}
 .rm-films-heading{margin-bottom:25px}
 .rm-films-heading h3{font-size:clamp(26px,2.8vw,36px);line-height:1.35}
-.rm-event-videos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start}
+.rm-event-videos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;align-items:start}
 .rm-event-film{min-width:0}
 .rm-film-caption{padding-top:15px}
 .rm-film-caption h4{font-size:16px;font-weight:500;line-height:1.5;margin:0;overflow-wrap:anywhere}

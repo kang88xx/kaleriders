@@ -147,7 +147,7 @@ export function initRefreshMedia(doc = document) {
   const filmsTitle = element('h3', '', filmsHeadingCopy, copy('현장의 온도, 그대로.', 'A look inside the events.'));
   filmsTitle.id = 'rm-films-title';
   const filmsGrid = element('div', 'rm-event-videos', films);
-  ['fogo-mainnet', 'fogo-meetup', 'vinci-world'].forEach(id => {
+  ['fogo-mainnet', 'fogo-meetup'].forEach(id => {
     const item = byId[id];
     const article = element('article', 'rm-event-film', filmsGrid);
     article.setAttribute('aria-labelledby', `rm-film-title-${id}`);

@@ -31,7 +31,7 @@ Only approved runtime modules and assets are included from the local preview. Ne
 
 `https://kaleriders.com/sample` serves the event portfolio draft separately from the homepage. Vercel rewrites `/sample` and `/sample/` to `public/sample.html`. For the simple local Python server, open `/sample.html?lang=ko#work`. The page is marked `noindex` and retains the existing Korean/English switch.
 
-The six cases use 19 original photos and three videos from the owner's Drive. Metrics and unverified delivery descriptions are illustrative and visibly labeled as drafts. Replace bilingual copy and values in `public/case-studies-data.js`; review the sample labels in `public/case-studies.js` before treating any values as verified. `docs/case-study-sources.json` records the source files.
+The five cases use 19 original photos and two videos from the owner's Drive. Metrics and unverified delivery descriptions are illustrative and visibly labeled as drafts. Replace bilingual copy and values in `public/case-studies-data.js`; review the sample labels in `public/case-studies.js` before treating any values as verified. `docs/case-study-sources.json` records the source files.
 
 `sample-app.js` initializes the case section before the shared app handles localization. The homepage refresh modules skip roots that are absent from this draft page. Native video controls do not autoplay or preload.
 
