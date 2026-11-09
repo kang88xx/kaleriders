@@ -233,3 +233,27 @@ html[lang="en"] .route-stop strong { font-size: 14px; letter-spacing: 0; }
 @media(max-width:360px) {
   .footer-compact .footer-nav { gap:0 14px; }
 }
+
+/* Typography pass 2026-11-10: English-first legibility. Minimum 10px for any caption; 600 for card-level titles. */
+#refresh-services-root .rs-art .art-label { font-size: 11px; letter-spacing: .08em; }
+#refresh-services-root .rs-art-caption { font-size: 10px; letter-spacing: .1em; }
+.route-intro .eyebrow { font-size: 11px; }
+.map-heading { font-size: 10px; }
+.rm-record-copy h4, .rm-film-caption h4, .ri-research-list h4, .rt-caption h3 { font-weight: 600; }
+.serif-accent { font-weight: 400; }
+.brand-signature-hero .brand-signature-words { font-weight: 400; }
+.brand-signature-hero strong { font-weight: 600; }
+.ri-metrics dt { font-size: 13px; }
+.reference-strip .ref-kgen img { width: 44px; max-height: 44px; }
+@media (min-width: 901px) {
+  .rt-card { align-items: flex-start; }
+  .rt-caption { padding-top: 6px; }
+}
+@media (max-width: 600px) {
+  #refresh-services-root .rs-art .art-label { font-size: 10px; }
+  #refresh-services-root .rs-art-caption { font-size: 10px; }
+  .route-intro .eyebrow { font-size: 10px; }
+  .map-heading { font-size: 10px; }
+  .ri-metrics dt { font-size: 12px; }
+  .reference-strip .ref-kgen img { width: 40px; max-height: 40px; }
+}

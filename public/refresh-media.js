@@ -120,7 +120,7 @@ export function initRefreshMedia(doc = document) {
   const recordCopy = {
     kgen: copy('무대 소개와 커뮤니티 참여 미션을 담은 현장 사진.', 'Stage presentations and community activities.'),
     'open-agi': copy('AI·로보틱스 발표와 참가자들의 대화를 담은 기록.', 'AI and robotics talks and conversations between attendees.'),
-    'creators-night': copy('참가자들이 한 공간에 모여 대화하는 네트워킹 현장.', 'Attendees meeting and talking at a networking event.'),
+    'creators-night': copy('Kaito와 함께한 KBW Creators Night에서 Axis Robotics를 소개한 현장.', 'Introducing Axis Robotics at KBW Creators Night, co-hosted with Kaito.'),
   };
   // Describe only the scenes supported by the supplied media, not draft delivery claims.
   Object.entries(recordCopy).forEach(([id, description]) => {
