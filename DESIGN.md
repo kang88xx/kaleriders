@@ -38,7 +38,7 @@ The owner removed the process-board footer strip (brand sentence and KALE RIDERS
 
 `refresh-insights.js/css` owns the bilingual report example, 4/8/12-week calculations, accessible data table and responsive chart. A ResizeObserver keeps labels from shrinking on mobile. Numeric sample provenance is visible directly above the metrics.
 
-`refresh-media.js/css` owns the deterministic balanced photo order, three factual event records, three visible films and retained hidden testimonial proposal. Each source photo appears 5–6 times within the 100 cells; no new event imagery or additional unique photographs is claimed. `refresh-gallery.js/css` and its tested pure layout preserve the chosen fixed-frame push expansion.
+`refresh-media.js/css` owns the deterministic balanced photo order, three factual event records, two visible films and retained hidden testimonial proposal. The wall uses 23 unique photos: the 19 case photos plus four the owner supplied on 2026-11-10 (`wallPhotos`: two from KGEN VeriFi Seoul After Hours, a KGEN booth and an Axis Robotics booth). Each appears 4–5 times within the 100 cells. The additions are wall-only, carry scene descriptions and add no case or delivery claims; an optional `position` sets the crop focus for an off-center subject. `refresh-gallery.js/css` and its tested pure layout preserve the chosen fixed-frame push expansion.
 
 `refresh-team.js/css` uses Kang's supplied portrait, and established monochrome character fronts for Kalya and Mascot instead of fictional human photos. All three flip to colored PFP backs. Existing simple responsibility descriptions are retained, with no invented credentials.
 
@@ -68,4 +68,4 @@ Vanilla HTML/CSS/ESM, no new dependencies. Keep this preview synchronized with t
 - [ ] Owner: verified per-project KALE responsibilities and outcomes; do not reuse draft metrics as real results.
 - [ ] Owner: actual portraits for Kalya/Mascot if desired; established characters are the current truthful fallback.
 - [ ] Owner: operational reply-time promise, if one is agreed. Current copy explains next steps without a deadline.
-- [ ] Owner: more unique event photos; only 19 original photographs are currently available.
+- [ ] Owner: more unique event photos; 23 are available after the 2026-11-10 additions, so each still repeats 4–5 times.

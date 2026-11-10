@@ -1,8 +1,48 @@
 import { caseStudies } from './case-studies-data.js';
-import { initRefreshGallery } from './refresh-gallery.js?v=autoplay-20261106';
+import { initRefreshGallery } from './refresh-gallery.js?v=focus-20261110';
 
 const assetURL = path => new URL(path, import.meta.url).href;
 const copy = (ko, en) => ({ ko, en });
+
+// Owner-supplied event photos shown on the photo wall only. They come from other
+// KGEN and Axis Robotics events, so they are not attached to a case story.
+// `position` is an optional CSS object-position for a subject that sits off-center.
+export const wallPhotos = [
+  { src: 'assets/cases/kgen/after-hours-talk.jpg', alt: copy('KGEN VeriFi Seoul After Hours에서 발표를 듣는 참석자들', 'Attendees watching a presentation at KGEN VeriFi Seoul After Hours') },
+  { src: 'assets/cases/kgen/after-hours-banner.jpg', alt: copy('행사명과 날짜가 표시된 KGEN VeriFi Seoul After Hours 거리 배너', 'KGEN VeriFi Seoul After Hours street banner showing the event name and date') },
+  { src: 'assets/cases/kgen/booth.jpg', position: '50% 88%', alt: copy('KGEN 부스와 텔레그램 채널 안내 배너', 'KGEN booth with a banner for its Telegram channel') },
+  { src: 'assets/cases/axis-robotics/booth.jpg', alt: copy('Axis Robotics 부스와 소개 배너, 로봇 팔 영상이 나오는 모니터', 'Axis Robotics booth with an introduction banner and a monitor showing a robot arm') },
+];
+
+// Every case photo plus the wall-only additions, each listed once.
+export const wallPool = [
+  ...caseStudies.flatMap(item => [
+    ...(item.media.type === 'image' ? [item.media] : []),
+    ...item.gallery.map(media => ({ type: 'image', ...media })),
+  ]),
+  ...wallPhotos,
+];
+
+// Spread the pool evenly over the wall: each pass uses every photo once, avoiding the photo
+// on the previous tile and on the tiles 10 and 20 places back (the tile above at 10 and 20
+// columns). A fixed seed keeps the composition stable between visits and languages.
+export function arrangeWall(photos = wallPool, count = 100) {
+  let seed = 20261106;
+  const gallery = [];
+  while (gallery.length < count && photos.length) {
+    const remaining = [...photos];
+    while (remaining.length && gallery.length < count) {
+      const neighbors = [1, 10, 20].map(offset => gallery[gallery.length - offset]?.src);
+      const candidates = remaining.map((photo, index) => ({ photo, index })).filter(({ photo }) => !neighbors.includes(photo.src));
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      const pool = candidates.length ? candidates : remaining.map((photo, index) => ({ photo, index }));
+      const chosen = pool[seed % pool.length];
+      gallery.push(chosen.photo);
+      remaining.splice(chosen.index, 1);
+    }
+  }
+  return gallery;
+}
 
 export function initRefreshMedia(doc = document) {
   const galleryRoot = doc.getElementById('refresh-gallery-root');
@@ -83,26 +123,7 @@ export function initRefreshMedia(doc = document) {
   };
 
   const byId = Object.fromEntries(caseStudies.map(item => [item.id, item]));
-  const originalPhotos = caseStudies.flatMap(item => [
-    ...(item.media.type === 'image' ? [item.media] : []),
-    ...item.gallery.map(media => ({ type: 'image', ...media })),
-  ]);
-  // Balance the existing photos across the wall without repeating the same rows.
-  // A fixed seed keeps the composition stable between visits and languages.
-  let seed = 20261106;
-  const gallery = [];
-  while (gallery.length < 100 && originalPhotos.length) {
-    const remaining = [...originalPhotos];
-    while (remaining.length && gallery.length < 100) {
-      const neighbors = [1, 10, 20].map(offset => gallery[gallery.length - offset]?.src);
-      const candidates = remaining.map((photo, index) => ({ photo, index })).filter(({ photo }) => !neighbors.includes(photo.src));
-      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
-      const pool = candidates.length ? candidates : remaining.map((photo, index) => ({ photo, index }));
-      const chosen = pool[seed % pool.length];
-      gallery.push(chosen.photo);
-      remaining.splice(chosen.index, 1);
-    }
-  }
+  const gallery = arrangeWall();
 
   const heading = element('div', 'rm-heading', galleryRoot);
   const headingCopy = element('div', '', heading);

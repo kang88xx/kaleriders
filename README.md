@@ -27,6 +27,12 @@ The process diagram advances its connector and highlighted stage together every 
 
 Only approved runtime modules and assets are included from the local preview. New comparison pages and withdrawn design variants are excluded. The production homepage allows indexing; the existing `/sample` draft remains `noindex`.
 
+## Photo wall
+
+The homepage wall under “People we brought together.” fills 100 square tiles from 23 unique photos. Each appears four or five times, and the balanced order keeps a photo from sitting directly beside or above itself. Nineteen come from the event cases. The owner supplied four more on 2026-11-10: two from KGEN VeriFi Seoul After Hours, a KGEN booth and an Axis Robotics booth. They are listed as `wallPhotos` in `public/refresh-media.js`, appear on the wall only, and are not part of a case story on `/sample`. At the owner's request the faces visible in the two After Hours photos are pixelated, so those two files differ from the supplied originals; `docs/case-study-sources.json` records both checksums.
+
+To add a photo, copy the original into `public/assets/cases/`, append it to `wallPhotos` with Korean and English descriptions, record it in `docs/case-study-sources.json` and update the photo count in `checks/case-studies.test.mjs`. An optional `position` (CSS `object-position`, such as `50% 88%`) keeps an off-center subject inside the square and expanded crops. `arrangeWall()` in the same file builds the order; `checks/photo-wall.test.mjs` checks the spread, the square tiles and crop focus, the source records, and that each page loads every module under one version token.
+
 ## Event sample
 
 `https://kaleriders.com/sample` serves the event portfolio draft separately from the homepage. Vercel rewrites `/sample` and `/sample/` to `public/sample.html`. For the simple local Python server, open `/sample.html?lang=ko#work`. The page is marked `noindex` and retains the existing Korean/English switch.

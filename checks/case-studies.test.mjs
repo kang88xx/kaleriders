@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { statSync, readFileSync } from 'node:fs';
 import { caseStudies, contentStatus } from '../public/case-studies-data.js';
+import { wallPhotos } from '../public/refresh-media.js';
 
 test('illustrative cases remain explicitly marked as drafts', () => {
   assert.equal(contentStatus, 'draft');
@@ -33,6 +34,20 @@ test('every gallery image, video and poster resolves to a nonempty local asset',
   }
   assert.equal(caseStudies.filter(item => item.media.type === 'video').length, 2);
   assert.equal(caseStudies.reduce((total, item) => total + item.gallery.length + (item.media.type === 'image' ? 1 : 0), 0), 19);
+});
+
+test('photo wall additions are distinct local JPEGs with complete bilingual descriptions', () => {
+  const casePhotos = caseStudies.flatMap(item => [...(item.media.type === 'image' ? [item.media.src] : []), ...item.gallery.map(photo => photo.src)]);
+  const sources = [...casePhotos, ...wallPhotos.map(photo => photo.src)];
+  assert.equal(sources.length, 23);
+  assert.equal(new Set(sources).size, sources.length, 'The wall repeats a photo source');
+  for (const photo of wallPhotos) {
+    assert(photo.src.startsWith('assets/cases/') && !photo.src.includes('..'), photo.src);
+    assert.equal(readFileSync(new URL(`../public/${photo.src}`, import.meta.url)).readUInt16BE(0), 0xffd8, photo.src);
+    assert(photo.alt.ko.trim() && photo.alt.en.trim(), `${photo.src} description`);
+    assert(!/[가-힣]/u.test(photo.alt.en), `${photo.src} English contains untranslated Korean`);
+    if ('position' in photo) assert.match(photo.position, /^\d{1,3}% \d{1,3}%$/, photo.src);
+  }
 });
 
 test('original video sources are MP4 containers and posters are JPEG images', () => {

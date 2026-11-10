@@ -114,6 +114,56 @@
       "url": "https://drive.google.com/file/d/1alQ4Fn0LkmtNE_innZmsXeRMc8gu_Hjz/view?usp=drivesdk",
       "mimeType": "video/mp4",
       "bytes": 8631928
+    },
+    {
+      "group": "KGEN",
+      "name": "photo_2026-02-26_19-55-27.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 138423,
+      "receivedAt": "2026-11-10",
+      "source": "Owner-supplied Drive download archive drive-download-20261110T130423Z-1-001.zip. The source Drive is not connected to this account, so no file URL is recorded.",
+      "localPath": "assets/cases/kgen/after-hours-talk.jpg",
+      "sha256": "b619a997f3d4659697a11c02cbc5e28661506b6937330d91debe3b535b6bc482",
+      "usage": "Homepage photo wall only (wallPhotos in public/refresh-media.js); not part of a case story. KGEN VeriFi Seoul After Hours; the event banner reads 26.02.26.",
+      "originalBytes": 108301,
+      "originalSha256": "274f6361b961ce95619754716b20c28fe444718b4b636a9f2c1a64f4d2941cc7",
+      "edit": "Faces of the presenter and four attendees pixelated on 2026-11-10 at the owner's request; re-encoded as JPEG (quality 0.9)."
+    },
+    {
+      "group": "KGEN",
+      "name": "photo_2026-02-26_18-38-21.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 232164,
+      "receivedAt": "2026-11-10",
+      "source": "Owner-supplied Drive download archive drive-download-20261110T130423Z-1-001.zip. The source Drive is not connected to this account, so no file URL is recorded.",
+      "localPath": "assets/cases/kgen/after-hours-banner.jpg",
+      "sha256": "bc0f6e1bb400f53f8b171fa0159f9d2cba2cfd943f921ffb6c776b7b02c2ffd5",
+      "usage": "Homepage photo wall only (wallPhotos in public/refresh-media.js); not part of a case story. KGEN VeriFi Seoul After Hours; the banner reads 26.02.26.",
+      "originalBytes": 179915,
+      "originalSha256": "2d14797a74129e0e570c5ef49557253fea57992331cec462baf984207c782327",
+      "edit": "Faces of two passers-by pixelated on 2026-11-10 at the owner's request; re-encoded as JPEG (quality 0.9)."
+    },
+    {
+      "group": "KGEN",
+      "name": "photo_2026-11-10_19-14-34.jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 236231,
+      "receivedAt": "2026-11-10",
+      "source": "Owner-supplied Drive download archive drive-download-20261110T130423Z-1-001.zip. The source Drive is not connected to this account, so no file URL is recorded.",
+      "localPath": "assets/cases/kgen/booth.jpg",
+      "sha256": "34d7822dff2e53bc388f137e4ae6da499c5d4ca0c275bb21ccb2b618b311f3bc",
+      "usage": "Homepage photo wall only (wallPhotos in public/refresh-media.js); not part of a case story. Booth photo; event and date are not recorded."
+    },
+    {
+      "group": "Axis Robotics",
+      "name": "photo_2026-11-10_19-14-16 (2).jpg",
+      "mimeType": "image/jpeg",
+      "bytes": 192587,
+      "receivedAt": "2026-11-10",
+      "source": "Owner-supplied Drive download archive drive-download-20261110T130423Z-1-001.zip. The source Drive is not connected to this account, so no file URL is recorded.",
+      "localPath": "assets/cases/axis-robotics/booth.jpg",
+      "sha256": "709cc955c15ff4d5d696eb6cfe45e87a9a1c1b94bc4ed3aa472a8710095db750",
+      "usage": "Homepage photo wall only (wallPhotos in public/refresh-media.js); not part of a case story. Booth photo; event and date are not recorded."
     }
   ]
 }

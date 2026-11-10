@@ -41,6 +41,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
     image.src = new URL(photo.src, import.meta.url).href;
     image.alt = '';
     image.decoding = 'async';
+    if (photo.position) image.style.objectPosition = photo.position;
     underlay.append(image);
   });
   grid.replaceChildren(underlay);
@@ -53,6 +54,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
     image.src = new URL(photo.src, import.meta.url).href;
     image.loading = 'lazy';
     image.decoding = 'async';
+    if (photo.position) image.style.objectPosition = photo.position;
     tile.append(image);
     grid.append(tile);
     tile.addEventListener('click', () => {
