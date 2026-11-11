@@ -1,56 +1,70 @@
-/* The service refresh shares the established blue, paper and lime palette. */
-#services:has(#refresh-services-root) { padding-bottom: 48px; }
-#refresh-services-root { min-width: 0; }
-#refresh-services-root .services-heading { margin-bottom: 40px; }
-#refresh-services-root .service-tabs { grid-template-columns: 1fr .8fr 1fr .9fr 1.65fr; gap: 20px; }
-#refresh-services-root .service-tabs button { min-width: 0; min-height: 64px; font-size: 14px; white-space: normal; line-height: 1.5; }
-#refresh-services-root .service-tabs button:focus-visible { outline-offset: -4px; }
-#refresh-services-root .service-panel { min-height: 390px; }
-#refresh-services-root .panel-copy { position: relative; display: flex; flex-direction: column; justify-content: center; padding: 40px 42px; min-width: 0; }
-#refresh-services-root .panel-copy .eyebrow { font-size: 11px; letter-spacing: .08em; margin-bottom: 20px; }
-#refresh-services-root .panel-copy h3 { font-size: clamp(27px, 2.55vw, 38px); line-height: 1.4; }
-#refresh-services-root .panel-copy > p:not(.eyebrow) { max-width: 400px; font-size: 15px; line-height: 1.85; margin-top: 20px; }
-#refresh-services-root .rs-steps { display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 22px 0 24px; gap: 7px; }
-#refresh-services-root .rs-steps li { display: inline-flex; align-items: center; gap: 7px; padding: 4px 12px 4px 4px; }
-#refresh-services-root .rs-step-no { display: inline-grid; place-items: center; flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; background: var(--blue); color: var(--paper); font-size: 11px; font-weight: 700; line-height: 1; }
-#refresh-services-root .rs-inquiry { align-self: flex-start; min-height: 48px; font-size: 14px; gap: 16px; padding: 11px 20px; }
-#refresh-services-root .rs-art { min-height: 390px; flex-direction: column; }
-#refresh-services-root .rs-art svg { width: min(100% - 32px, 480px); height: auto; display: block; }
-@keyframes rs-card-in { from { opacity: 0; transform: translateY(14px); } }
-@media (prefers-reduced-motion: no-preference) {
-  #refresh-services-root .service-panel:not([hidden]) .rs-card { animation: rs-card-in .55s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--step) * 90ms); }
-}
-#refresh-services-root .rs-art-meetup { background: #dce6ed; }
-#refresh-services-root .rs-art-press { background: #e8d6c5; }
-#refresh-services-root .rs-art-airdrop { background: #d6e0f3; }
-html[lang="en"] #refresh-services-root .services-heading h2 { font-size: clamp(29px, 3vw, 44px); }
-html[lang="en"] #refresh-services-root .service-tabs button { min-width: 0; font-size: 14px; }
-@media (max-width: 1050px) {
-  #refresh-services-root .service-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 16px; overflow: visible; border-bottom: 0; }
-  #refresh-services-root .service-tabs button { min-width: 0; min-height: 52px; padding: 12px 10px; border-bottom: 1px solid #ffffff40; }
-  #refresh-services-root .service-tabs button:last-child { grid-column: 1 / -1; }
-  #refresh-services-root .panel-copy { padding: 32px 28px; }
-  #refresh-services-root .panel-copy > p:not(.eyebrow) { font-size: 14px; }
-}
-/* Below 900px the drawing moves under the copy so its labels keep a readable size. */
+/* Infographic draft 1: five services side by side, their lines meeting at one team label.
+   Section padding and the heading margin come from site-refinements.css. */
+#refresh-services-root { --sf-line: #ffffff59; --sf-soft: #dce1f3; min-width: 0; }
+
+.sf-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 8px 0 0; padding: 0; list-style: none; }
+.sf-service { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; height: 100%; padding: 10px 10px 6px; border-radius: 12px; color: var(--paper); text-align: center; }
+.sf-service:focus-visible { outline-offset: 2px; }
+.sf-icon { position: relative; display: grid; flex: none; place-items: center; width: 68px; height: 68px; border: 1px solid var(--sf-line); border-radius: 50%; transition: background-color .25s, border-color .25s, color .25s; }
+.sf-icon .service-icon { width: 28px; height: 28px; }
+.sf-check { position: absolute; top: -3px; right: -3px; width: 22px; height: 22px; border: 2px solid var(--deep); border-radius: 50%; background: var(--lime); transform: scale(0); transition: transform .35s cubic-bezier(.3, 1.4, .5, 1) calc(.7s + var(--sf-delay, 0s)); }
+.sf-check::after { content: ''; position: absolute; left: 6px; top: 3px; width: 5px; height: 9px; border: solid var(--ink); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.sf-text { display: grid; justify-items: center; gap: 4px; }
+.sf-no { color: var(--lime); font-size: 12px; line-height: 1.4; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
+.sf-name { font-size: 19px; font-weight: 500; line-height: 1.35; letter-spacing: -.03em; }
+html[lang="en"] .sf-name { letter-spacing: -.01em; }
+.sf-line { max-width: 18em; color: var(--sf-soft); font-size: 14px; line-height: 1.55; }
+/* Highlight follows the selection state only, so a touch or an unpin never leaves a stray highlight.
+   A pinned service is also underlined, so it does not rely on colour alone. */
+.sf-service.is-shown .sf-icon { border-color: var(--lime); background: var(--lime); color: var(--ink); }
+.sf-service[aria-pressed="true"] .sf-name { color: var(--lime); text-decoration: underline 2px; text-underline-offset: 6px; }
+
+.sf-fan { display: block; width: 100%; height: 88px; margin-top: 6px; overflow: visible; }
+/* The drawing stretches with the width while the stroke stays 1.5px, so dashes are measured on
+   screen; 1400px is longer than any line at the widest layout. */
+.sf-fan path { fill: none; stroke: var(--sf-line); stroke-width: 1.5; stroke-dasharray: 1400; stroke-dashoffset: 1400; vector-effect: non-scaling-stroke; transition: stroke-dashoffset .9s cubic-bezier(.4, 0, .2, 1) var(--sf-delay, 0s), stroke .25s, stroke-width .25s; }
+.sf-fan path.is-shown { stroke: var(--lime); stroke-width: 2.5; }
+.sf-team { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 10px; width: fit-content; max-width: 100%; min-height: 50px; margin: 0 auto; padding: 12px 24px; border-radius: 999px; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.6; text-align: center; }
+.sf-team-state { display: none; }
+.sf-team-state.is-active { display: contents; }
+.sf-team strong { font-weight: 600; }
+
+/* Drawn once when the graphic first appears: lines from left to right, then the checks.
+   Only the drawing is staggered; highlight colours change at once. */
+.sf.is-drawn .sf-fan path { stroke-dashoffset: 0; }
+.sf.is-drawn .sf-check { transform: scale(1); }
+:is(.sf-fan path, .sf-item):nth-child(2) { --sf-delay: .12s; }
+:is(.sf-fan path, .sf-item):nth-child(3) { --sf-delay: .24s; }
+:is(.sf-fan path, .sf-item):nth-child(4) { --sf-delay: .36s; }
+:is(.sf-fan path, .sf-item):nth-child(5) { --sf-delay: .48s; }
+
+/* Below 900px the services stack, joined by one rail down to the team label. */
 @media (max-width: 900px) {
-  #refresh-services-root .service-panel { grid-template-columns: 1fr; }
-  #refresh-services-root .rs-art { min-height: 0; padding: 28px 20px; }
+  .sf { position: relative; }
+  .sf-list { position: relative; grid-template-columns: minmax(0, 1fr); margin-top: 0; }
+  .sf-list::before { content: ''; position: absolute; left: 27px; top: 34px; bottom: -30px; border-left: 1.5px solid var(--sf-line); transform: scaleY(0); transform-origin: top; transition: transform .9s cubic-bezier(.4, 0, .2, 1); }
+  .sf.is-drawn .sf-list::before { transform: none; }
+  .sf-item { position: relative; }
+  .sf-service { flex-direction: row; align-items: center; gap: 16px; padding: 10px 0; text-align: left; }
+  .sf-icon { width: 56px; height: 56px; background: var(--deep); }
+  .sf-icon .service-icon { width: 24px; height: 24px; }
+  .sf-text { justify-items: start; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: 2px 10px; }
+  .sf-no { grid-row: 1; }
+  .sf-name { grid-row: 1; font-size: 18px; }
+  .sf-line { grid-column: 1 / -1; max-width: none; }
+  .sf-fan { display: none; }
+  .sf-team { position: relative; display: grid; width: 100%; margin-top: 18px; padding: 14px 18px; border-radius: 14px; text-align: left; }
+  .sf-team-state, .sf-team-state.is-active { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 2px 10px; grid-area: 1 / 1; }
+  .sf-team-state:not(.is-active) { visibility: hidden; }
 }
-@media (max-width: 600px) {
-  #services:has(#refresh-services-root) { padding-bottom: 24px; }
-  #refresh-services-root .services-heading { margin-bottom: 23px; }
-  #refresh-services-root .service-tabs { gap: 6px 12px; margin-bottom: 24px; }
-  #refresh-services-root .service-tabs button { min-height: 52px; min-width: 0; font-size: 13px; padding: 12px 4px; gap: 7px; }
-  html[lang="en"] #refresh-services-root .service-tabs button { font-size: 13px; }
-  #refresh-services-root .service-icon { width: 18px; height: 18px; }
-  #refresh-services-root .service-panel { grid-template-columns: 1fr; }
-  #refresh-services-root .panel-copy { padding: 28px 24px; min-height: 0; }
-  #refresh-services-root .panel-copy .eyebrow { font-size: 11px; margin-bottom: 18px; }
-  #refresh-services-root .panel-copy h3 { font-size: 27px; }
-  #refresh-services-root .panel-copy > p:not(.eyebrow) { font-size: 14px; margin-top: 17px; }
-  #refresh-services-root .rs-steps { margin-top: 21px; }
-  #refresh-services-root .rs-inquiry { padding-inline: 16px; gap: 10px; }
-  #refresh-services-root .rs-art { min-height: 0; padding: 16px 6px; }
-  #refresh-services-root .rs-art svg { width: 100%; }
+@media (max-width: 400px) {
+  .sf-service { gap: 12px; }
+  .sf-icon { width: 50px; height: 50px; }
+  .sf-list::before { left: 24px; }
+  .sf-name { font-size: 17px; }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-fan path, .sf-check, .sf-icon, .sf-list::before { transition: none; }
+}
+html.motion-paused :is(.sf-fan path, .sf-check, .sf-list::before) { transition: none; }
