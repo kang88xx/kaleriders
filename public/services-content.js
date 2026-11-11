@@ -1,6 +1,6 @@
-// Section copy and the five services, shared by the infographic drafts.
+// Section copy and the five services shown by the services infographic.
 // Each service has a name, one short line, its three steps and its line icon (the icons already
-// used on the live service tabs). No client names, results or numbers beyond the five services.
+// used on the earlier service tabs). No client names, results or numbers beyond the five services.
 
 export const escape = value => String(value).replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 // Korean is rendered first; localize() swaps every marked node when the page language changes.
@@ -50,26 +50,38 @@ export const services = [
   },
 ];
 
-// Shows one service at a time from pointer, focus or a press: pointing previews, a press pins.
-// `apply(index)` receives the service to show, or -1 for the default state.
-export function serviceSelection(buttons, apply, { canHover }) {
-  let pinned = -1;
-  let preview = -1;
-  const render = () => {
-    const shown = preview > -1 ? preview : pinned;
-    buttons.forEach((button, index) => {
-      button.setAttribute('aria-pressed', String(index === pinned));
-      button.classList.toggle('is-shown', index === shown);
-    });
-    apply(shown);
+// Highlights the services one after another, every `interval` ms from the first to the last and
+// round again. Pointing at, pressing or keyboard-focusing a service shows it and holds it for
+// `hold` ms before the cycle continues from there. `apply(index)` receives the service to show
+// (-1 before the cycle starts). start() and stop() control the cycle; holds work either way.
+export function serviceCycle(buttons, apply, { interval = 1200, hold = 3000, timers = globalThis } = {}) {
+  let current = -1;
+  let running = false;
+  let timer = 0;
+  const show = index => {
+    current = index;
+    buttons.forEach((button, i) => button.classList.toggle('is-shown', i === index));
+    apply(index);
   };
+  const schedule = delay => {
+    timers.clearTimeout(timer);
+    if (running) timer = timers.setTimeout(step, delay);
+  };
+  const step = () => { show((current + 1) % buttons.length); schedule(interval); };
+  const holdOn = index => { show(index); schedule(hold); };
   buttons.forEach((button, index) => {
-    button.addEventListener('click', () => { pinned = pinned === index ? -1 : index; preview = -1; render(); });
-    button.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse' && canHover()) { preview = index; render(); } });
-    button.addEventListener('pointerleave', event => { if (event.pointerType === 'mouse' && preview === index) { preview = -1; render(); } });
-    button.addEventListener('focus', () => { if (button.matches(':focus-visible')) { preview = index; render(); } });
-    button.addEventListener('blur', () => { if (preview === index) { preview = -1; render(); } });
+    button.addEventListener('click', () => holdOn(index));
+    button.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') holdOn(index); });
+    button.addEventListener('focus', () => { if (button.matches(':focus-visible')) holdOn(index); });
   });
-  render();
-  return { render };
+  show(-1);
+  return {
+    start() {
+      if (running) return;
+      running = true;
+      if (current < 0) step();
+      else schedule(interval);
+    },
+    stop() { running = false; timers.clearTimeout(timer); },
+  };
 }

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { services, sectionCopy, escape, localize, serviceSelection } from '../public/services-content.js';
+import { services, sectionCopy, escape, localize, serviceCycle } from '../public/services-content.js';
 import { sectionMarkup, serviceMarkup, teamMarkup, teamCopy } from '../public/refresh-services.js';
 
 const bilingual = (pair, where) => {
@@ -19,14 +19,16 @@ test('the five services keep their order, each with a short line and three steps
     assert.match(service.icon, /^(<(path|circle|rect) [^<>]*\/>)+$/, `${service.id}: the icon holds only drawing elements`);
   }
   [...sectionCopy.title, ...sectionCopy.intro].forEach((line, index) => bilingual(line, `heading line ${index + 1}`));
+  Object.values(teamCopy).forEach(pair => bilingual(pair, 'team label'));
 });
 
-// The owner asked on 2026-11-11 for a light infographic instead of photos, project records,
-// example documents and a per-service inquiry button.
-test('the section stays a light infographic', () => {
+// The owner asked on 2026-11-11 for a light infographic without photos, project records, example
+// documents, a per-service inquiry button or (later that day) the 01-05 numbers.
+test('the section stays a light infographic without numbers', () => {
   const html = sectionMarkup();
   assert.match(html, /<h2 id="services-title">/);
-  assert(!/<img|<video|<table|data-open-brief|예시|Example|사례 입력/.test(html), 'a photo, record, table, inquiry button or example label is back');
+  assert(!/<img|<video|<table|data-open-brief|예시|Example|사례 입력|sf-no|aria-pressed|aria-live/.test(html), 'a photo, record, inquiry button, number, toggle or live region is back');
+  assert(!/>0[1-5]</.test(html), 'a 01-05 number is visible again');
 });
 
 test('markup escapes text and the language switch updates it', () => {
@@ -39,74 +41,94 @@ test('markup escapes text and the language switch updates it', () => {
   assert.equal(node.firstChild.nodeValue, '밋업');
 });
 
-// Just enough of a button for serviceSelection.
+// Just enough of a button and a clock for serviceCycle.
 const fakeButton = () => {
   const classes = new Set();
   return {
-    on: {}, attributes: {}, classes, focusVisible: false,
+    on: {}, classes, focusVisible: false,
     addEventListener(type, listener) { this.on[type] = listener; },
-    setAttribute(name, value) { this.attributes[name] = value; },
     classList: { toggle: (name, force) => (force ? classes.add(name) : classes.delete(name)) },
     matches(selector) { return selector === ':focus-visible' && this.focusVisible; },
   };
 };
+const fakeClock = () => {
+  let now = 0;
+  let next = null;
+  return {
+    setTimeout(callback, delay) { next = { callback, at: now + delay }; return 1; },
+    clearTimeout() { next = null; },
+    // Runs every timer due within `ms`, in order.
+    tick(ms) {
+      const end = now + ms;
+      while (next && next.at <= end) { const { callback, at } = next; next = null; now = at; callback(); }
+      now = end;
+    },
+  };
+};
 
-test('pointing previews a service, a press pins it, and keyboard focus previews it', () => {
-  const buttons = [fakeButton(), fakeButton(), fakeButton()];
+test('the highlight moves every 1.2 seconds from the first service to the last and round again', () => {
+  const buttons = services.map(fakeButton);
+  const clock = fakeClock();
   const shown = [];
-  let hoverable = true;
-  serviceSelection(buttons, index => shown.push(index), { canHover: () => hoverable });
-  const last = () => shown.at(-1);
-  const mouse = { pointerType: 'mouse' };
-  assert.equal(last(), -1, 'nothing is shown at first');
-  buttons[1].on.pointerenter(mouse);
-  assert.equal(last(), 1, 'pointing previews');
-  buttons[1].on.pointerleave(mouse);
-  assert.equal(last(), -1, 'leaving clears the preview');
-  buttons[2].on.click();
-  assert.deepEqual([last(), buttons[2].attributes['aria-pressed'], buttons[0].attributes['aria-pressed']], [2, 'true', 'false'], 'a press pins');
-  buttons[0].on.pointerenter(mouse);
-  assert(buttons[0].classes.has('is-shown') && !buttons[2].classes.has('is-shown'), 'a preview outranks the pinned service');
-  buttons[0].on.pointerleave(mouse);
-  assert.equal(last(), 2, 'leaving returns to the pinned service');
-  buttons[2].on.click();
-  assert.deepEqual([last(), buttons[2].attributes['aria-pressed']], [-1, 'false'], 'a second press unpins');
+  const cycle = serviceCycle(buttons, index => shown.push(index), { timers: clock });
+  assert.deepEqual(shown, [-1], 'nothing is highlighted before the cycle starts');
+  cycle.start();
+  assert.equal(shown.at(-1), 0, 'the first service shows as soon as the cycle starts');
+  clock.tick(1199);
+  assert.equal(shown.at(-1), 0);
+  clock.tick(1);
+  assert.equal(shown.at(-1), 1, 'the next service after 1.2 seconds');
+  clock.tick(1200 * 4);
+  assert.deepEqual(shown.slice(-5), [1, 2, 3, 4, 0], 'after the fifth comes the first again');
+  assert(buttons[0].classes.has('is-shown') && [1, 2, 3, 4].every(index => !buttons[index].classes.has('is-shown')), 'only the shown service is highlighted');
+  cycle.stop();
+  clock.tick(5000);
+  assert.equal(shown.at(-1), 0, 'stop() halts the cycle');
+});
+
+test('pointing at, pressing or keyboard-focusing a service holds it for 3 seconds', () => {
+  const buttons = services.map(fakeButton);
+  const clock = fakeClock();
+  const shown = [];
+  const cycle = serviceCycle(buttons, index => shown.push(index), { timers: clock });
+  cycle.start();
+  buttons[3].on.pointerenter({ pointerType: 'mouse' });
+  assert.equal(shown.at(-1), 3, 'pointing shows the service at once');
+  clock.tick(2999);
+  assert.equal(shown.at(-1), 3, 'and holds it');
+  clock.tick(1);
+  assert.equal(shown.at(-1), 4, 'then the cycle continues from there');
+  clock.tick(1200);
+  assert.equal(shown.at(-1), 0, 'at the usual pace');
+  buttons[1].on.click();
+  clock.tick(2999);
+  assert.equal(shown.at(-1), 1, 'a press holds for 3 seconds too');
+  clock.tick(1);
+  assert.equal(shown.at(-1), 2);
   const count = shown.length;
-  buttons[1].on.pointerenter({ pointerType: 'touch' });
-  hoverable = false;
-  buttons[1].on.pointerenter(mouse);
-  assert.equal(shown.length, count, 'touch, and narrow layouts, do not preview on pointing');
-  buttons[0].on.focus();
-  assert.equal(shown.length, count, 'focus from a mouse press does not preview');
-  buttons[0].focusVisible = true;
-  buttons[0].on.focus();
-  assert.equal(last(), 0, 'keyboard focus previews');
-  buttons[0].on.blur();
-  assert.equal(last(), -1, 'leaving with the keyboard clears the preview');
-  // A stale leave or blur from another service must not clear the current preview.
-  hoverable = true;
-  buttons[0].on.focus();
-  buttons[2].on.pointerenter(mouse);
-  buttons[0].on.blur();
-  buttons[0].on.pointerleave(mouse);
-  assert.equal(last(), 2, 'only the previewed service can clear its own preview');
+  buttons[4].on.pointerenter({ pointerType: 'touch' });
+  buttons[4].on.focus();
+  assert.equal(shown.length, count, 'a touch enter or a mouse-press focus does not count as pointing');
+  buttons[4].focusVisible = true;
+  buttons[4].on.focus();
+  assert.equal(shown.at(-1), 4, 'keyboard focus holds too');
+  cycle.stop();
+  buttons[0].on.click();
+  clock.tick(10000);
+  assert.equal(shown.at(-1), 0, 'with the cycle stopped (off screen or reduced motion), a press just shows the service');
 });
 
 test('the five services feed one team label through five lines', () => {
   const html = sectionMarkup();
   services.forEach((service, index) => {
     const button = serviceMarkup(service, index);
-    assert(button.includes(`data-index="${index}" aria-pressed="false" aria-controls="sf-team" aria-describedby="sf-steps-${index}"`), `${service.id}: button`);
-    assert(button.includes(`<span class="sf-no" aria-hidden="true">0${index + 1}</span>`), `${service.id}: number`);
+    assert(button.includes(`data-index="${index}" aria-controls="sf-team" aria-describedby="sf-steps-${index}"`), `${service.id}: button`);
   });
   const paths = [...html.matchAll(/<path data-index="(\d)" d="M(\d+) 0 C\d+ \d+ \d+ \d+ (\d+) (\d+)"\/>/g)];
   assert.deepEqual(paths.map(match => [Number(match[1]), Number(match[2]), Number(match[3]), Number(match[4])]), services.map((_, index) => [index, 100 + index * 200, 500, 96]), 'each line runs from its column centre to the team label');
   const team = teamMarkup();
-  // Steps are read with each button (aria-describedby), not announced on every change.
   assert.match(team, /^<p class="sf-team" id="sf-team">/);
-  assert(!html.includes('aria-live'), 'a live region would repeat every preview');
   services.forEach((_, index) => assert.equal(team.match(new RegExp(`id="sf-steps-${index}"`, 'g'))?.length, 1, `steps ${index + 1} have one target`));
-  Object.values(teamCopy).forEach(pair => bilingual(pair, 'team label'));
   assert.equal(team.match(/class="sf-team-state/g).length, services.length + 1);
   assert.deepEqual([...team.matchAll(/class="sf-team-state is-active" data-state="(-?\d)"/g)].map(match => match[1]), ['-1'], 'only the team line shows at first');
 });

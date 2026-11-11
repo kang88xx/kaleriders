@@ -10,14 +10,13 @@
 .sf-check { position: absolute; top: -3px; right: -3px; width: 22px; height: 22px; border: 2px solid var(--deep); border-radius: 50%; background: var(--lime); transform: scale(0); transition: transform .35s cubic-bezier(.3, 1.4, .5, 1) calc(.7s + var(--sf-delay, 0s)); }
 .sf-check::after { content: ''; position: absolute; left: 6px; top: 3px; width: 5px; height: 9px; border: solid var(--ink); border-width: 0 2px 2px 0; transform: rotate(45deg); }
 .sf-text { display: grid; justify-items: center; gap: 4px; }
-.sf-no { color: var(--lime); font-size: 12px; line-height: 1.4; letter-spacing: .04em; font-variant-numeric: tabular-nums; }
 .sf-name { font-size: 19px; font-weight: 500; line-height: 1.35; letter-spacing: -.03em; }
 html[lang="en"] .sf-name { letter-spacing: -.01em; }
 .sf-line { max-width: 18em; color: var(--sf-soft); font-size: 14px; line-height: 1.55; }
-/* Highlight follows the selection state only, so a touch or an unpin never leaves a stray highlight.
-   A pinned service is also underlined, so it does not rely on colour alone. */
+/* The highlighted service (cycling, or held after pointing or pressing): lime icon and name. */
 .sf-service.is-shown .sf-icon { border-color: var(--lime); background: var(--lime); color: var(--ink); }
-.sf-service[aria-pressed="true"] .sf-name { color: var(--lime); text-decoration: underline 2px; text-underline-offset: 6px; }
+.sf-service.is-shown .sf-name { color: var(--lime); }
+.sf-name { transition: color .25s; }
 
 .sf-fan { display: block; width: 100%; height: 88px; margin-top: 6px; overflow: visible; }
 /* The drawing stretches with the width while the stroke stays 1.5px, so dashes are measured on
@@ -48,10 +47,9 @@ html[lang="en"] .sf-name { letter-spacing: -.01em; }
   .sf-service { flex-direction: row; align-items: center; gap: 16px; padding: 10px 0; text-align: left; }
   .sf-icon { width: 56px; height: 56px; background: var(--deep); }
   .sf-icon .service-icon { width: 24px; height: 24px; }
-  .sf-text { justify-items: start; grid-template-columns: auto minmax(0, 1fr); align-items: baseline; gap: 2px 10px; }
-  .sf-no { grid-row: 1; }
-  .sf-name { grid-row: 1; font-size: 18px; }
-  .sf-line { grid-column: 1 / -1; max-width: none; }
+  .sf-text { justify-items: start; gap: 2px; }
+  .sf-name { font-size: 18px; }
+  .sf-line { max-width: none; }
   .sf-fan { display: none; }
   .sf-team { position: relative; display: grid; width: 100%; margin-top: 18px; padding: 14px 18px; border-radius: 14px; text-align: left; }
   .sf-team-state, .sf-team-state.is-active { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 2px 10px; grid-area: 1 / 1; }
