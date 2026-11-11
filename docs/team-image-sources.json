@@ -1,0 +1,66 @@
+{
+  "reviewedAt": "2026-11-11",
+  "usage": "Team coins in public/refresh-team.js. The front portrait is shown in grayscale by refresh-team.css; the back is the member's PFP. Kang's front, assets/team/kang-illustration.png, predates this record.",
+  "sources": [
+    {
+      "member": "Kalya",
+      "side": "front portrait",
+      "localPath": "assets/team/kalya-portrait.jpg",
+      "bytes": 17923,
+      "sha256": "02e15e45363406e5d0461ec8c9e298296598b732275181501fb9a4dd02801a65",
+      "receivedAt": "2026-11-11",
+      "source": "Pasted by the owner in a Claude Code session (PNG, 200×217). The original is kept with the release evidence outside this repository.",
+      "originalBytes": 131560,
+      "originalSha256": "a6d521509771dd890333180e5ee66f16df75e3b96fbe0bb8c4befa7e2a54b143",
+      "edit": "Square crop at x35 y10, 150×150; resized to 240×240; JPEG quality 0.9."
+    },
+    {
+      "member": "Mascot",
+      "side": "front portrait",
+      "localPath": "assets/team/mascot-portrait.jpg",
+      "bytes": 6195,
+      "sha256": "d6a8916cee61b45e22959920949a39ebc98411338cf75e73d8ccf7a934db3a01",
+      "receivedAt": "2026-11-11",
+      "source": "Pasted by the owner in a Claude Code session (PNG, 307×362). The original is kept with the release evidence outside this repository.",
+      "originalBytes": 158195,
+      "originalSha256": "f91a5bbcdd63c0b3b16da69e72595426250fc5e75c2abb43f0502e9f252030e9",
+      "edit": "The face of a person behind Mascot is pixelated (x195 y35, 85×105, 8px blocks). Square crop at x62 y82, 168×168; resized to 240×240; JPEG quality 0.9."
+    },
+    {
+      "member": "Kang",
+      "side": "PFP",
+      "localPath": "assets/team/kang-pfp.jpg",
+      "bytes": 14110,
+      "sha256": "ee57eb210d67a4526b17f4254697b1ebbe2e9ec4344522d4a7c4ce7aeb5e0b4d",
+      "receivedAt": "2026-11-11",
+      "source": "Pasted by the owner in a Claude Code session (PNG, 791×788). The original is kept with the release evidence outside this repository.",
+      "originalBytes": 307507,
+      "originalSha256": "e2af8b1967a6eb24e100b5ad6eaee9db9fb992d63859d735a9e9b81fa2bdce38",
+      "edit": "Square crop at x60 y50, 670×670; resized to 320×320; JPEG quality 0.88."
+    },
+    {
+      "member": "Kalya",
+      "side": "PFP",
+      "localPath": "assets/team/kalya-pfp.jpg",
+      "bytes": 25961,
+      "sha256": "f6fa84f73256a5a2d303d8fe1b40c2ffc126ec46a84790789cf3fa0788ff2b35",
+      "receivedAt": "2026-11-11",
+      "source": "Pasted by the owner in a Claude Code session (PNG, 1440×1437, a circular image on white). The original is kept with the release evidence outside this repository.",
+      "originalBytes": 3298118,
+      "originalSha256": "dade73b943b3882cc01ea71eabdebba0c2e5610714dee99478d065e8d3412ccf",
+      "edit": "Square crop at x80 y40, 1280×1280, inside the supplied circle so no white corner shows; resized to 320×320; JPEG quality 0.88."
+    },
+    {
+      "member": "Mascot",
+      "side": "PFP",
+      "localPath": "assets/team/mascot-pfp.jpg",
+      "bytes": 31799,
+      "sha256": "713c16d6ac40904b85ea1d660e5254feb39c342169a61a283c7d6348fb53bbd2",
+      "receivedAt": "2026-11-11",
+      "source": "Pasted by the owner in a Claude Code session (PNG, 400×400). The original is kept with the release evidence outside this repository.",
+      "originalBytes": 318143,
+      "originalSha256": "cfdb5689bd7849140e2d42837fb3622a8ee7d4f69375b80a5ff27e79e6eaa097",
+      "edit": "Resized to 320×320; JPEG quality 0.88."
+    }
+  ]
+}

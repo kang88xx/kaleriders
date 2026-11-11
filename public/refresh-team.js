@@ -1,18 +1,22 @@
 const copy = (ko, en) => ({ ko, en });
-const members = [
+// Each coin shows a monochrome portrait and flips to the member's own colored PFP.
+// Image sources and edits are recorded in docs/team-image-sources.json.
+export const members = [
   {
-    id: 'kang', name: 'Kang', image: 'kang-illustration.png',
+    id: 'kang', name: 'Kang', image: 'kang-illustration.png', pfp: 'kang-pfp.jpg',
     alt: copy('제공된 Kang 사진을 바탕으로 만든 흑백 반실사 일러스트', 'A monochrome illustration based on a photo of Kang'),
     role: copy('전략·파트너십', 'Strategy & partnerships'),
     description: copy('한국 시장 진입 전략과 프로젝트·파트너 협업을 연결합니다.', 'Plans Korean market entry and coordinates project partnerships.'),
   },
   {
-    id: 'kalya', name: 'Kalya',
+    id: 'kalya', name: 'Kalya', image: 'kalya-portrait.jpg', pfp: 'kalya-pfp.jpg',
+    alt: copy('Kalya의 흑백 인물 사진', 'A monochrome photo of Kalya'),
     role: copy('콘텐츠·KOL', 'Content & KOLs'),
     description: copy('프로젝트에 맞는 크리에이터를 연결하고 콘텐츠와 캠페인을 기획합니다.', 'Finds creators for each project and plans content and campaigns.'),
   },
   {
-    id: 'mascot', name: 'Mascot',
+    id: 'mascot', name: 'Mascot', image: 'mascot-portrait.jpg', pfp: 'mascot-pfp.jpg',
+    alt: copy('Mascot의 흑백 인물 사진', 'A monochrome photo of Mascot'),
     role: copy('커뮤니티·행사 운영', 'Community & events'),
     description: copy('커뮤니티의 참여를 만들고 밋업과 행사 현장을 운영합니다.', 'Runs community activities, meetups and events.'),
   },
@@ -64,20 +68,16 @@ export function initRefreshTeam(doc = document) {
     visual.setAttribute('aria-pressed', 'false');
     const coin = element('span', 'rt-coin', visual);
     coin.setAttribute('aria-hidden', 'true');
-    if (member.image) {
-      const portrait = element('img', 'rt-portrait', coin);
-      portrait.src = new URL(`assets/team/${member.image}`, import.meta.url).href;
-      portrait.loading = 'lazy';
-      portrait.decoding = 'async';
-      bindings.push(language => { portrait.alt = member.alt[language]; });
-    } else {
-      // Use each member's own character until their approved portrait is available.
-      const portrait = element('span', 'rt-portrait rt-character-front', coin);
-      portrait.dataset.memberAvatar = member.id;
-    }
-    const pfp = element('span', `rt-pfp rt-pfp-${member.id}`, coin);
-    pfp.dataset.memberAvatar = member.id;
-    pfp.setAttribute('aria-hidden', 'true');
+    const portrait = element('img', 'rt-portrait', coin);
+    portrait.src = new URL(`assets/team/${member.image}`, import.meta.url).href;
+    portrait.loading = 'lazy';
+    portrait.decoding = 'async';
+    bindings.push(language => { portrait.alt = member.alt[language]; });
+    const pfp = element('img', 'rt-pfp', coin);
+    pfp.src = new URL(`assets/team/${member.pfp}`, import.meta.url).href;
+    pfp.alt = '';
+    pfp.loading = 'lazy';
+    pfp.decoding = 'async';
     const caption = element('div', 'rt-caption', card);
     const nameLine = element('div', 'rt-name-line', caption);
     const name = element('h3', '', nameLine, member.name);
@@ -96,11 +96,10 @@ export function initRefreshTeam(doc = document) {
   function updateButtons() {
     portraits.forEach((button, index) => {
       const flipped = index === active && button.classList.contains('is-flipped');
-      const hasPortrait = Boolean(members[index].image);
       button.setAttribute('aria-pressed', String(flipped));
       button.setAttribute('aria-label', language === 'en'
-        ? `${members[index].name}: ${flipped ? (hasPortrait ? 'return to portrait' : 'return to monochrome character') : 'preview PFP character'}`
-        : `${members[index].name}: ${flipped ? (hasPortrait ? '인물 사진으로 돌아가기' : '흑백 캐릭터로 돌아가기') : 'PFP 캐릭터 보기'}`);
+        ? `${members[index].name}: ${flipped ? 'return to portrait' : 'preview PFP character'}`
+        : `${members[index].name}: ${flipped ? '인물 사진으로 돌아가기' : 'PFP 캐릭터 보기'}`);
     });
   }
   function resetPreview() {

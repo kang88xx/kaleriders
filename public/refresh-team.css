@@ -9,13 +9,10 @@
 .rt-visual { flex: 0 0 auto; position: relative; display: block; width: 84px; height: 84px; padding: 0; border: 0; border-radius: 50%; background: transparent; perspective: 600px; }
 .rt-coin { position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; transform-style: preserve-3d; transition: transform 350ms cubic-bezier(.4, 0, .2, 1); }
 .rt-visual.is-flipped .rt-coin { transform: rotateY(180deg); }
-.rt-portrait { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; border-radius: 50%; background: #eae6df; backface-visibility: hidden; }
+.rt-portrait, .rt-pfp { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; background: #eae6df; backface-visibility: hidden; }
+.rt-portrait { object-position: center top; filter: grayscale(1); }
 .rt-card[data-member="kang"] .rt-portrait { object-position: center 10%; }
-.rt-character-front { display: grid; place-items: center; padding: 10px; overflow: hidden; filter: grayscale(1); }
-.rt-pfp { position: absolute; inset: 0; display: grid; place-items: center; width: 100%; height: 100%; padding: 10px; border-radius: 50%; overflow: hidden; background: var(--lime); backface-visibility: hidden; transform: rotateY(180deg); }
-.rt-pfp-kalya { background: #dee5ee; }
-.rt-pfp-mascot { background: #e6d2bf; }
-.rt-pfp svg, .rt-character-front svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.rt-pfp { transform: rotateY(180deg); }
 .rt-caption { min-width: 0; }
 .rt-name-line { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
 .rt-caption h3 { font: 500 23px/1.25 Arial, sans-serif; letter-spacing: -.045em; }

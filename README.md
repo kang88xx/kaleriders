@@ -33,6 +33,18 @@ The homepage wall under “People we brought together.” fills 100 square tiles
 
 To add a photo, copy the original into `public/assets/cases/`, append it to `wallPhotos` with Korean and English descriptions, record it in `docs/case-study-sources.json` and update the photo count in `checks/case-studies.test.mjs`. An optional `position` (CSS `object-position`, such as `50% 88%`) keeps an off-center subject inside the square and expanded crops. `arrangeWall()` in the same file builds the order; `checks/photo-wall.test.mjs` checks the spread, the square tiles and crop focus, the source records, and that each page loads every module under one version token.
 
+## Service drawings
+
+Each of the five service tabs draws its three steps as numbered cards, and the steps listed beside the drawing carry the same numbers. KOL campaigns shows a shortlist, a Korean post and a posting schedule. Meetups shows a venue map, an invitation and a name tag. Press outreach shows a press release, an email pitch and a published article. Airdrops shows a mission list, a community guide and an eligibility check. KBW & event production shows a run of show, a partner board and a floor plan. Text inside the drawings is example interface copy, with no client names or results.
+
+The drawings are SVG strings built with small helpers in `public/refresh-services.js` on a 480×380 canvas. Labels use `<tspan>` with Korean and English text, so the language switch updates them. Two sample lines stay Korean in both languages on purpose: the post in the KOL drawing and the headline in the press drawing show content made for Korean readers. Each group of labels sits in a `<g data-box>` with one `[data-card]` shape, so a browser check can measure every label against its card. `checks/services.test.mjs` checks that card numbers match the steps, that every box has one card, and that text outside a `<tspan>` is language-neutral or one of the two Korean samples.
+
+Between 600px and 900px the drawing moves under the copy and keeps its full size. On phones it scales to the screen width, and its smallest labels render at about 9px at 390px. The numbered step list above it carries the same information as text.
+
+## Team
+
+Each team coin shows a portrait in grayscale and flips to that member's colored PFP. Kang's front is the existing illustration. The owner supplied the Kalya and Mascot photos and all three PFPs on 2026-11-11. The face of a person behind Mascot is pixelated. `docs/team-image-sources.json` records the source, edit and checksum of each file added on 2026-11-11; Kang's illustration predates it. `checks/team.test.mjs` checks that every member's files exist, the recorded checksums and the rendered coins. To replace an image, put a square crop in `public/assets/team/`, point the member's `image` or `pfp` in `public/refresh-team.js` at it and update its record.
+
 ## Event sample
 
 `https://kaleriders.com/sample` serves the event portfolio draft separately from the homepage. Vercel rewrites `/sample` and `/sample/` to `public/sample.html`. For the simple local Python server, open `/sample.html?lang=ko#work`. The page is marked `noindex` and retains the existing Korean/English switch.

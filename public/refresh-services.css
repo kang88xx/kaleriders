@@ -10,13 +10,16 @@
 #refresh-services-root .panel-copy .eyebrow { font-size: 11px; letter-spacing: .08em; margin-bottom: 20px; }
 #refresh-services-root .panel-copy h3 { font-size: clamp(27px, 2.55vw, 38px); line-height: 1.4; }
 #refresh-services-root .panel-copy > p:not(.eyebrow) { max-width: 400px; font-size: 15px; line-height: 1.85; margin-top: 20px; }
-#refresh-services-root .panel-copy ul { margin: 22px 0 24px; gap: 7px; }
-#refresh-services-root .panel-copy li { font-size: 12px; padding: 5px 11px; }
+#refresh-services-root .rs-steps { display: flex; flex-wrap: wrap; list-style: none; padding: 0; margin: 22px 0 24px; gap: 7px; }
+#refresh-services-root .rs-steps li { display: inline-flex; align-items: center; gap: 7px; padding: 4px 12px 4px 4px; }
+#refresh-services-root .rs-step-no { display: inline-grid; place-items: center; flex: 0 0 auto; width: 20px; height: 20px; border-radius: 50%; background: var(--blue); color: var(--paper); font-size: 11px; font-weight: 700; line-height: 1; }
 #refresh-services-root .rs-inquiry { align-self: flex-start; min-height: 48px; font-size: 14px; gap: 16px; padding: 11px 20px; }
 #refresh-services-root .rs-art { min-height: 390px; flex-direction: column; }
-#refresh-services-root .rs-art svg { width: min(100%, 500px); height: auto; display: block; }
-#refresh-services-root .rs-art .art-label { top: 23px; left: 25px; font-size: 9px; }
-#refresh-services-root .rs-art-caption { position: absolute; bottom: 23px; right: 25px; font: 8px Arial, sans-serif; letter-spacing: .12em; }
+#refresh-services-root .rs-art svg { width: min(100% - 32px, 480px); height: auto; display: block; }
+@keyframes rs-card-in { from { opacity: 0; transform: translateY(14px); } }
+@media (prefers-reduced-motion: no-preference) {
+  #refresh-services-root .service-panel:not([hidden]) .rs-card { animation: rs-card-in .55s cubic-bezier(.2, .7, .2, 1) both; animation-delay: calc(var(--step) * 90ms); }
+}
 #refresh-services-root .rs-art-meetup { background: #dce6ed; }
 #refresh-services-root .rs-art-press { background: #e8d6c5; }
 #refresh-services-root .rs-art-airdrop { background: #d6e0f3; }
@@ -28,6 +31,11 @@ html[lang="en"] #refresh-services-root .service-tabs button { min-width: 0; font
   #refresh-services-root .service-tabs button:last-child { grid-column: 1 / -1; }
   #refresh-services-root .panel-copy { padding: 32px 28px; }
   #refresh-services-root .panel-copy > p:not(.eyebrow) { font-size: 14px; }
+}
+/* Below 900px the drawing moves under the copy so its labels keep a readable size. */
+@media (max-width: 900px) {
+  #refresh-services-root .service-panel { grid-template-columns: 1fr; }
+  #refresh-services-root .rs-art { min-height: 0; padding: 28px 20px; }
 }
 @media (max-width: 600px) {
   #services:has(#refresh-services-root) { padding-bottom: 24px; }
@@ -41,10 +49,8 @@ html[lang="en"] #refresh-services-root .service-tabs button { min-width: 0; font
   #refresh-services-root .panel-copy .eyebrow { font-size: 11px; margin-bottom: 18px; }
   #refresh-services-root .panel-copy h3 { font-size: 27px; }
   #refresh-services-root .panel-copy > p:not(.eyebrow) { font-size: 14px; margin-top: 17px; }
-  #refresh-services-root .panel-copy ul { margin-top: 21px; }
+  #refresh-services-root .rs-steps { margin-top: 21px; }
   #refresh-services-root .rs-inquiry { padding-inline: 16px; gap: 10px; }
-  #refresh-services-root .rs-art { min-height: 280px; }
-  #refresh-services-root .rs-art svg { width: 100%; max-height: 300px; }
-  #refresh-services-root .rs-art .art-label { font-size: 8px; left: 20px; top: 18px; }
-  #refresh-services-root .rs-art-caption { bottom: 16px; right: 20px; font-size: 7px; }
+  #refresh-services-root .rs-art { min-height: 0; padding: 16px 6px; }
+  #refresh-services-root .rs-art svg { width: 100%; }
 }
