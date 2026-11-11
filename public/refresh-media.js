@@ -4,14 +4,23 @@ import { initRefreshGallery } from './refresh-gallery.js?v=focus-20261110';
 const assetURL = path => new URL(path, import.meta.url).href;
 const copy = (ko, en) => ({ ko, en });
 
-// Owner-supplied event photos shown on the photo wall only. They come from other
-// KGEN and Axis Robotics events, so they are not attached to a case story.
+// Owner-supplied event photos shown on the photo wall only. They come from other KGEN and
+// Axis Robotics events, and (2026-11-12) Momentum × Buidlpad's Keep The Mo'mentum and the Aria
+// meetup, so they are not attached to a case story. Faces close to the camera are pixelated.
 // `position` is an optional CSS object-position for a subject that sits off-center.
 export const wallPhotos = [
   { src: 'assets/cases/kgen/after-hours-talk.jpg', alt: copy('KGEN VeriFi Seoul After Hours에서 발표를 듣는 참석자들', 'Attendees watching a presentation at KGEN VeriFi Seoul After Hours') },
   { src: 'assets/cases/kgen/after-hours-banner.jpg', alt: copy('행사명과 날짜가 표시된 KGEN VeriFi Seoul After Hours 거리 배너', 'KGEN VeriFi Seoul After Hours street banner showing the event name and date') },
   { src: 'assets/cases/kgen/booth.jpg', position: '50% 88%', alt: copy('KGEN 부스와 텔레그램 채널 안내 배너', 'KGEN booth with a banner for its Telegram channel') },
   { src: 'assets/cases/axis-robotics/booth.jpg', alt: copy('Axis Robotics 부스와 소개 배너, 로봇 팔 영상이 나오는 모니터', 'Axis Robotics booth with an introduction banner and a monitor showing a robot arm') },
+  { src: 'assets/cases/momentum/stage.jpg', alt: copy('Momentum × Buidlpad “Keep The Mo’mentum” 무대에서 발표하는 모습', 'A talk on the Keep The Mo’mentum stage, hosted by Momentum with Buidlpad') },
+  { src: 'assets/cases/momentum/audience-1.jpg', alt: copy('Keep The Mo’mentum 행사장을 채운 참석자들', 'Attendees filling the Keep The Mo’mentum venue') },
+  { src: 'assets/cases/momentum/audience-2.jpg', alt: copy('Keep The Mo’mentum 객석과 뒤편에 선 참석자들', 'Seated and standing attendees at Keep The Mo’mentum') },
+  { src: 'assets/cases/momentum/audience-3.jpg', alt: copy('Keep The Mo’mentum 발표를 기다리는 객석', 'The audience waiting for the next Keep The Mo’mentum talk') },
+  { src: 'assets/cases/aria/audience-panel.jpg', alt: copy('Aria 밋업 패널 토크를 듣는 참석자들', 'Attendees listening to a panel at the Aria meetup') },
+  { src: 'assets/cases/aria/stage.jpg', alt: copy('Aria 밋업에서 $ARIAIP를 소개하는 발표', 'A presentation introducing $ARIAIP at the Aria meetup') },
+  { src: 'assets/cases/aria/entrance.jpg', alt: copy('Aria 밋업 입구에 모인 참석자들', 'Attendees gathered at the Aria meetup entrance') },
+  { src: 'assets/cases/aria/queue.jpg', alt: copy('Aria 밋업 입장을 기다리는 거리의 대기 줄', 'A queue on the street waiting to enter the Aria meetup') },
 ];
 
 // Every case photo plus the wall-only additions, each listed once.
@@ -21,6 +30,14 @@ export const wallPool = [
     ...item.gallery.map(media => ({ type: 'image', ...media })),
   ]),
   ...wallPhotos,
+];
+
+// The film row under the wall, by case. A case whose own media is a photo supplies its film here:
+// the KGEN after-movie the owner sent on 2026-11-12, re-encoded for the web from the 4K original.
+export const eventFilms = [
+  { id: 'fogo-mainnet' },
+  { id: 'fogo-meetup' },
+  { id: 'kgen', media: { type: 'video', src: 'assets/cases/kgen/after-movie.mp4', poster: 'assets/cases/kgen/after-movie.jpg', alt: copy('KGEN · VeriFi Korea 현장 애프터무비', 'KGEN · VeriFi Korea event after-movie') } },
 ];
 
 // Spread the pool evenly over the wall: each pass uses every photo once, avoiding the photo
@@ -133,34 +150,6 @@ export function initRefreshMedia(doc = document) {
   const photoGallery = initRefreshGallery(grid, gallery, doc);
   bindings.push(language => photoGallery.updateLanguage(language));
 
-  const records = element('section', 'rm-records', galleryRoot);
-  records.setAttribute('aria-labelledby', 'rm-records-title');
-  const recordsTitle = element('h3', '', records, copy('행사 기록', 'Event highlights'));
-  recordsTitle.id = 'rm-records-title';
-  const recordsGrid = element('div', 'rm-records-grid', records);
-  const recordCopy = {
-    kgen: copy('무대 소개와 커뮤니티 참여 미션을 담은 현장 사진.', 'Stage presentations and community activities.'),
-    'open-agi': copy('AI·로보틱스 발표와 참가자들의 대화를 담은 기록.', 'AI and robotics talks and conversations between attendees.'),
-    'creators-night': copy('Kaito와 함께한 KBW Creators Night에서 Axis Robotics를 소개한 현장.', 'Introducing Axis Robotics at KBW Creators Night, co-hosted with Kaito.'),
-  };
-  // Describe only the scenes supported by the supplied media, not draft delivery claims.
-  Object.entries(recordCopy).forEach(([id, description]) => {
-    const item = byId[id];
-    const card = element('article', 'rm-record', recordsGrid);
-    card.setAttribute('aria-labelledby', `rm-record-title-${id}`);
-    const image = element('img', 'rm-record-photo', card);
-    image.src = assetURL(item.media.src);
-    image.loading = 'lazy';
-    image.decoding = 'async';
-    image.width = 84;
-    image.height = 84;
-    attribute(image, 'alt', item.media.alt);
-    const caption = element('div', 'rm-record-copy', card);
-    const title = element('h4', '', caption, item.title);
-    title.id = `rm-record-title-${id}`;
-    element('p', '', caption, description);
-  });
-
   const films = element('section', 'rm-films', galleryRoot);
   films.setAttribute('aria-labelledby', 'rm-films-title');
   const filmsHeading = element('div', 'rm-heading rm-films-heading', films);
@@ -168,12 +157,12 @@ export function initRefreshMedia(doc = document) {
   const filmsTitle = element('h3', '', filmsHeadingCopy, copy('현장의 온도, 그대로.', 'A look inside the events.'));
   filmsTitle.id = 'rm-films-title';
   const filmsGrid = element('div', 'rm-event-videos', films);
-  ['fogo-mainnet', 'fogo-meetup'].forEach(id => {
+  eventFilms.forEach(({ id, media }) => {
     const item = byId[id];
     const article = element('article', 'rm-event-film', filmsGrid);
     article.setAttribute('aria-labelledby', `rm-film-title-${id}`);
     const frame = element('div', 'rm-event-frame rm-video-frame', article);
-    mediaElement(item.media, frame);
+    mediaElement(media || item.media, frame);
     const caption = element('div', 'rm-film-caption', article);
     const title = element('h4', '', caption, item.title);
     title.id = `rm-film-title-${id}`;

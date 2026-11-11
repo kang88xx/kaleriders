@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { statSync, readFileSync } from 'node:fs';
 import { caseStudies, contentStatus } from '../public/case-studies-data.js';
-import { wallPhotos } from '../public/refresh-media.js';
+import { eventFilms, wallPhotos } from '../public/refresh-media.js';
 
 test('illustrative cases remain explicitly marked as drafts', () => {
   assert.equal(contentStatus, 'draft');
@@ -39,7 +39,7 @@ test('every gallery image, video and poster resolves to a nonempty local asset',
 test('photo wall additions are distinct local JPEGs with complete bilingual descriptions', () => {
   const casePhotos = caseStudies.flatMap(item => [...(item.media.type === 'image' ? [item.media.src] : []), ...item.gallery.map(photo => photo.src)]);
   const sources = [...casePhotos, ...wallPhotos.map(photo => photo.src)];
-  assert.equal(sources.length, 23);
+  assert.equal(sources.length, 31);
   assert.equal(new Set(sources).size, sources.length, 'The wall repeats a photo source');
   for (const photo of wallPhotos) {
     assert(photo.src.startsWith('assets/cases/') && !photo.src.includes('..'), photo.src);
@@ -56,5 +56,20 @@ test('original video sources are MP4 containers and posters are JPEG images', ()
     assert.equal(media.toString('ascii', 4, 8), 'ftyp');
     const poster = readFileSync(new URL(`../public/${item.media.poster}`, import.meta.url));
     assert.equal(poster.readUInt16BE(0), 0xffd8);
+  }
+});
+
+test('the film row shows one film per case: an MP4 with a JPEG poster and bilingual descriptions', () => {
+  const byId = new Map(caseStudies.map(item => [item.id, item]));
+  assert.deepEqual(eventFilms.map(film => film.id), ['fogo-mainnet', 'fogo-meetup', 'kgen']);
+  for (const film of eventFilms) {
+    assert(byId.has(film.id), `${film.id} is not a case`);
+    const media = film.media || byId.get(film.id).media;
+    assert.equal(media.type, 'video', film.id);
+    for (const src of [media.src, media.poster]) assert(src.startsWith('assets/cases/') && !src.includes('..'), src);
+    assert.equal(readFileSync(new URL(`../public/${media.src}`, import.meta.url)).toString('ascii', 4, 8), 'ftyp', media.src);
+    assert.equal(readFileSync(new URL(`../public/${media.poster}`, import.meta.url)).readUInt16BE(0), 0xffd8, media.poster);
+    assert(media.alt.ko.trim() && media.alt.en.trim(), `${film.id} description`);
+    assert(!/[가-힣]/u.test(media.alt.en), `${film.id} English contains untranslated Korean`);
   }
 });

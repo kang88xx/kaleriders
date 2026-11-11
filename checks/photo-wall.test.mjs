@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { arrangeWall, wallPhotos, wallPool } from '../public/refresh-media.js';
+import { arrangeWall, eventFilms, initRefreshMedia, wallPhotos, wallPool } from '../public/refresh-media.js';
 import { initRefreshGallery } from '../public/refresh-gallery.js';
 
 test('the wall spreads every photo evenly without a repeat beside or above it', () => {
@@ -107,7 +107,33 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
   }
 });
 
-test('source records match every published wall photo byte for byte', () => {
+test('the film row renders every event film, the KGEN after-movie last, with labels in both languages', () => {
+  const { doc } = fakeGallery(1000, 1440);
+  const roots = { 'refresh-gallery-root': new FakeElement('div'), 'refresh-friends-root': new FakeElement('div') };
+  doc.getElementById = id => roots[id] ?? null;
+  doc.createElement = tag => Object.assign(new FakeElement(tag), { clientWidth: 1000 }); // the wall grid needs a width
+  let changeLanguage;
+  doc.addEventListener = (type, listener) => { if (type === 'languagechange') changeLanguage = listener; };
+  initRefreshMedia(doc);
+  const descendants = node => [node, ...node.children.flatMap(descendants)];
+  const films = descendants(roots['refresh-gallery-root']).filter(node => node.className === 'rm-event-film');
+  assert.deepEqual(films.map(film => film.getAttribute('aria-labelledby')), ['rm-film-title-fogo-mainnet', 'rm-film-title-fogo-meetup', 'rm-film-title-kgen']);
+  const kgen = descendants(films[2]);
+  const video = kgen.find(node => node.tagName === 'VIDEO');
+  const heading = kgen.find(node => node.tagName === 'H4');
+  const play = kgen.find(node => node.className === 'rm-video-launch');
+  assert.match(video.src, /\/assets\/cases\/kgen\/after-movie\.mp4$/);
+  assert.match(video.poster, /\/assets\/cases\/kgen\/after-movie\.jpg$/);
+  assert.equal(heading.id, 'rm-film-title-kgen');
+  assert.equal(heading.textContent, 'KGEN · VeriFi Korea');
+  assert.equal(video.getAttribute('aria-label'), 'KGEN · VeriFi Korea 현장 애프터무비');
+  assert.equal(play.getAttribute('aria-label'), '영상 재생: KGEN · VeriFi Korea 현장 애프터무비');
+  changeLanguage({ detail: { language: 'en' } });
+  assert.equal(video.getAttribute('aria-label'), 'KGEN · VeriFi Korea event after-movie');
+  assert.equal(play.getAttribute('aria-label'), 'Play video: KGEN · VeriFi Korea event after-movie');
+});
+
+test('source records match every published wall photo and added film byte for byte', () => {
   const record = JSON.parse(readFileSync(new URL('../docs/case-study-sources.json', import.meta.url), 'utf8'));
   const located = new Map(record.sources.filter(item => item.localPath).map(item => [item.localPath, item]));
   for (const [path, item] of located) {
@@ -116,6 +142,9 @@ test('source records match every published wall photo byte for byte', () => {
     assert.equal(createHash('sha256').update(bytes).digest('hex'), item.sha256, path);
   }
   for (const photo of wallPhotos) assert(located.has(photo.src), `${photo.src} has no source record`);
+  for (const { media } of eventFilms.filter(film => film.media)) {
+    for (const path of [media.src, media.poster]) assert(located.has(path), `${path} has no source record`);
+  }
 });
 
 // A module requested under two query strings is fetched and run twice on the same page.
