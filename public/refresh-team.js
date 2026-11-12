@@ -43,6 +43,7 @@ export function initRefreshTeam(doc = document) {
   let language = doc.documentElement.lang === 'en' ? 'en' : 'ko';
   let visible = false;
   let lastTurned = [];
+  let focused = false;
   let autoTimer;
   const flipped = new Set();      // coins showing their PFP
   const returnTimers = new Map(); // coin index -> timer that turns it back
@@ -141,7 +142,7 @@ export function initRefreshTeam(doc = document) {
   }
   function schedule() {
     view.clearTimeout(autoTimer);
-    const running = visible && !doc.hidden && !reducedMotion.matches && !root.contains(doc.activeElement);
+    const running = visible && !doc.hidden && !reducedMotion.matches && !focused;
     root.dataset.pfpAutoplay = reducedMotion.matches ? 'reduced-motion' : running ? 'running' : 'paused';
     if (!running) return;
     // About every two seconds (it was three), a little uneven so the turns do not tick like a clock.
@@ -164,8 +165,16 @@ export function initRefreshTeam(doc = document) {
   }, { threshold: .2 }).observe(grid);
   doc.addEventListener('visibilitychange', pause);
   reducedMotion.addEventListener('change', pause);
-  root.addEventListener('focusin', schedule);
-  root.addEventListener('focusout', () => view.queueMicrotask(schedule));
+  // A coin pressed with a pointer keeps focus, which used to stop the coins until a click elsewhere.
+  // Only focus from the keyboard holds them (browsers without :focus-visible count as keyboard).
+  root.addEventListener('focusin', event => {
+    try { focused = event.target.matches?.(':focus-visible') ?? true; } catch { focused = true; }
+    schedule();
+  });
+  root.addEventListener('focusout', event => {
+    if (!root.contains(event.relatedTarget)) focused = false;
+    view.queueMicrotask(schedule);
+  });
   root.addEventListener('keydown', event => {
     if (event.key === 'Escape' && flipped.size) {
       event.preventDefault();

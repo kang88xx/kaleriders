@@ -16,7 +16,8 @@ test('the six services keep their order, each with a short line and three or fou
     bilingual(service.line, `${service.id} line`);
     // Airdrops is the longest: on 2026-11-13 the owner asked for whitelists and sale allocation in it
     // and approved the draft with this line and four steps. The others stay at three.
-    assert(service.line[0].length <= 24 && service.line[1].length <= 48, `${service.id}: a line is too long for the graphic`);
+    const [korean, english] = service.id === 'airdrop' ? [24, 48] : [20, 40];
+    assert(service.line[0].length <= korean && service.line[1].length <= english, `${service.id}: a line is too long for the graphic`);
     assert.equal(service.steps.length, service.id === 'airdrop' ? 4 : 3, service.id);
     service.steps.forEach((step, index) => bilingual(step, `${service.id} step ${index + 1}`));
     // One sign per circle: a line icon, lettering (KOL) or a logo file drawn in the text colour (KBW).

@@ -195,6 +195,31 @@ test('the playing wall always has one photo open, and a press does not leave it 
   assert.equal(opened().length, 1);
 });
 
+// With a photo open nearly all the time, the wall's Escape handler ran for the whole page: the
+// inquiry dialog did not close on the first Escape and focus jumped into the wall (review, 2026-11-13).
+test('Escape and the arrow keys act on the wall only when focus is inside it', () => {
+  const { doc, grid } = fakeGallery(1000, 1440);
+  const view = doc.defaultView;
+  let keydown;
+  view.matchMedia = () => ({ matches: false, addEventListener() {} });
+  doc.addEventListener = (type, listener) => { if (type === 'keydown') keydown = listener; };
+  initRefreshGallery(grid, arrangeWall(), doc, { compactCount: phoneTiles });
+  const tiles = grid.children.slice(1);
+  const opened = () => tiles.filter(tile => tile.classList.contains('is-open'));
+  const press = key => { const event = { key, defaultPrevented: false, preventDefault() { this.defaultPrevented = true; } }; keydown(event); return event; };
+  const first = opened()[0];
+  doc.activeElement = { parentNode: null }; // somewhere else on the page, such as the inquiry dialog
+  assert.equal(press('Escape').defaultPrevented, false, 'Escape elsewhere must stay with the page');
+  assert.deepEqual(opened(), [first], 'Escape elsewhere must not close the photo');
+  assert.equal(press('ArrowRight').defaultPrevented, false);
+  doc.activeElement = first; // a keyboard visitor inside the wall
+  assert.equal(press('ArrowRight').defaultPrevented, true);
+  assert.notEqual(opened()[0], first, 'The arrow key should move to the next photo');
+  assert.equal(press('Escape').defaultPrevented, true);
+  assert.deepEqual(opened(), [], 'Escape inside the wall closes the photo');
+  assert(!/enlarge|크게/.test(first.getAttribute('aria-label')) || !first.classList.contains('is-open'));
+});
+
 test('any film can be the large one, with the other two after it in their listed order', () => {
   const ids = eventFilms.map(film => film.id);
   assert.deepEqual(orderFilms(eventFilms, 0).map(film => film.id), ids);

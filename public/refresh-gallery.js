@@ -22,6 +22,8 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
   let focused = false;
   let manualPause = false;
   let holdTimer = null;
+  // Whether focus came from the keyboard; browsers without :focus-visible throw on the selector.
+  const keyboardFocus = element => { try { return element.matches?.(':focus-visible') ?? true; } catch { return true; } };
   // Tiles in use at the current width.
   const isCompact = () => view.innerWidth <= 600;
   const inUse = () => (isCompact() ? Math.min(compactCount, photos.length) : photos.length);
@@ -114,6 +116,7 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
       tile.classList.toggle('is-open', index === selected);
       tile.dataset.visible = String(rect.visible);
       tile.setAttribute('aria-pressed', String(index === selected));
+      tile.setAttribute('aria-label', tileLabel(index));
       tile.setAttribute('aria-hidden', String(!rect.visible));
       tile.tabIndex = rect.visible ? 0 : -1;
       tile.inert = !rect.visible;
@@ -212,13 +215,15 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
     updateStatus();
     if (restoreFocus) tile.focus({ preventScroll: true });
   }
+  // The opened photo is already enlarged, so only the others say that a press enlarges them.
+  const tileLabel = index => `${index + 1}/${inUse()} · ${photos[index].alt[language]}${index === selected ? '' : ` · ${copy[language].toggle}`}`;
   function updateLanguage(value) {
     language = value === 'en' ? 'en' : 'ko';
     grid.setAttribute('aria-label', copy[language].gallery);
     tiles.forEach((tile, index) => {
       const alt = photos[index].alt[language];
       tile.firstElementChild.alt = alt;
-      tile.setAttribute('aria-label', `${index + 1}/${inUse()} · ${alt} · ${copy[language].toggle}`);
+      tile.setAttribute('aria-label', tileLabel(index));
     });
     updateStatus();
   }
@@ -244,6 +249,7 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
     // Escape or a narrower layout closed the photo, one opens at once.
     if (selected < 0) showRandomPhoto();
     else sharpen(selected);
+    view.clearTimeout(autoplayTimer); // opening a photo above can come back through here
     autoplayTimer = view.setTimeout(() => {
       autoplayTimer = null;
       if (!inView || doc.hidden || reducedMotion.matches || hovered || focused || manualPause) {
@@ -271,7 +277,7 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
   grid.addEventListener('focusin', event => {
     // A tile pressed with the pointer keeps focus after the pointer has left, which used to leave
     // the wall paused until a click elsewhere. Only focus from the keyboard holds it.
-    focused = event.target.matches?.(':focus-visible') ?? true;
+    focused = keyboardFocus(event.target);
     syncAutoplay();
   });
   grid.addEventListener('focusout', event => {
@@ -289,14 +295,17 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
   doc.addEventListener('visibilitychange', syncAutoplay);
 
   doc.addEventListener('keydown', event => {
-    if (selected < 0) return;
+    // The keys act only for a visitor who is in the wall. A photo is now open nearly all the time,
+    // so without this Escape anywhere on the page was swallowed here (the inquiry dialog did not
+    // close on the first press) and focus was pulled into the wall.
+    if (selected < 0 || event.defaultPrevented || !grid.contains(doc.activeElement)) return;
     if (event.key === 'Escape') {
       event.preventDefault();
       manualPause = true;
       syncAutoplay();
       close(true);
     }
-    else if (grid.contains(doc.activeElement) && ['ArrowLeft', 'ArrowRight'].includes(event.key)) {
+    else if (['ArrowLeft', 'ArrowRight'].includes(event.key)) {
       event.preventDefault();
       manualPause = true;
       syncAutoplay();

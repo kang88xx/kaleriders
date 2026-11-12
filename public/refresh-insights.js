@@ -68,7 +68,6 @@ export function initRefreshInsights() {
         <h3 id="ri-report-title">캠페인 리포트 구성 예시</h3>
         <p class="ri-example-note">분석 방식과 리포트 구성을 보여주는 가상 데이터입니다. 실제 고객 성과가 아닙니다.</p>
         <div class="ri-report-toolbar"><p>보고 기간별 변화</p><div class="ri-periods" role="group" aria-label="누적 보고 기간">${performanceData.periods.map(value => `<button type="button" data-ri-period="${value}" aria-pressed="${value === period}">${value}주</button>`).join('')}</div></div>
-        <svg class="ri-defs" width="0" height="0" aria-hidden="true" focusable="false"><filter id="ri-mosaic" x="-4%" y="-12%" width="108%" height="124%" color-interpolation-filters="sRGB"><feGaussianBlur stdDeviation="3" result="soft"/><feFlood x="3" y="3" width="2" height="2"/><feComposite width="8" height="8"/><feTile result="grid"/><feComposite in="soft" in2="grid" operator="in"/><feMorphology operator="dilate" radius="4"/></filter></svg>
         <dl class="ri-metrics" aria-live="polite" aria-atomic="true">
           <div><dt>누적 노출</dt><dd data-ri-metric="impressions"></dd></div>
           <div><dt>추적 방문</dt><dd data-ri-metric="visits"></dd></div>
@@ -96,7 +95,23 @@ export function initRefreshInsights() {
   let geometry = null; // set by drawChart
   let shown = period;  // weeks revealed; fractional while the line moves
   let frame = 0;
+  let requests = 0;   // counts animateTo calls, so an unfinished fade cannot finish over a newer one
+  const fades = [];   // the fade-outs running before the line is drawn again
   if (!reducedMotion.matches) period = shown = performanceData.periods[0];
+
+  // A mosaic standing for a figure: four rows of blocks, as wide as the figure, shaded from a hash
+  // of its text so each period looks different and the same period always looks the same.
+  function mosaic(text) {
+    const columns = Math.max(6, Math.round(text.length * 2.1)), rows = 4;
+    let seed = [...text].reduce((hash, character) => (Math.imul(hash, 31) + character.charCodeAt(0)) >>> 0, 7);
+    let cells = '';
+    for (let row = 0; row < rows; row++) for (let column = 0; column < columns; column++) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      const shade = (.1 + (seed >>> 8) % 1000 / 1000 * .55) * (row === 0 || row === rows - 1 ? .6 : 1);
+      cells += `<rect x="${column}" y="${row}" width="1.03" height="1.03" opacity="${shade.toFixed(2)}"/>`;
+    }
+    return `<svg class="ri-mosaic" viewBox="0 0 ${columns} ${rows}" width="${columns * .25}em" height="${rows * .25}em" fill="currentColor" aria-hidden="true" focusable="false">${cells}</svg>`;
+  }
 
   // The point on the line after `weeks` weeks (fractional between two weekly figures).
   function pointAt(weeks) {
@@ -122,6 +137,12 @@ export function initRefreshInsights() {
     value.textContent = number(Math.round(point.actions));
   }
   function drawChart() {
+    // An unfinished fade belongs to the nodes this replaces: drop it and show its period at once.
+    if (fades.length) {
+      requests += 1;
+      fades.splice(0).forEach(fade => fade.cancel());
+      shown = period;
+    }
     const step = 500;
     const max = Math.ceil(Math.max(...performanceData.weeks.map(row => row.actions)) / step) * step;
     const { width, height } = chart.getBoundingClientRect();
@@ -160,6 +181,8 @@ export function initRefreshInsights() {
   // drawn again from the first week.
   function animateTo(target) {
     cancelAnimationFrame(frame);
+    const request = ++requests;
+    fades.splice(0).forEach(fade => fade.cancel());
     if (reducedMotion.matches || !geometry) { setProgress(target); return; }
     const glide = (from, to) => {
       const started = performance.now();
@@ -173,10 +196,12 @@ export function initRefreshInsights() {
     };
     if (target < shown) {
       const parts = [chart.querySelector('[data-ri-series]'), chart.querySelector('[data-ri-end]'), chart.querySelector('[data-ri-value]')];
-      const fades = parts.map(part => part.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 170, fill: 'forwards' }));
+      fades.push(...parts.map(part => part.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 170, fill: 'forwards' })));
       fades[0].finished.then(() => {
+        // A newer request (another period, or a redraw) owns the chart now.
+        if (request !== requests) return;
         setProgress(1);
-        fades.forEach(fade => fade.cancel());
+        fades.splice(0).forEach(fade => fade.cancel());
         parts.forEach(part => part.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 170 }));
         glide(1, target);
       }).catch(() => {});
@@ -194,7 +219,9 @@ export function initRefreshInsights() {
   function showPeriod(next, animate = true) {
     period = next;
     const summary = getPerformanceSummary(period);
-    for (const key of ['impressions', 'visits', 'actions']) root.querySelector(`[data-ri-metric="${key}"]`).textContent = number(summary[key]);
+    // The totals read as withheld: blocks are drawn in place of each figure, which stays in the
+    // markup for screen readers (the weekly figures are in the data table anyway).
+    for (const key of ['impressions', 'visits', 'actions']) root.querySelector(`[data-ri-metric="${key}"]`).innerHTML = `<span class="visually-hidden">${number(summary[key])}</span>${mosaic(number(summary[key]))}`;
     root.querySelector('[data-ri-period-label]').textContent = language === 'en' ? `First ${period} weeks since launch` : `론칭 후 ${period}주 누적`;
     root.querySelector('[data-ri-rate]').textContent = language === 'en' ? `Visit-to-action rate ${summary.conversion.toFixed(1)}%` : `방문 대비 완료율 ${summary.conversion.toFixed(1)}%`;
     root.querySelectorAll('[data-ri-period]').forEach(button => {
@@ -228,7 +255,10 @@ export function initRefreshInsights() {
   }
   report.addEventListener('pointerenter', event => { if (event.pointerType !== 'touch') { hovered = true; sync(); } });
   report.addEventListener('pointerleave', event => { if (event.pointerType !== 'touch') { hovered = false; sync(); } });
-  report.addEventListener('focusin', event => { focused = event.target.matches(':focus-visible'); sync(); });
+  report.addEventListener('focusin', event => {
+    try { focused = event.target.matches(':focus-visible'); } catch { focused = true; }
+    sync();
+  });
   report.addEventListener('focusout', event => { if (!report.contains(event.relatedTarget)) { focused = false; sync(); } });
   new IntersectionObserver(entries => { inView = entries[entries.length - 1].isIntersecting; sync(); }, { threshold: .35 }).observe(report);
   document.addEventListener('visibilitychange', sync);
@@ -244,11 +274,13 @@ export function initRefreshInsights() {
   }
   const localizedAttributes = [...root.querySelectorAll('[aria-label]')].map(element => ({ element, key: element.getAttribute('aria-label') }));
   root.querySelectorAll('[data-ri-period]').forEach(button => button.addEventListener('click', () => {
-    showPeriod(Number(button.dataset.riPeriod));
-    // A chosen period stays for six seconds before the periods play on.
+    // A chosen period stays for six seconds before the periods play on. The hold starts first, so
+    // the totals are a live region again when they change and a screen reader hears the choice.
     held = true;
     clearTimeout(holdTimer);
     holdTimer = setTimeout(() => { held = false; sync(); }, 6000);
+    sync();
+    showPeriod(Number(button.dataset.riPeriod));
     sync();
   }));
   document.addEventListener('languagechange', event => {
@@ -262,6 +294,7 @@ export function initRefreshInsights() {
   showPeriod(period, false);
   requestAnimationFrame(() => thumb.classList.add('is-ready'));
   new ResizeObserver(() => { drawChart(); moveThumb(false); }).observe(chart);
+  new ResizeObserver(() => moveThumb(false)).observe(root.querySelector('.ri-periods'));
   sync();
   root.dataset.ready = 'true';
 }

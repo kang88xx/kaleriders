@@ -1,5 +1,5 @@
 import { caseStudies } from './case-studies-data.js';
-import { initRefreshGallery } from './refresh-gallery.js?v=wall-200-20261113';
+import { initRefreshGallery } from './refresh-gallery.js?v=keys-20261113';
 import { compactColumns, wideColumns } from './gallery-fixed/layouts.js?v=wall-200-20261113';
 import { addedWallPhotos } from './wall-photos.js?v=wall-200-20261113';
 
