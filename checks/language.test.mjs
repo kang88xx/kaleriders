@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { resolveLanguage, translate, initLanguage } from '../public/i18n.js';
 import { english } from '../public/translations.js';
@@ -134,6 +135,37 @@ test('switching round-trips copy and attributes while retaining nodes and active
   f.heading.click();
   assert.equal(clicks, 1, 'Existing element listeners remain attached');
   assert.deepEqual(f.events, ['en', 'ko', 'en', 'ko']);
+});
+
+test('the page stays hidden until the copy is in the visitor\'s language', () => {
+  const html = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
+  const head = html.slice(0, html.indexOf('</head>'));
+  const boot = head.match(/<script>([\s\S]*?)<\/script>/);
+  assert(boot, 'index.html has no inline language script');
+  assert(boot.index < head.indexOf('rel="stylesheet"'), 'The language script runs before anything can paint');
+  assert.match(head, /<style>\.language-pending body \{ visibility: hidden; \}<\/style>/);
+  const visit = search => {
+    const classes = new Set();
+    const timers = [];
+    const classList = { add: name => classes.add(name), remove: name => classes.delete(name) };
+    new Function('location', 'document', 'setTimeout', boot[1])({ search }, { documentElement: { classList } }, (callback, delay) => timers.push({ callback, delay }));
+    return { classes, timers };
+  };
+  assert.deepEqual([...visit('?lang=ko').classes], [], 'A Korean visit paints the Korean copy at once');
+  for (const search of ['', '?lang=en', '?lang=invalid', '?campaign=share']) {
+    const { classes, timers } = visit(search);
+    assert.deepEqual([...classes], ['language-pending'], `${JSON.stringify(search)} waits for the English copy`);
+    assert.equal(timers.length, 1);
+    assert(timers[0].delay <= 5000, 'The page shows itself if the scripts never arrive');
+    timers[0].callback();
+    assert.deepEqual([...classes], []);
+  }
+  // i18n.js shows the page once the copy is switched, after the modules have followed.
+  const f = fixture({ search: '' });
+  const removed = [];
+  f.doc.documentElement.classList = { remove: name => removed.push(`${name} after ${f.events.join(',')}`) };
+  initLanguage(f.doc, f.view);
+  assert.deepEqual(removed, ['language-pending after en']);
 });
 
 test('explicit switching stores locale in the URL and preserves its query and anchor', () => {

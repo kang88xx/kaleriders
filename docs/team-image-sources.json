@@ -1,6 +1,6 @@
 {
-  "reviewedAt": "2026-11-11",
-  "usage": "Team coins in public/refresh-team.js. The front portrait is shown in grayscale by refresh-team.css; the back is the member's PFP. Kang's front, assets/team/kang-illustration.png, predates this record.",
+  "reviewedAt": "2026-11-12",
+  "usage": "Team coins in public/refresh-team.js. The front portrait is shown in grayscale by refresh-team.css; the back is the member's PFP. Kang's front, assets/team/kang-illustration.png, predates this record. Mascot's front was replaced on 2026-11-12.",
   "sources": [
     {
       "member": "Kalya",
@@ -18,13 +18,13 @@
       "member": "Mascot",
       "side": "front portrait",
       "localPath": "assets/team/mascot-portrait.jpg",
-      "bytes": 6195,
-      "sha256": "d6a8916cee61b45e22959920949a39ebc98411338cf75e73d8ccf7a934db3a01",
-      "receivedAt": "2026-11-11",
-      "source": "Pasted by the owner in a Claude Code session (PNG, 307×362). The original is kept with the release evidence outside this repository.",
-      "originalBytes": 158195,
-      "originalSha256": "f91a5bbcdd63c0b3b16da69e72595426250fc5e75c2abb43f0502e9f252030e9",
-      "edit": "The face of a person behind Mascot is pixelated (x195 y35, 85×105, 8px blocks). Square crop at x62 y82, 168×168; resized to 240×240; JPEG quality 0.9."
+      "bytes": 18057,
+      "sha256": "171e2131c498faeedd3674e583e6ab331cf5fb8fb8fadbdcfd20786dda20c4e7",
+      "receivedAt": "2026-11-12",
+      "source": "Supplied by the owner as a local file on 2026-11-12 (JPEG, 633 × 1345, a close-up cropped at the right edge of the head). It replaces the photo supplied on 2026-11-11. The original is kept with the release evidence outside this repository.",
+      "originalBytes": 247503,
+      "originalSha256": "9eb883f0bb466d981506b8498a4c8e2f21a740b4290be58fe6cdb37de4bfd228",
+      "edit": "Extended on 2026-11-12 to a square head-and-shoulders frame so the head sits at about the scale of the other two portraits: the photo was placed at (460, 105) in a 1680 × 1680 frame and the area around it was generated with Stable Diffusion XL inpainting, run locally (the photo was not sent to an outside service). Generated: the right edge of the hair and cheek and the right ear, the background on both sides and the shoulders. The supplied pixels were pasted back unchanged apart from a blended band about 26 source pixels wide along the seams. A small lamp in the generated background beside the ear, which read as an earring at coin size, was painted over. Resized to 320 × 320; JPEG quality 0.9."
     },
     {
       "member": "Kang",

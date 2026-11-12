@@ -47,6 +47,8 @@ export function initLanguage(doc = document, view = window) {
       try { view.history.replaceState(null, '', url); } catch { /* Local file previews may block history. */ }
     }
     doc.dispatchEvent(new CustomEvent('languagechange', { detail: { language } }));
+    // index.html hides the page until the copy is in the visitor's language.
+    doc.documentElement.classList?.remove('language-pending');
   };
 
   buttons.forEach(button => button.addEventListener('click', () => applyLanguage(button.dataset.language, true)));

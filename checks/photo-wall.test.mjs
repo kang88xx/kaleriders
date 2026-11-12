@@ -174,6 +174,20 @@ function moduleTokens(page) {
   return tokens;
 }
 
+// The page is hidden until app.js has run (see the language script in index.html), so its modules
+// are preloaded side by side instead of being found one import level at a time.
+test('the homepage preloads exactly the modules it runs, under the same version tokens', () => {
+  const html = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
+  const preloaded = [...html.matchAll(/<link rel="modulepreload" href="([^"]+)">/g)].map(match => match[1]);
+  const entry = fileURLToPath(new URL('../public/app.js', import.meta.url));
+  const expected = [...moduleTokens('../public/index.html')]
+    .filter(([path]) => path !== entry)
+    .map(([path, queries]) => `${path.slice(fileURLToPath(publicRoot).length)}${[...queries][0]}`);
+  assert.equal(new Set(preloaded).size, preloaded.length, 'A module is preloaded twice');
+  assert.deepEqual([...preloaded].sort(), expected.sort());
+  assert(html.indexOf('rel="modulepreload"') < html.indexOf('<script type="module"'), 'Preloads come before the module script');
+});
+
 test('each page loads every module once, under a single version token', () => {
   for (const page of ['../public/index.html', '../public/sample.html']) {
     const tokens = moduleTokens(page);

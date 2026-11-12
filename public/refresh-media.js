@@ -21,6 +21,10 @@ export const wallPhotos = [
   { src: 'assets/cases/aria/stage.jpg', alt: copy('Aria 밋업에서 $ARIAIP를 소개하는 발표', 'A presentation introducing $ARIAIP at the Aria meetup') },
   { src: 'assets/cases/aria/entrance.jpg', alt: copy('Aria 밋업 입구에 모인 참석자들', 'Attendees gathered at the Aria meetup entrance') },
   { src: 'assets/cases/aria/queue.jpg', alt: copy('Aria 밋업 입장을 기다리는 거리의 대기 줄', 'A queue on the street waiting to enter the Aria meetup') },
+  { src: 'assets/cases/fogo/mainnet-photo-zone.jpg', alt: copy('FOGO Mainnet Party 포토존: 환영 배너와 굿즈 티셔츠·모자를 걸어 둔 의자', 'FOGO Mainnet Party photo zone: a welcome banner with merch T-shirts and a cap on two chairs') },
+  { src: 'assets/cases/fogo/mainnet-networking.jpg', alt: copy('FOGO Mainnet Party 행사장에서 이야기를 나누는 참석자들', 'Attendees talking at the FOGO Mainnet Party venue') },
+  { src: 'assets/cases/fogo/meetup-venue.jpg', alt: copy('Korea FOGO Meet Up 행사장: 벽에 비춘 FOGO 로고와 굿즈 테이블', 'Korea FOGO Meet Up venue: the FOGO logo projected on the wall beside the merch table') },
+  { src: 'assets/cases/fogo/meetup-goods.jpg', alt: copy('Korea FOGO Meet Up 굿즈 테이블에 놓인 선글라스와 참가자 이름표', 'Sunglasses and attendee name badges on the Korea FOGO Meet Up merch table') },
 ];
 
 // Every case photo plus the wall-only additions, each listed once.
