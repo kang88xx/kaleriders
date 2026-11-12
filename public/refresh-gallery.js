@@ -30,6 +30,8 @@ export function initRefreshGallery(grid, photos, doc = document) {
   status.setAttribute('aria-live', 'polite');
   grid.before(status);
 
+  // The wall draws small files (photo.thumb); only an opened photo loads its full file.
+  const small = photo => new URL(photo.thumb || photo.src, import.meta.url).href;
   // Original tiles fill the spaces exposed while the larger frame moves into place.
   const underlay = doc.createElement('div');
   underlay.className = 'rg-underlay';
@@ -38,7 +40,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
   underlay.hidden = true;
   photos.forEach(photo => {
     const image = doc.createElement('img');
-    image.src = new URL(photo.src, import.meta.url).href;
+    image.src = small(photo);
     image.alt = '';
     image.decoding = 'async';
     if (photo.position) image.style.objectPosition = photo.position;
@@ -51,7 +53,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
     tile.className = 'rm-tile';
     tile.dataset.photoIndex = String(index);
     const image = doc.createElement('img');
-    image.src = new URL(photo.src, import.meta.url).href;
+    image.src = small(photo);
     image.loading = 'lazy';
     image.decoding = 'async';
     if (photo.position) image.style.objectPosition = photo.position;
@@ -129,11 +131,43 @@ export function initRefreshGallery(grid, photos, doc = document) {
 
   function updateStatus() {
     const text = copy[language];
-    status.textContent = selected < 0 ? text.hint : `${String(selected + 1).padStart(2, '0')} / ${photos.length} · ${photos[selected].alt[language]}`;
+    status.textContent = selected < 0 ? text.hint : `${String(selected + 1).padStart(String(photos.length).length, '0')} / ${photos.length} · ${photos[selected].alt[language]}`;
+  }
+  // Swap the opened tile to its full file once that file has loaded, so the small one stays
+  // on screen until then. A closed tile goes back to its small file after it has shrunk, so a
+  // long autoplay session never holds more than a couple of full files.
+  function sharpen(index) {
+    const photo = photos[index];
+    const image = tiles[index].firstElementChild;
+    if (!photo.thumb || image.dataset.full) return;
+    const url = new URL(photo.src, import.meta.url).href;
+    image.dataset.full = 'loading';
+    if (!view.Image) { image.src = url; image.dataset.full = 'true'; return; }
+    const full = new view.Image();
+    full.decoding = 'async';
+    full.onload = () => {
+      if (selected !== index) { delete image.dataset.full; return; }
+      image.src = url;
+      image.dataset.full = 'true';
+    };
+    full.onerror = () => { delete image.dataset.full; };
+    full.src = url;
+  }
+  function soften(index) {
+    if (index < 0 || !photos[index].thumb) return;
+    view.setTimeout(() => {
+      if (selected === index) return;
+      const image = tiles[index].firstElementChild;
+      if (image.dataset.full === 'true') image.src = small(photos[index]);
+      delete image.dataset.full;
+    }, 800);
   }
   function open(index, focus = false) {
     if (!tiles.length) return;
+    const previous = selected;
     selected = (index + tiles.length) % tiles.length;
+    if (previous !== selected) soften(previous);
+    sharpen(selected);
     layout();
     updateStatus();
     if (focus) tiles[selected].focus({ preventScroll: true });
@@ -141,6 +175,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
   function close(restoreFocus = false) {
     if (selected < 0) return;
     const tile = tiles[selected];
+    soften(selected);
     selected = -1;
     layout();
     updateStatus();

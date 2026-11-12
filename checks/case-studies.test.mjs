@@ -39,7 +39,7 @@ test('every gallery image, video and poster resolves to a nonempty local asset',
 test('photo wall additions are distinct local JPEGs with complete bilingual descriptions', () => {
   const casePhotos = caseStudies.flatMap(item => [...(item.media.type === 'image' ? [item.media.src] : []), ...item.gallery.map(photo => photo.src)]);
   const sources = [...casePhotos, ...wallPhotos.map(photo => photo.src)];
-  assert.equal(sources.length, 35);
+  assert.equal(sources.length, 180);
   assert.equal(new Set(sources).size, sources.length, 'The wall repeats a photo source');
   for (const photo of wallPhotos) {
     assert(photo.src.startsWith('assets/cases/') && !photo.src.includes('..'), photo.src);

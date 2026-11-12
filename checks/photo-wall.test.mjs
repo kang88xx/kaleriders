@@ -3,24 +3,44 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { arrangeWall, eventFilms, initRefreshMedia, wallPhotos, wallPool } from '../public/refresh-media.js';
+import { arrangeWall, eventFilms, initRefreshMedia, thumbOf, wallPhotos, wallPool } from '../public/refresh-media.js';
 import { initRefreshGallery } from '../public/refresh-gallery.js';
 
-test('the wall spreads every photo evenly without a repeat beside or above it', () => {
+test('the wall shows every photo once, in a fixed order that fills whole rows', () => {
   const wall = arrangeWall();
-  assert.equal(wall.length, 100);
+  assert.equal(wall.length, wallPool.length);
+  assert.equal(wall.length % 20, 0, 'The last row is incomplete at 20 columns (and at 10)');
   assert.deepEqual(arrangeWall().map(photo => photo.src), wall.map(photo => photo.src), 'The order changes between visits');
+  assert.equal(new Set(wall.map(photo => photo.src)).size, wall.length, 'A photo repeats or is missing');
+  assert.notDeepEqual(wall.map(photo => photo.src), wallPool.map(photo => photo.src), 'The wall is not mixed');
+});
+
+test('a larger wall repeats photos evenly without a repeat beside or above', () => {
+  const pool = wallPool.slice(0, 35);
+  const wall = arrangeWall(pool, 100);
+  assert.equal(wall.length, 100);
   const counts = new Map();
   wall.forEach(photo => counts.set(photo.src, (counts.get(photo.src) || 0) + 1));
-  assert.equal(counts.size, wallPool.length, 'A photo is missing from the wall');
-  const low = Math.floor(100 / wallPool.length);
-  const high = Math.ceil(100 / wallPool.length);
-  for (const [src, count] of counts) assert(count >= low && count <= high, `${src} appears ${count} times`);
+  assert.equal(counts.size, pool.length, 'A photo is missing from the wall');
+  for (const [src, count] of counts) assert(count >= 2 && count <= 3, `${src} appears ${count} times`);
   for (const columns of [20, 10]) {
     wall.forEach((photo, index) => {
       if (index % columns) assert.notEqual(wall[index - 1].src, photo.src, `tile ${index + 1} repeats its left neighbour at ${columns} columns`);
       if (index >= columns) assert.notEqual(wall[index - columns].src, photo.src, `tile ${index + 1} repeats the tile above at ${columns} columns`);
     });
+  }
+});
+
+// The wall draws small copies; 180 full files would be about 40 MB on the homepage.
+test('every wall photo has a small copy under assets/cases/thumbs/', () => {
+  for (const photo of wallPool) {
+    assert.equal(photo.thumb, thumbOf(photo.src));
+    assert.match(photo.thumb, /^assets\/cases\/thumbs\/.+\.jpg$/);
+    const file = new URL(`../public/${photo.thumb}`, import.meta.url);
+    assert(existsSync(file), `${photo.thumb} is missing`);
+    const bytes = readFileSync(file);
+    assert(bytes[0] === 0xff && bytes[1] === 0xd8, `${photo.thumb} is not a JPEG`);
+    assert(bytes.length < 60000, `${photo.thumb} is ${bytes.length} bytes, too large for a wall tile`);
   }
 });
 
@@ -78,7 +98,8 @@ function fakeGallery(width, viewport) {
 
 test('the gallery keeps square tiles in a fixed frame and applies a photo crop focus', () => {
   const wall = arrangeWall();
-  const focused = wallPhotos.find(photo => photo.position);
+  assert(wallPhotos.some(photo => photo.position), 'No wall photo sets a crop focus');
+  const focused = wall.find(photo => photo.position);
   assert(focused, 'No wall photo sets a crop focus');
   for (const [viewport, width, columns] of [[1440, 1000, 20], [390, 390, 10]]) {
     const { doc, grid } = fakeGallery(width, viewport);
@@ -93,6 +114,8 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
       assert.equal(tile.style.width, `${cell}px`, `tile ${index + 1} width at ${columns} columns`);
       assert.equal(tile.style.height, `${cell}px`, `tile ${index + 1} height at ${columns} columns`);
       assert.equal(tile.firstElementChild.style.objectPosition, wall[index].position, `tile ${index + 1} crop`);
+      assert(tile.firstElementChild.src.endsWith(`/public/${wall[index].thumb}`), `tile ${index + 1} draws the small copy`);
+      assert(underlay.children[index].src.endsWith(`/public/${wall[index].thumb}`), `underlay ${index + 1} draws the small copy`);
       assert.equal(underlay.children[index].style.objectPosition, wall[index].position, `underlay ${index + 1} crop`);
     });
 
@@ -100,6 +123,8 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
     tiles[index].listeners.get('click')[0]();
     assert(tiles[index].classList.contains('is-open'));
     assert(Number.parseFloat(tiles[index].style.width) > cell, 'The opened photo did not enlarge');
+    assert(tiles[index].firstElementChild.src.endsWith(`/public/${focused.src}`), 'The opened photo did not load its full file');
+    assert(tiles[(index + 1) % tiles.length].firstElementChild.src.endsWith(`/public/${wall[(index + 1) % tiles.length].thumb}`), 'A closed tile loaded its full file');
     assert.equal(grid.style.height, frameHeight, 'Opening a photo resized the frame');
     gallery.updateLanguage('en');
     assert.equal(tiles[index].firstElementChild.alt, focused.alt.en);

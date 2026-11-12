@@ -1,14 +1,16 @@
 import { caseStudies } from './case-studies-data.js';
-import { initRefreshGallery } from './refresh-gallery.js?v=focus-20261110';
+import { initRefreshGallery } from './refresh-gallery.js?v=wall-180-20261112';
+import { addedWallPhotos } from './wall-photos.js?v=wall-180-20261112';
 
 const assetURL = path => new URL(path, import.meta.url).href;
 const copy = (ko, en) => ({ ko, en });
 
-// Owner-supplied event photos shown on the photo wall only. They come from other KGEN and
-// Axis Robotics events, and (2026-11-12) Momentum × Buidlpad's Keep The Mo'mentum and the Aria
-// meetup, so they are not attached to a case story. Faces close to the camera are pixelated.
+// Event photos shown on the photo wall only, so they are not attached to a case story. The first
+// sixteen were supplied by the owner (other KGEN and Axis Robotics events, Momentum × Buidlpad's
+// Keep The Mo'mentum, the Aria meetup and FOGO). The rest, added on 2026-11-12, are listed in
+// wall-photos.js. Faces close to the camera are pixelated.
 // `position` is an optional CSS object-position for a subject that sits off-center.
-export const wallPhotos = [
+const suppliedWallPhotos = [
   { src: 'assets/cases/kgen/after-hours-talk.jpg', alt: copy('KGEN VeriFi Seoul After Hours에서 발표를 듣는 참석자들', 'Attendees watching a presentation at KGEN VeriFi Seoul After Hours') },
   { src: 'assets/cases/kgen/after-hours-banner.jpg', alt: copy('행사명과 날짜가 표시된 KGEN VeriFi Seoul After Hours 거리 배너', 'KGEN VeriFi Seoul After Hours street banner showing the event name and date') },
   { src: 'assets/cases/kgen/booth.jpg', position: '50% 88%', alt: copy('KGEN 부스와 텔레그램 채널 안내 배너', 'KGEN booth with a banner for its Telegram channel') },
@@ -26,6 +28,11 @@ export const wallPhotos = [
   { src: 'assets/cases/fogo/meetup-venue.jpg', alt: copy('Korea FOGO Meet Up 행사장: 벽에 비춘 FOGO 로고와 굿즈 테이블', 'Korea FOGO Meet Up venue: the FOGO logo projected on the wall beside the merch table') },
   { src: 'assets/cases/fogo/meetup-goods.jpg', alt: copy('Korea FOGO Meet Up 굿즈 테이블에 놓인 선글라스와 참가자 이름표', 'Sunglasses and attendee name badges on the Korea FOGO Meet Up merch table') },
 ];
+export const wallPhotos = [...suppliedWallPhotos, ...addedWallPhotos];
+
+// The wall draws a small copy of each photo (short side 200px) kept beside the full file under
+// assets/cases/thumbs/; an opened photo loads the full file.
+export const thumbOf = src => src.replace('assets/cases/', 'assets/cases/thumbs/').replace(/\.[a-z]+$/i, '.jpg');
 
 // Every case photo plus the wall-only additions, each listed once.
 export const wallPool = [
@@ -34,7 +41,7 @@ export const wallPool = [
     ...item.gallery.map(media => ({ type: 'image', ...media })),
   ]),
   ...wallPhotos,
-];
+].map(photo => ({ ...photo, thumb: thumbOf(photo.src) }));
 
 // The film row under the wall, by case. A case whose own media is a photo supplies its film here:
 // the KGEN after-movie the owner sent on 2026-11-12, re-encoded for the web from the 4K original.
@@ -44,10 +51,12 @@ export const eventFilms = [
   { id: 'kgen', media: { type: 'video', src: 'assets/cases/kgen/after-movie.mp4', poster: 'assets/cases/kgen/after-movie.jpg', alt: copy('KGEN · VeriFi Korea 현장 애프터무비', 'KGEN · VeriFi Korea event after-movie') } },
 ];
 
-// Spread the pool evenly over the wall: each pass uses every photo once, avoiding the photo
-// on the previous tile and on the tiles 10 and 20 places back (the tile above at 10 and 20
-// columns). A fixed seed keeps the composition stable between visits and languages.
-export function arrangeWall(photos = wallPool, count = 100) {
+// Put the pool on the wall in a fixed mixed order. By default every photo appears once, so the
+// pool size must fill whole rows at 20 and 10 columns. With a larger count each further pass
+// uses every photo once more, avoiding the photo on the previous tile and on the tiles 10 and
+// 20 places back (the tile above at 10 and 20 columns). A fixed seed keeps the composition
+// stable between visits and languages.
+export function arrangeWall(photos = wallPool, count = photos.length) {
   let seed = 20261106;
   const gallery = [];
   while (gallery.length < count && photos.length) {
