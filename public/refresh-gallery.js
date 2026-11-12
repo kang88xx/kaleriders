@@ -1,11 +1,12 @@
-import { fixedLayout } from './gallery-fixed/layouts.js';
+import { fixedLayout } from './gallery-fixed/layouts.js?v=wall-25-20261112';
 
 const copy = {
   ko: { hint: '사진을 눌러 크게 보세요.', toggle: '눌러서 펼치거나 접기', gallery: '행사 사진 갤러리' },
   en: { hint: 'Select a photo to take a closer look.', toggle: 'Select to expand or collapse', gallery: 'Event photo gallery' },
 };
 
-export function initRefreshGallery(grid, photos, doc = document) {
+// Phones show only the first `compactCount` tiles; the rest of `photos` fills the wide wall.
+export function initRefreshGallery(grid, photos, doc = document, { compactCount = photos.length } = {}) {
   const view = doc.defaultView;
   const reducedMotion = view.matchMedia('(prefers-reduced-motion: reduce)');
   let language = doc.documentElement.lang.startsWith('en') ? 'en' : 'ko';
@@ -21,6 +22,9 @@ export function initRefreshGallery(grid, photos, doc = document) {
   let hovered = false;
   let focused = false;
   let manualPause = false;
+  // Tiles in use at the current width.
+  const isCompact = () => view.innerWidth <= 600;
+  const inUse = () => (isCompact() ? Math.min(compactCount, photos.length) : photos.length);
 
   grid.classList.add('rg-gallery');
   grid.setAttribute('role', 'group');
@@ -70,6 +74,8 @@ export function initRefreshGallery(grid, photos, doc = document) {
   function layout(animate = true) {
     const width = grid.clientWidth;
     if (width <= 0) return;
+    // A photo that phones do not show closes when the wall narrows.
+    if (selected >= inUse()) { soften(selected); selected = -1; }
     const version = ++transitionVersion;
     const bounds = grid.getBoundingClientRect();
     const before = tiles.map(tile => {
@@ -78,8 +84,10 @@ export function initRefreshGallery(grid, photos, doc = document) {
     });
     animations.forEach(animation => animation.cancel());
     animations = [];
-    const compact = view.innerWidth <= 600;
-    const next = fixedLayout({ width, count: tiles.length, selected, compact, mode: 'push' });
+    const compact = isCompact();
+    const used = inUse();
+    const next = fixedLayout({ width, count: used, selected, compact, mode: 'push' });
+    [...underlay.children].forEach((image, index) => { image.style.display = index >= used ? 'none' : ''; });
     grid.style.height = `${next.height}px`;
     grid.classList.toggle('rg-open', selected >= 0);
     underlay.style.gridTemplateColumns = `repeat(${next.columns},minmax(0,1fr))`;
@@ -87,6 +95,12 @@ export function initRefreshGallery(grid, photos, doc = document) {
     const moving = animate && !firstLayout && !reducedMotion.matches;
     underlay.hidden = !moving;
     tiles.forEach((tile, index) => {
+      tile.style.display = index >= used ? 'none' : '';
+      if (index >= used) {
+        tile.classList.toggle('is-open', false);
+        tile.setAttribute('aria-pressed', 'false');
+        return;
+      }
       const rect = next.rects[index];
       Object.assign(tile.style, { left: `${rect.x}px`, top: `${rect.y}px`, width: `${rect.width}px`, height: `${rect.height}px`, opacity: rect.visible ? '1' : '0' });
       tile.classList.toggle('is-open', index === selected);
@@ -105,7 +119,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
         ], { duration: 160, easing: 'ease-out' }));
         return;
       }
-      const timing = { duration: 680, easing: 'cubic-bezier(.4,0,.2,1)' };
+      const timing = { duration: 520, easing: 'cubic-bezier(.4,0,.2,1)' };
       if (Math.abs(old.width - rect.width) > .1 || Math.abs(old.height - rect.height) > .1) {
         animations.push(tile.animate([
           { left: `${old.x}px`, top: `${old.y}px`, width: `${old.width}px`, height: `${old.height}px`, opacity: old.opacity },
@@ -124,14 +138,23 @@ export function initRefreshGallery(grid, photos, doc = document) {
     else Promise.all(animations.map(animation => animation.finished.catch(() => {}))).then(() => {
       if (version === transitionVersion) underlay.hidden = true;
     });
+    const relabel = !firstLayout && compact !== lastCompact;
+    // A hidden tile cannot report losing focus, so autoplay would stay paused.
+    const lostFocus = tiles.indexOf(doc.activeElement) >= used;
     lastWidth = width;
     lastCompact = compact;
     firstLayout = false;
+    if (relabel) updateLanguage(language);
+    if (lostFocus) {
+      focused = false;
+      manualPause = false;
+      syncAutoplay();
+    }
   }
 
   function updateStatus() {
     const text = copy[language];
-    status.textContent = selected < 0 ? text.hint : `${String(selected + 1).padStart(String(photos.length).length, '0')} / ${photos.length} · ${photos[selected].alt[language]}`;
+    status.textContent = selected < 0 ? text.hint : `${String(selected + 1).padStart(String(inUse()).length, '0')} / ${inUse()} · ${photos[selected].alt[language]}`;
   }
   // Swap the opened tile to its full file once that file has loaded, so the small one stays
   // on screen until then. A closed tile goes back to its small file after it has shrunk, so a
@@ -165,7 +188,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
   function open(index, focus = false) {
     if (!tiles.length) return;
     const previous = selected;
-    selected = (index + tiles.length) % tiles.length;
+    selected = (index + inUse()) % inUse();
     if (previous !== selected) soften(previous);
     sharpen(selected);
     layout();
@@ -187,14 +210,14 @@ export function initRefreshGallery(grid, photos, doc = document) {
     tiles.forEach((tile, index) => {
       const alt = photos[index].alt[language];
       tile.firstElementChild.alt = alt;
-      tile.setAttribute('aria-label', `${index + 1}/${photos.length} · ${alt} · ${copy[language].toggle}`);
+      tile.setAttribute('aria-label', `${index + 1}/${inUse()} · ${alt} · ${copy[language].toggle}`);
     });
     updateStatus();
   }
 
   function showRandomPhoto() {
     const currentSource = selected >= 0 ? photos[selected].src : null;
-    const candidates = photos.flatMap((photo, index) => photo.src !== currentSource ? [index] : []);
+    const candidates = photos.slice(0, inUse()).flatMap((photo, index) => photo.src !== currentSource ? [index] : []);
     if (candidates.length) open(candidates[Math.floor(Math.random() * candidates.length)]);
   }
   function syncAutoplay() {
@@ -206,7 +229,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
       : hovered || focused || manualPause ? 'paused'
       : 'running';
     grid.dataset.autoplay = state;
-    // Automatic changes should not interrupt a screen reader every two seconds.
+    // Automatic changes should not interrupt a screen reader every second and a half.
     status.setAttribute('aria-live', state === 'running' ? 'off' : 'polite');
     if (state !== 'running' || !photos.length) return;
     if (!autoplayStarted) {
@@ -221,7 +244,7 @@ export function initRefreshGallery(grid, photos, doc = document) {
       }
       showRandomPhoto();
       syncAutoplay();
-    }, 2000);
+    }, 1540);
   }
 
   grid.addEventListener('pointerenter', event => {

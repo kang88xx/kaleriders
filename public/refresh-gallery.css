@@ -5,7 +5,7 @@
   overflow: hidden;
   isolation: isolate;
   aspect-ratio: auto;
-  background: var(--pale);
+  background: transparent;
 }
 .rg-gallery .rm-tile {
   position: absolute;
@@ -21,6 +21,10 @@
   background: transparent;
   cursor: pointer;
 }
+/* Each photo is a rounded chip: half a pixel is cut from every side, which leaves 1px between photos. */
+.rg-gallery .rm-tile,
+.rg-underlay img { clip-path: inset(.5px round 6px); }
+.rg-gallery .rm-tile.is-open { z-index: 3; clip-path: inset(.5px round 14px); }
 .rg-gallery .rm-tile img,
 .rg-underlay img {
   display: block;
@@ -32,17 +36,10 @@
   object-position: center;
   transition: filter 280ms ease;
 }
+/* The opened photo has no frame; the photos around it step back. */
 .rg-gallery.rg-open .rm-tile:not(.is-open) img,
-.rg-gallery.rg-open .rg-underlay img { filter: brightness(.62); }
-.rg-gallery .rm-tile.is-open { z-index: 3; }
+.rg-gallery.rg-open .rg-underlay img { filter: brightness(.38); }
 .rg-gallery .rm-tile.is-open img { filter: none; }
-.rg-gallery .rm-tile.is-open::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  box-shadow: inset 0 0 0 4px var(--lime);
-}
 .rg-gallery .rm-tile[data-visible='false'] { pointer-events: none; }
 .rg-gallery .rm-tile:focus-visible {
   z-index: 4;
@@ -59,7 +56,9 @@
 }
 .rg-underlay[hidden] { display: none; }
 @media (max-width: 600px) {
-  .rg-gallery .rm-tile.is-open::after { box-shadow: inset 0 0 0 3px var(--lime); }
+  .rg-gallery .rm-tile,
+  .rg-underlay img { clip-path: inset(.5px round 4px); }
+  .rg-gallery .rm-tile.is-open { clip-path: inset(.5px round 10px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .rg-gallery .rm-tile img, .rg-underlay img { transition: none; }

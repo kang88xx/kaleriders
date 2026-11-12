@@ -80,6 +80,17 @@ test('each coin shows the member portrait and flips to their own PFP image', () 
     assert.equal(images[0].alt, member.alt.ko);
     assert.equal(images[1].alt, '');
   });
+  // The role shares the name's line and the description comes under both.
+  cards.forEach((card, index) => {
+    const member = members[index];
+    const [caption] = card.findAll(node => node.className === 'rt-caption');
+    assert.deepEqual(caption.children.map(node => node.className), ['rt-name-line', 'rt-description'], `${member.id} caption`);
+    const [nameLine, description] = caption.children;
+    assert.deepEqual(nameLine.children.map(node => node.className || node.tagName), ['H3', 'rt-role'], `${member.id} name line`);
+    assert.equal(nameLine.children[0].textContent, member.name);
+    assert.equal(nameLine.children[1].textContent, member.role.ko);
+    assert.equal(description.textContent, member.description.ko);
+  });
   // member-art.js fills every [data-member-avatar] with a drawn character, which would cover these photos.
   assert.equal(root.findAll(node => 'memberAvatar' in node.dataset).length, 0);
   listeners.get('languagechange')({ detail: { language: 'en' } });

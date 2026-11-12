@@ -1,4 +1,4 @@
-import { performanceData, getPerformanceSummary } from './service-performance-data.js';
+import { performanceData, getPerformanceSummary } from './service-performance-data.js?v=periods-20261112';
 
 const copy = {
   '시장을 읽고,': 'Understand the market.',
@@ -21,9 +21,9 @@ const copy = {
   '시장 분석과 채널·콘텐츠별 반응을 정리해 다음 실행의 우선순위를 제안합니다.': 'We review the market, channel performance and content response, then recommend where to focus next.',
   '예시 데이터': 'Illustrative data',
   '누적 보고 기간': 'Cumulative reporting period',
+  '2주': '2 weeks',
   '4주': '4 weeks',
   '8주': '8 weeks',
-  '12주': '12 weeks',
   '누적 노출': 'Total impressions',
   '추적 방문': 'Tracked visits',
   '완료 행동': 'Completed actions',
@@ -102,7 +102,8 @@ export function initRefreshInsights() {
     const right = chartWidth - 18;
     chart.setAttribute('viewBox', `0 0 ${chartWidth} ${chartHeight}`);
     // Draw in the rendered CSS-pixel size so mobile labels do not shrink with a desktop viewBox.
-    const x = week => 48 + (week - 1) / 11 * (right - 48);
+    const span = performanceData.weeks.length;
+    const x = week => 48 + (week - 1) / (span - 1) * (right - 48);
     const y = actions => baseline - actions / max * (baseline - 32);
     const points = summary.weeks.map(row => `${x(row.week)},${y(row.actions)}`).join(' ');
     const last = summary.weeks.at(-1);
@@ -117,8 +118,8 @@ export function initRefreshInsights() {
       <polyline class="ri-chart-line" points="${points}"/>
       ${summary.weeks.map(row => `<circle class="ri-chart-dot" cx="${x(row.week)}" cy="${y(row.actions)}" r="3.5"/>`).join('')}
       <circle class="ri-chart-end" cx="${x(last.week)}" cy="${y(last.actions)}" r="6"/>
-      <text class="ri-chart-value" x="${x(last.week)}" y="${y(last.actions) - 14}" text-anchor="${last.week === 12 ? 'end' : 'middle'}">${number(last.actions)}</text>
-      ${[1, 4, 8, 12].map(week => `<text class="ri-axis" x="${x(week)}" y="${chartHeight - 10}" text-anchor="middle">${language === 'en' ? `W${week}` : `${week}주`}</text>`).join('')}`;
+      <text class="ri-chart-value" x="${x(last.week)}" y="${y(last.actions) - 14}" text-anchor="${last.week === span ? 'end' : 'middle'}">${number(last.actions)}</text>
+      ${[1, ...performanceData.periods].map(week => `<text class="ri-axis" x="${x(week)}" y="${chartHeight - 10}" text-anchor="middle">${language === 'en' ? `W${week}` : `${week}주`}</text>`).join('')}`;
     root.querySelector('[data-ri-table]').innerHTML = summary.weeks.map(row => `<tr><th scope="row">${language === 'en' ? `Week ${row.week}` : `${row.week}주`}</th><td>${number(row.impressions)}</td><td>${number(row.visits)}</td><td>${number(row.actions)}</td></tr>`).join('');
   }
 

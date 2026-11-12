@@ -82,7 +82,8 @@ export function initRefreshTeam(doc = document) {
     const nameLine = element('div', 'rt-name-line', caption);
     const name = element('h3', '', nameLine, member.name);
     name.id = `rt-name-${member.id}`;
-    element('p', 'rt-role', caption, member.role);
+    // The role sits on the name's line and drops under it when the line is too narrow.
+    element('p', 'rt-role', nameLine, member.role);
     element('p', 'rt-description', caption, member.description);
     portraits.push(visual);
     visual.addEventListener('click', () => {

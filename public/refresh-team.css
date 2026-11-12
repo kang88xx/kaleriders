@@ -16,9 +16,9 @@
 /* Kang's character is cut out on a clear ground and sits whole inside the coin, with no disc behind it. */
 .rt-card[data-member="kang"] .rt-pfp { background: transparent; }
 .rt-caption { min-width: 0; }
-.rt-name-line { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+.rt-name-line { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 13px; }
 .rt-caption h3 { font: 500 23px/1.25 Arial, sans-serif; letter-spacing: -.045em; }
-.rt-role { margin-top: 8px; font-size: 14px; font-weight: 500; line-height: 1.6; }
+.rt-role { font-size: 14px; font-weight: 500; line-height: 1.6; }
 .rt-description { margin-top: 8px; font-size: 14px; line-height: 1.8; color: var(--muted); }
 .rt-card:target .rt-visual { outline: 2px solid var(--blue); outline-offset: 5px; }
 @media (max-width: 1150px) {
@@ -32,9 +32,8 @@
   .rt-grid { grid-template-columns: 1fr; gap: 0; }
   .rt-card { padding: 18px 0; border-bottom: 1px solid var(--line); gap: 22px; }
   .rt-card:last-child { border-bottom: 0; }
-  .rt-caption { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 5px 18px; align-items: center; flex: 1; }
-  .rt-role { margin: 0; }
-  .rt-description { grid-column: 2; grid-row: 1 / 3; margin: 0; }
+  .rt-caption { flex: 1; }
+  .rt-description { margin-top: 6px; }
 }
 @media (max-width: 600px) {
   #team:has(#refresh-team-root) { padding-top: 20px; padding-bottom: 45px; }
@@ -43,8 +42,6 @@
   .rt-heading .eyebrow { font-size: 11px; margin-bottom: 14px; }
   .rt-intro { margin-top: 16px; max-width: none; }
   .rt-card { gap: 18px; scroll-margin-top: 85px; }
-  .rt-caption { display: block; }
-  .rt-role, .rt-description { margin-top: 6px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .rt-coin { transition: none; }

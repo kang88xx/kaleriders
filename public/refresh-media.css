@@ -16,11 +16,19 @@
 .rm-films{padding-top:62px}
 .rm-films-heading{margin-bottom:25px}
 .rm-films-heading h3{font-size:clamp(26px,2.8vw,36px);line-height:1.35}
-.rm-event-videos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;align-items:start}
-.rm-event-film{min-width:0}
-.rm-film-caption{padding-top:15px}
-.rm-film-caption h4{font-size:16px;font-weight:500;line-height:1.5;margin:0;overflow-wrap:anywhere}
-.rm-film-caption p{font-size:13px;line-height:1.6;color:var(--muted);margin-top:6px}
+/* One large film beside two small ones. The narrow column's width makes both sides end level:
+   large height = 2 small heights + gap at 16:9, so small width = (100% - 25/9 gap) / 3. */
+.rm-event-videos{--g:18px;display:grid;grid-template-columns:minmax(0,1fr) calc((100% - var(--g) * 25 / 9) / 3);gap:var(--g);align-items:start}
+.rm-event-film{position:relative;min-width:0;grid-column:2}
+.rm-event-film:first-child{grid-column:1;grid-row:1 / span 2}
+.rm-event-videos .rm-video-frame{border-radius:12px}
+/* The title lies on the picture and leaves once the film has started, clear of the player controls. */
+.rm-film-caption{position:absolute;inset:auto 0 0 0;z-index:2;padding:46px 18px 14px;border-radius:0 0 12px 12px;background:linear-gradient(#0b183000,#0b1830d0);pointer-events:none;transition:opacity .2s}
+.rm-film-caption h4{font-size:16px;font-weight:500;line-height:1.5;margin:0;overflow-wrap:anywhere;color:#fff}
+.rm-film-caption p{font-size:13px;line-height:1.6;color:#ffffffc4;margin-top:1px}
+.rm-event-film:first-child .rm-film-caption{padding:80px 26px 22px}
+.rm-event-film:first-child .rm-film-caption h4{font-size:24px}
+.rm-event-film:has(.rm-video-launch[hidden]) .rm-film-caption{opacity:0}
 /* A featured message above a shared, three-column testimonial panel. */
 .rm-friends-shell .rm-heading{margin-bottom:32px}
 .rm-friends-shell .rm-intro{max-width:355px}
@@ -54,9 +62,13 @@
 .rm-play-error{position:absolute;z-index:3;bottom:10px;left:10px;right:10px;background:var(--paper);color:var(--ink);border-radius:5px;padding:10px;font-size:11px;line-height:1.5}
 .rm-play-error a{display:block;text-decoration:underline;margin-top:5px;min-height:32px;padding-top:5px}
 .rm-sample-badge{position:absolute;z-index:2;top:12px;left:12px;right:12px;width:fit-content;max-width:calc(100% - 24px);padding:4px 9px;background:var(--lime);color:#1734a4;border-radius:30px;font-size:9px;line-height:1.5;pointer-events:none}
-@media(max-width:1000px){.rm-heading{gap:24px}.rm-intro{max-width:330px;font-size:12px}.rm-event-videos{gap:16px}.rm-film-caption h4{font-size:16px}.rm-play-icon{width:46px;height:46px}.rm-sample-badge{top:8px;left:8px;right:8px;max-width:calc(100% - 16px);font-size:8px;padding:3px 7px}.rm-testimonial-feature{gap:26px;padding:26px}.rm-testimonial-copy{padding:0}.rm-testimonial-copy h3{font-size:30px}.rm-testimonial-copy .rm-testimonial-quote{font-size:14px}.rm-testimonial-card{padding:0 20px}.rm-testimonial-card .rm-testimonial-quote{font-size:15px}.rm-testimonial-author{gap:10px}.rm-testimonial-avatar{width:40px;height:40px;flex-basis:40px}}
-@media(max-width:760px){.rm-friends-shell .rm-heading{align-items:flex-start;flex-direction:column;gap:18px}.rm-friends-shell .rm-intro{max-width:none}.rm-testimonial-feature{grid-template-columns:1fr;gap:28px}.rm-testimonial-copy{padding:0 4px 6px}.rm-testimonial-copy h3{font-size:34px}.rm-testimonial-copy .rm-testimonial-quote{font-size:17px}.rm-testimonial-grid{grid-template-columns:1fr;padding:0 24px}.rm-testimonial-card{padding:24px 0}.rm-testimonial-card+.rm-testimonial-card{border-left:0;border-top:1px solid var(--line)}.rm-testimonial-card .rm-testimonial-quote{min-height:0;font-size:17px}.rm-testimonial-card .rm-testimonial-author{margin-top:20px}}
-@media(max-width:600px){#work:has(#refresh-gallery-root){padding-top:15px;padding-bottom:45px}#friends:has(#refresh-friends-root){padding-bottom:0}.rm-heading{display:block;margin-bottom:25px}.rm-heading .eyebrow{font-size:9px;margin-bottom:12px}.rm-heading h2{font-size:32px}.rm-intro{font-size:12px;margin-top:18px;max-width:100%}.rm-films{padding-top:40px}.rm-films-heading h3{font-size:28px}.rm-event-videos{grid-template-columns:1fr;gap:28px}.rm-film-caption{padding-top:12px}.rm-film-caption h4{font-size:16px}.rm-sample-badge{font-size:9px;top:12px;left:12px;right:12px;max-width:calc(100% - 24px);padding:4px 9px}.rm-play-icon{width:52px;height:52px}.rm-friends-shell .rm-heading{margin-bottom:24px}.rm-testimonial-feature{padding:18px;gap:24px;border-radius:14px}.rm-testimonial-video-caption{font-size:9px;gap:10px}.rm-testimonial-copy h3{font-size:30px}.rm-testimonial-grid{margin-top:18px;border-radius:14px}.rm-testimonial-sample{font-size:9px;margin-bottom:14px}}
-@media(prefers-reduced-motion:reduce){.rm-play-icon{transition:none}}
+/* The small films are short here, so they keep only the title, clear of the play button. */
+@media(max-width:1150px){.rm-event-film:not(:first-child) .rm-film-caption{padding-bottom:12px}.rm-event-film:not(:first-child) .rm-film-caption p{display:none}}
+@media(max-width:1000px){.rm-heading{gap:24px}.rm-intro{max-width:330px;font-size:12px}.rm-event-videos{--g:14px}.rm-event-film:first-child .rm-film-caption{padding:60px 20px 16px}.rm-event-film:first-child .rm-film-caption h4{font-size:20px}.rm-play-icon{width:46px;height:46px}.rm-event-film:not(:first-child) .rm-play-icon{width:40px;height:40px}.rm-sample-badge{top:8px;left:8px;right:8px;max-width:calc(100% - 16px);font-size:8px;padding:3px 7px}.rm-testimonial-feature{gap:26px;padding:26px}.rm-testimonial-copy{padding:0}.rm-testimonial-copy h3{font-size:30px}.rm-testimonial-copy .rm-testimonial-quote{font-size:14px}.rm-testimonial-card{padding:0 20px}.rm-testimonial-card .rm-testimonial-quote{font-size:15px}.rm-testimonial-author{gap:10px}.rm-testimonial-avatar{width:40px;height:40px;flex-basis:40px}}
+@media(max-width:760px){.rm-event-videos{grid-template-columns:minmax(0,1fr)}.rm-event-film,.rm-event-film:first-child{grid-column:1;grid-row:auto}.rm-event-film:first-child .rm-film-caption{padding:46px 18px 14px}.rm-event-film:first-child .rm-film-caption h4{font-size:16px}.rm-event-film:not(:first-child) .rm-film-caption{padding-bottom:14px}.rm-event-film:not(:first-child) .rm-film-caption p{display:block}.rm-event-film:not(:first-child) .rm-play-icon{width:46px;height:46px}.rm-friends-shell .rm-heading{align-items:flex-start;flex-direction:column;gap:18px}.rm-friends-shell .rm-intro{max-width:none}.rm-testimonial-feature{grid-template-columns:1fr;gap:28px}.rm-testimonial-copy{padding:0 4px 6px}.rm-testimonial-copy h3{font-size:34px}.rm-testimonial-copy .rm-testimonial-quote{font-size:17px}.rm-testimonial-grid{grid-template-columns:1fr;padding:0 24px}.rm-testimonial-card{padding:24px 0}.rm-testimonial-card+.rm-testimonial-card{border-left:0;border-top:1px solid var(--line)}.rm-testimonial-card .rm-testimonial-quote{min-height:0;font-size:17px}.rm-testimonial-card .rm-testimonial-author{margin-top:20px}}
+@media(max-width:600px){#work:has(#refresh-gallery-root){padding-top:15px;padding-bottom:45px}#friends:has(#refresh-friends-root){padding-bottom:0}.rm-heading{display:block;margin-bottom:25px}.rm-heading .eyebrow{font-size:9px;margin-bottom:12px}.rm-heading h2{font-size:32px}.rm-intro{font-size:12px;margin-top:18px;max-width:100%}.rm-films{padding-top:40px}.rm-films-heading h3{font-size:28px}.rm-sample-badge{font-size:9px;top:12px;left:12px;right:12px;max-width:calc(100% - 24px);padding:4px 9px}.rm-play-icon,.rm-event-film:not(:first-child) .rm-play-icon{width:52px;height:52px}.rm-friends-shell .rm-heading{margin-bottom:24px}.rm-testimonial-feature{padding:18px;gap:24px;border-radius:14px}.rm-testimonial-video-caption{font-size:9px;gap:10px}.rm-testimonial-copy h3{font-size:30px}.rm-testimonial-grid{margin-top:18px;border-radius:14px}.rm-testimonial-sample{font-size:9px;margin-bottom:14px}}
+/* On narrow phones the films are short, so they keep only the title, clear of the play button. */
+@media(max-width:380px){.rm-event-videos .rm-event-film .rm-film-caption{padding-bottom:12px}.rm-event-videos .rm-event-film .rm-film-caption p{display:none}}
+@media(prefers-reduced-motion:reduce){.rm-play-icon,.rm-film-caption{transition:none}}
 @media(max-width:1000px){.rm-records-grid{grid-template-columns:1fr;gap:0}.rm-record-photo{width:76px;height:76px;flex-basis:76px}.rm-record-copy{flex:1}}
 @media(max-width:600px){.rm-records{padding-top:26px}.rm-records>h3{font-size:22px;margin-bottom:14px}.rm-record{gap:14px;padding:18px 0}}

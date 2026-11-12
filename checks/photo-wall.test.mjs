@@ -3,16 +3,34 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { arrangeWall, eventFilms, initRefreshMedia, thumbOf, wallPhotos, wallPool } from '../public/refresh-media.js';
+import { arrangeWall, eventFilms, initRefreshMedia, orderFilms, phoneTiles, thumbOf, wallPhotos, wallPool, wallTiles } from '../public/refresh-media.js';
 import { initRefreshGallery } from '../public/refresh-gallery.js';
 
-test('the wall shows every photo once, in a fixed order that fills whole rows', () => {
+// The owner chose 25 columns on 2026-11-12 (tiles 20% smaller). Eleven rows keep the wall about as
+// tall as before, which takes more tiles than there are photos.
+test('the wall fills 25 x 11 tiles in a fixed order: every photo once, then some a second time', () => {
   const wall = arrangeWall();
-  assert.equal(wall.length, wallPool.length);
-  assert.equal(wall.length % 20, 0, 'The last row is incomplete at 20 columns (and at 10)');
-  assert.deepEqual(arrangeWall().map(photo => photo.src), wall.map(photo => photo.src), 'The order changes between visits');
-  assert.equal(new Set(wall.map(photo => photo.src)).size, wall.length, 'A photo repeats or is missing');
-  assert.notDeepEqual(wall.map(photo => photo.src), wallPool.map(photo => photo.src), 'The wall is not mixed');
+  const sources = wall.map(photo => photo.src);
+  assert.equal(wall.length, wallTiles);
+  assert.equal(wallTiles, 25 * 11);
+  assert.deepEqual(arrangeWall().map(photo => photo.src), sources, 'The order changes between visits');
+  assert.equal(new Set(sources.slice(0, wallPool.length)).size, wallPool.length, 'A photo is missing from the first pass');
+  assert.notDeepEqual(sources.slice(0, wallPool.length), wallPool.map(photo => photo.src), 'The wall is not mixed');
+  const counts = new Map();
+  sources.forEach(src => counts.set(src, (counts.get(src) || 0) + 1));
+  for (const [src, count] of counts) assert(count <= 2, `${src} appears ${count} times`);
+  sources.forEach((src, index) => {
+    for (const [column, row] of [[-1, 0], [0, -1], [-1, -1], [1, -1]]) {
+      const x = index % 25 + column;
+      const y = Math.floor(index / 25) + row;
+      if (x >= 0 && x < 25 && y >= 0) assert.notEqual(sources[y * 25 + x], src, `tile ${index + 1} repeats a photo it touches`);
+    }
+  });
+});
+
+test('phones show every photo once in whole rows of 10', () => {
+  assert.equal(phoneTiles % 10, 0, 'The last row is incomplete at 10 columns');
+  assert.equal(phoneTiles, wallPool.length, 'A photo is left off the phone wall');
 });
 
 test('a larger wall repeats photos evenly without a repeat beside or above', () => {
@@ -23,7 +41,7 @@ test('a larger wall repeats photos evenly without a repeat beside or above', () 
   wall.forEach(photo => counts.set(photo.src, (counts.get(photo.src) || 0) + 1));
   assert.equal(counts.size, pool.length, 'A photo is missing from the wall');
   for (const [src, count] of counts) assert(count >= 2 && count <= 3, `${src} appears ${count} times`);
-  for (const columns of [20, 10]) {
+  for (const columns of [25, 20, 10]) {
     wall.forEach((photo, index) => {
       if (index % columns) assert.notEqual(wall[index - 1].src, photo.src, `tile ${index + 1} repeats its left neighbour at ${columns} columns`);
       if (index >= columns) assert.notEqual(wall[index - columns].src, photo.src, `tile ${index + 1} repeats the tile above at ${columns} columns`);
@@ -101,16 +119,21 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
   assert(wallPhotos.some(photo => photo.position), 'No wall photo sets a crop focus');
   const focused = wall.find(photo => photo.position);
   assert(focused, 'No wall photo sets a crop focus');
-  for (const [viewport, width, columns] of [[1440, 1000, 20], [390, 390, 10]]) {
+  for (const [viewport, width, columns, used] of [[1440, 1000, 25, wallTiles], [390, 390, 10, phoneTiles]]) {
     const { doc, grid } = fakeGallery(width, viewport);
-    const gallery = initRefreshGallery(grid, wall, doc);
-    const [underlay, ...tiles] = grid.children;
+    const gallery = initRefreshGallery(grid, wall, doc, { compactCount: phoneTiles });
+    const [underlay, ...allTiles] = grid.children;
     const cell = width / columns;
-    const frameHeight = `${Math.ceil(wall.length / columns) * cell}px`;
-    assert.equal(tiles.length, wall.length);
+    const frameHeight = `${used / columns * cell}px`;
+    assert.equal(allTiles.length, wall.length);
     assert.equal(underlay.children.length, wall.length);
     assert.equal(grid.style.height, frameHeight);
+    // Phones lay out the first pass only; the second-pass tiles are taken out.
+    allTiles.slice(used).forEach((tile, index) => assert.equal(tile.style.display, 'none', `tile ${used + index + 1} should be hidden`));
+    underlay.children.slice(used).forEach((image, index) => assert.equal(image.style.display, 'none', `underlay ${used + index + 1} should be hidden`));
+    const tiles = allTiles.slice(0, used);
     tiles.forEach((tile, index) => {
+      assert.equal(tile.style.display, '', `tile ${index + 1} is hidden`);
       assert.equal(tile.style.width, `${cell}px`, `tile ${index + 1} width at ${columns} columns`);
       assert.equal(tile.style.height, `${cell}px`, `tile ${index + 1} height at ${columns} columns`);
       assert.equal(tile.firstElementChild.style.objectPosition, wall[index].position, `tile ${index + 1} crop`);
@@ -122,7 +145,9 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
     const index = wall.indexOf(focused);
     tiles[index].listeners.get('click')[0]();
     assert(tiles[index].classList.contains('is-open'));
-    assert(Number.parseFloat(tiles[index].style.width) > cell, 'The opened photo did not enlarge');
+    assert.equal(tiles[index].style.width, `${(columns === 25 ? 10 : 8) * cell}px`, 'The opened photo has the wrong width');
+    assert.equal(tiles[index].style.height, `${(columns === 25 ? 7 : 5) * cell}px`, 'The opened photo has the wrong height');
+    assert.match(tiles[index].getAttribute('aria-label'), new RegExp(`^${index + 1}/${used} `), 'The label counts tiles that are not shown');
     assert(tiles[index].firstElementChild.src.endsWith(`/public/${focused.src}`), 'The opened photo did not load its full file');
     assert(tiles[(index + 1) % tiles.length].firstElementChild.src.endsWith(`/public/${wall[(index + 1) % tiles.length].thumb}`), 'A closed tile loaded its full file');
     assert.equal(grid.style.height, frameHeight, 'Opening a photo resized the frame');
@@ -132,7 +157,16 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
   }
 });
 
-test('the film row renders every event film, the KGEN after-movie last, with labels in both languages', () => {
+test('any film can be the large one, with the other two after it in their listed order', () => {
+  const ids = eventFilms.map(film => film.id);
+  assert.deepEqual(orderFilms(eventFilms, 0).map(film => film.id), ids);
+  assert.deepEqual(orderFilms(eventFilms, 1).map(film => film.id), [ids[1], ids[0], ids[2]]);
+  assert.deepEqual(orderFilms(eventFilms, 2).map(film => film.id), [ids[2], ids[0], ids[1]]);
+});
+
+test('the film block renders every event film, the randomly chosen one first, with labels in both languages', t => {
+  // The page draws the large film with Math.random; .99 picks the last listed film, KGEN.
+  t.mock.method(Math, 'random', () => .99);
   const { doc } = fakeGallery(1000, 1440);
   const roots = { 'refresh-gallery-root': new FakeElement('div'), 'refresh-friends-root': new FakeElement('div') };
   doc.getElementById = id => roots[id] ?? null;
@@ -142,8 +176,8 @@ test('the film row renders every event film, the KGEN after-movie last, with lab
   initRefreshMedia(doc);
   const descendants = node => [node, ...node.children.flatMap(descendants)];
   const films = descendants(roots['refresh-gallery-root']).filter(node => node.className === 'rm-event-film');
-  assert.deepEqual(films.map(film => film.getAttribute('aria-labelledby')), ['rm-film-title-fogo-mainnet', 'rm-film-title-fogo-meetup', 'rm-film-title-kgen']);
-  const kgen = descendants(films[2]);
+  assert.deepEqual(films.map(film => film.getAttribute('aria-labelledby')), ['rm-film-title-kgen', 'rm-film-title-fogo-mainnet', 'rm-film-title-fogo-meetup']);
+  const kgen = descendants(films[0]);
   const video = kgen.find(node => node.tagName === 'VIDEO');
   const heading = kgen.find(node => node.tagName === 'H4');
   const play = kgen.find(node => node.className === 'rm-video-launch');

@@ -1,12 +1,16 @@
 const modes = new Set(['pack', 'push', 'clear']);
 
+// Columns of the wall on wide screens and on phones; an opened photo spans 10 x 7 or 8 x 5 cells.
+export const wideColumns = 25;
+export const compactColumns = 10;
+
 // The canvas and ordinary square cells never change size when a photo opens.
 export function fixedLayout({ width, count = 100, selected = -1, compact = false, mode = 'pack' }) {
   if (!Number.isFinite(width) || width <= 0) throw new RangeError('Frame width must be positive.');
   if (!Number.isInteger(count) || count < 0) throw new RangeError('Photo count must be a non-negative integer.');
   if (!modes.has(mode)) throw new RangeError('Unknown fixed gallery mode.');
 
-  const columns = compact ? 10 : 20;
+  const columns = compact ? compactColumns : wideColumns;
   const rows = Math.ceil(count / columns);
   const cell = width / columns;
   const height = rows * cell;
@@ -21,8 +25,8 @@ export function fixedLayout({ width, count = 100, selected = -1, compact = false
   const result = { width, height, cell, columns, rows, rects };
   if (!Number.isInteger(selected) || selected < 0 || selected >= count) return result;
 
-  const spanColumns = compact ? 8 : 6;
-  const spanRows = Math.min(rows, compact ? 5 : 4);
+  const spanColumns = compact ? 8 : 10;
+  const spanRows = Math.min(rows, compact ? 5 : 7);
   const clamp = (value, maximum) => Math.max(0, Math.min(maximum, value));
   const anchorColumn = clamp(selected % columns - Math.floor((spanColumns - 1) / 2), columns - spanColumns);
   const anchorRow = clamp(Math.floor(selected / columns) - Math.floor((spanRows - 1) / 2), rows - spanRows);

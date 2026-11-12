@@ -2,12 +2,11 @@
 const copy = (ko, en) => ({ ko, en });
 export const serviceContentStatus = 'draft';
 export const performanceData = {
-  periods: [4, 8, 12], defaultPeriod: 8,
+  periods: [2, 4, 8], defaultPeriod: 4,
   // Weekly activity in one fictional campaign. Columns: impressions, tracked visits, completed actions.
   weeks: [
     [42000, 1400, 98], [56000, 1800, 144], [68000, 2200, 198], [84000, 2800, 280],
     [92000, 3200, 352], [106000, 3600, 432], [122000, 4000, 520], [140000, 4600, 644],
-    [152000, 5000, 750], [168000, 5600, 896], [184000, 6200, 1054], [206000, 7000, 1260],
   ].map(([impressions, visits, actions], index) => ({ week: index + 1, impressions, visits, actions })),
 };
 export const getRate = (value, total) => total > 0 ? value / total * 100 : null;

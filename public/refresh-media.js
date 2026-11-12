@@ -1,5 +1,6 @@
 import { caseStudies } from './case-studies-data.js';
-import { initRefreshGallery } from './refresh-gallery.js?v=wall-180-20261112';
+import { initRefreshGallery } from './refresh-gallery.js?v=wall-25-20261112';
+import { compactColumns, wideColumns } from './gallery-fixed/layouts.js?v=wall-25-20261112';
 import { addedWallPhotos } from './wall-photos.js?v=wall-180-20261112';
 
 const assetURL = path => new URL(path, import.meta.url).href;
@@ -51,18 +52,27 @@ export const eventFilms = [
   { id: 'kgen', media: { type: 'video', src: 'assets/cases/kgen/after-movie.mp4', poster: 'assets/cases/kgen/after-movie.jpg', alt: copy('KGEN · VeriFi Korea 현장 애프터무비', 'KGEN · VeriFi Korea event after-movie') } },
 ];
 
-// Put the pool on the wall in a fixed mixed order. By default every photo appears once, so the
-// pool size must fill whole rows at 20 and 10 columns. With a larger count each further pass
-// uses every photo once more, avoiding the photo on the previous tile and on the tiles 10 and
-// 20 places back (the tile above at 10 and 20 columns). A fixed seed keeps the composition
-// stable between visits and languages.
-export function arrangeWall(photos = wallPool, count = photos.length) {
+// The film block shows one film large with the other two beside it, in their listed order.
+// `featured` is the index of the large one; the page picks it at random on each visit.
+export const orderFilms = (films, featured) => [films[featured], ...films.filter((_, index) => index !== featured)];
+
+// The wide wall has 25 columns and 11 rows, about as tall as the 20 x 9 wall it replaced on
+// 2026-11-12, so it holds 275 tiles and 95 of the 180 photos appear twice. Phones show the first
+// pass only: every photo once, in whole rows of 10.
+export const wallTiles = wideColumns * 11;
+export const phoneTiles = Math.floor(Math.min(wallTiles, wallPool.length) / compactColumns) * compactColumns;
+
+// Put the pool on the wall in a fixed mixed order. The first pass uses every photo once; each
+// further pass uses every photo once more, avoiding the photo on the previous tile, on the tile
+// above and on the two beside that one at `columns` (and 10 and 20 places back, as the earlier
+// wall did). A fixed seed keeps the composition stable between visits and languages.
+export function arrangeWall(photos = wallPool, count = wallTiles, columns = wideColumns) {
   let seed = 20261106;
   const gallery = [];
   while (gallery.length < count && photos.length) {
     const remaining = [...photos];
     while (remaining.length && gallery.length < count) {
-      const neighbors = [1, 10, 20].map(offset => gallery[gallery.length - offset]?.src);
+      const neighbors = [1, 10, 20, columns - 1, columns, columns + 1].map(offset => gallery[gallery.length - offset]?.src);
       const candidates = remaining.map((photo, index) => ({ photo, index })).filter(({ photo }) => !neighbors.includes(photo.src));
       seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
       const pool = candidates.length ? candidates : remaining.map((photo, index) => ({ photo, index }));
@@ -160,7 +170,7 @@ export function initRefreshMedia(doc = document) {
   const galleryTitle = element('h2', '', headingCopy, copy('함께 만든 순간들.', 'People we brought together.'));
   galleryTitle.id = 'work-title';
   const grid = element('div', 'rm-gallery', galleryRoot);
-  const photoGallery = initRefreshGallery(grid, gallery, doc);
+  const photoGallery = initRefreshGallery(grid, gallery, doc, { compactCount: phoneTiles });
   bindings.push(language => photoGallery.updateLanguage(language));
 
   const films = element('section', 'rm-films', galleryRoot);
@@ -170,7 +180,7 @@ export function initRefreshMedia(doc = document) {
   const filmsTitle = element('h3', '', filmsHeadingCopy, copy('현장의 온도, 그대로.', 'A look inside the events.'));
   filmsTitle.id = 'rm-films-title';
   const filmsGrid = element('div', 'rm-event-videos', films);
-  eventFilms.forEach(({ id, media }) => {
+  orderFilms(eventFilms, Math.floor(Math.random() * eventFilms.length)).forEach(({ id, media }) => {
     const item = byId[id];
     const article = element('article', 'rm-event-film', filmsGrid);
     article.setAttribute('aria-labelledby', `rm-film-title-${id}`);
