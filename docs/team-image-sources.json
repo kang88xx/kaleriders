@@ -18,13 +18,13 @@
       "member": "Mascot",
       "side": "front portrait",
       "localPath": "assets/team/mascot-portrait.jpg",
-      "bytes": 18057,
-      "sha256": "171e2131c498faeedd3674e583e6ab331cf5fb8fb8fadbdcfd20786dda20c4e7",
+      "bytes": 19259,
+      "sha256": "118eff39ec4c4be1f237a88072bfa3846dc5f0e536bbc20f868f0e4d952fd9d8",
       "receivedAt": "2026-11-12",
       "source": "Supplied by the owner as a local file on 2026-11-12 (JPEG, 633 × 1345, a close-up cropped at the right edge of the head). It replaces the photo supplied on 2026-11-11. The original is kept with the release evidence outside this repository.",
       "originalBytes": 247503,
       "originalSha256": "9eb883f0bb466d981506b8498a4c8e2f21a740b4290be58fe6cdb37de4bfd228",
-      "edit": "Extended on 2026-11-12 to a square head-and-shoulders frame so the head sits at about the scale of the other two portraits: the photo was placed at (460, 105) in a 1680 × 1680 frame and the area around it was generated with Stable Diffusion XL inpainting, run locally (the photo was not sent to an outside service). Generated: the right edge of the hair and cheek and the right ear, the background on both sides and the shoulders. The supplied pixels were pasted back unchanged apart from a blended band about 26 source pixels wide along the seams. A small lamp in the generated background beside the ear, which read as an earring at coin size, was painted over. Resized to 320 × 320; JPEG quality 0.9."
+      "edit": "Extended on 2026-11-12 to a square head-and-shoulders frame so the head sits at about the scale of the other two portraits: the photo was placed at (460, 105) in a 1680 × 1680 frame and the area around it was generated with Stable Diffusion XL inpainting, run locally (the photo was not sent to an outside service). Generated: the right edge of the hair and cheek and the right ear, the background on both sides and the shoulders. The supplied pixels were pasted back unchanged apart from a blended band about 26 source pixels wide along the seams. A small lamp in the generated background beside the ear, which read as an earring at coin size, was painted over. Recropped later on 2026-11-12 at the owner's request, to centre the face in the coin and show it 15% larger: an 890 × 890 square at (95, 46) of the 1024 × 1024 extended frame. Resized to 320 × 320; JPEG quality 0.9."
     },
     {
       "member": "Kang",
@@ -42,13 +42,13 @@
       "member": "Kalya",
       "side": "PFP",
       "localPath": "assets/team/kalya-pfp.jpg",
-      "bytes": 25961,
-      "sha256": "f6fa84f73256a5a2d303d8fe1b40c2ffc126ec46a84790789cf3fa0788ff2b35",
+      "bytes": 26294,
+      "sha256": "eb3c443fb595bc4f176990b215e8d1d5fca7b60694534a49cbcd3734eea97b7c",
       "receivedAt": "2026-11-11",
       "source": "Pasted by the owner in a Claude Code session (PNG, 1440×1437, a circular image on white). The original is kept with the release evidence outside this repository.",
       "originalBytes": 3298118,
       "originalSha256": "dade73b943b3882cc01ea71eabdebba0c2e5610714dee99478d065e8d3412ccf",
-      "edit": "Square crop at x80 y40, 1280×1280, inside the supplied circle so no white corner shows; resized to 320×320; JPEG quality 0.88."
+      "edit": "Reframed on 2026-11-12 at the owner's request, because the character looked cut off in the coin: shown 15% smaller than the earlier 1280 × 1280 crop. The supplied image is itself a circle, so the ring outside it (the tip of the antenna, sky and meadow) was generated with Stable Diffusion XL inpainting, run locally; the supplied pixels inside the circle were pasted back unchanged. Resized to 320 × 320; JPEG quality 0.88."
     },
     {
       "member": "Mascot",
