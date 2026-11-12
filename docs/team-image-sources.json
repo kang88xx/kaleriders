@@ -29,14 +29,14 @@
     {
       "member": "Kang",
       "side": "PFP",
-      "localPath": "assets/team/kang-pfp.jpg",
-      "bytes": 14110,
-      "sha256": "ee57eb210d67a4526b17f4254697b1ebbe2e9ec4344522d4a7c4ce7aeb5e0b4d",
+      "localPath": "assets/team/kang-pfp.png",
+      "bytes": 47723,
+      "sha256": "2709fe45bad5cdfe37a9228f715a9077677c45b5fadfbd7677556b06d397f2f6",
       "receivedAt": "2026-11-11",
       "source": "Pasted by the owner in a Claude Code session (PNG, 791×788). The original is kept with the release evidence outside this repository.",
       "originalBytes": 307507,
       "originalSha256": "e2af8b1967a6eb24e100b5ad6eaee9db9fb992d63859d735a9e9b81fa2bdce38",
-      "edit": "Square crop at x60 y50, 670×670; resized to 320×320; JPEG quality 0.88."
+      "edit": "Recut on 2026-11-12 at the owner's request, because the square crop cut the ears and feet in the round coin: the black backdrop is removed (PNG with a clear ground), the outer black outline, which was part of that backdrop, is redrawn about 6px wide around the character, and the whole character is centred to span 90% of the coin's diameter. Resized to 320 × 320. The earlier file was a 670 × 670 JPEG crop of the same original."
     },
     {
       "member": "Kalya",

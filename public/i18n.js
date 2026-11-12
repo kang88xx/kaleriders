@@ -1,4 +1,4 @@
-import { english } from './translations.js?v=flow-en-20261108';
+import { english } from './translations.js?v=symbols-20261112';
 
 let currentLanguage = 'en';
 

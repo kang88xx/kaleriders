@@ -1,22 +1,28 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { services, sectionCopy, escape, localize, serviceCycle } from '../public/services-content.js';
-import { sectionMarkup, serviceMarkup, teamMarkup, teamCopy } from '../public/refresh-services.js';
+import { existsSync, readFileSync } from 'node:fs';
+import { services, sectionCopy, escape, localize, serviceCycle, logoGroup, partners } from '../public/services-content.js';
+import { sectionMarkup, serviceMarkup, signMarkup, teamMarkup, teamCopy } from '../public/refresh-services.js';
 
 const bilingual = (pair, where) => {
   assert(Array.isArray(pair) && pair.length === 2, `${where}: expected a [ko, en] pair`);
   assert(pair[0].trim() && pair[1].trim(), `${where}: a language is missing`);
 };
 
-test('the five services keep their order, each with a short line and three steps in both languages', () => {
-  assert.deepEqual(services.map(service => service.id), ['kol', 'meetup', 'press', 'airdrop', 'events']);
+test('the six services keep their order, each with a short line and three steps in both languages', () => {
+  assert.deepEqual(services.map(service => service.id), ['kol', 'community', 'meetup', 'press', 'airdrop', 'events']);
   for (const service of services) {
     bilingual(service.label, `${service.id} label`);
     bilingual(service.line, `${service.id} line`);
     assert(service.line[0].length <= 20 && service.line[1].length <= 40, `${service.id}: a line is too long for the graphic`);
     assert.equal(service.steps.length, 3, service.id);
     service.steps.forEach((step, index) => bilingual(step, `${service.id} step ${index + 1}`));
-    assert.match(service.icon, /^(<(path|circle|rect) [^<>]*\/>)+$/, `${service.id}: the icon holds only drawing elements`);
+    // One sign per circle: a line icon, lettering (KOL) or a logo file drawn in the text colour (KBW).
+    assert.equal([service.icon, service.word, service.mark].filter(Boolean).length, 1, `${service.id}: exactly one sign`);
+    if (service.icon) assert.match(service.icon, /^(<(path|circle|rect) [^<>]*\/>)+$/, `${service.id}: the icon holds only drawing elements`);
+    if (service.word) assert.match(service.word, /^[A-Z]{2,4}$/, `${service.id}: short lettering`);
+    if (service.mark) assert(service.mark.startsWith('assets/references/') && existsSync(new URL(`../public/${service.mark}`, import.meta.url)), `${service.id}: missing ${service.mark}`);
+    assert.match(signMarkup(service), /^<(svg class="service-icon"|span class="sf-(word|mark)") aria-hidden="true"/, `${service.id}: the sign is decoration beside the name`);
   }
   [...sectionCopy.title, ...sectionCopy.intro].forEach((line, index) => bilingual(line, `heading line ${index + 1}`));
   Object.values(teamCopy).forEach(pair => bilingual(pair, 'team label'));
@@ -27,7 +33,10 @@ test('the five services keep their order, each with a short line and three steps
 test('the section stays a light infographic without numbers', () => {
   const html = sectionMarkup();
   assert.match(html, /<h2 id="services-title">/);
-  assert(!/<img|<video|<table|data-open-brief|예시|Example|사례 입력|sf-no|aria-pressed|aria-live/.test(html), 'a photo, record, inquiry button, number, toggle or live region is back');
+  assert.equal(html.match(/<img /g).length, partners.length * services.length, 'the only images are the partner symbols in the team label');
+  assert.deepEqual(services.filter(service => service.word).map(service => service.id), ['kol']);
+  assert.deepEqual(services.filter(service => service.mark).map(service => service.id), ['events']);
+  assert(!/<video|<table|data-open-brief|예시|Example|사례 입력|sf-no|aria-pressed|aria-live/.test(html), 'a photo, record, inquiry button, number, toggle or live region is back');
   assert(!/>0[1-5]</.test(html), 'a 01-05 number is visible again');
 });
 
@@ -66,7 +75,7 @@ const fakeClock = () => {
   };
 };
 
-test('the highlight moves every 1.2 seconds from the first service to the last and round again', () => {
+test('the highlight moves every 1.56 seconds from the first service to the sixth and round again', () => {
   const buttons = services.map(fakeButton);
   const clock = fakeClock();
   const shown = [];
@@ -74,13 +83,13 @@ test('the highlight moves every 1.2 seconds from the first service to the last a
   assert.deepEqual(shown, [-1], 'nothing is highlighted before the cycle starts');
   cycle.start();
   assert.equal(shown.at(-1), 0, 'the first service shows as soon as the cycle starts');
-  clock.tick(1199);
+  clock.tick(1559);
   assert.equal(shown.at(-1), 0);
   clock.tick(1);
-  assert.equal(shown.at(-1), 1, 'the next service after 1.2 seconds');
-  clock.tick(1200 * 4);
-  assert.deepEqual(shown.slice(-5), [1, 2, 3, 4, 0], 'after the fifth comes the first again');
-  assert(buttons[0].classes.has('is-shown') && [1, 2, 3, 4].every(index => !buttons[index].classes.has('is-shown')), 'only the shown service is highlighted');
+  assert.equal(shown.at(-1), 1, 'the next service after 1.56 seconds');
+  clock.tick(1560 * 5);
+  assert.deepEqual(shown.slice(-6), [1, 2, 3, 4, 5, 0], 'after the sixth comes the first again');
+  assert(buttons[0].classes.has('is-shown') && [1, 2, 3, 4, 5].every(index => !buttons[index].classes.has('is-shown')), 'only the shown service is highlighted');
   cycle.stop();
   clock.tick(5000);
   assert.equal(shown.at(-1), 0, 'stop() halts the cycle');
@@ -98,8 +107,8 @@ test('pointing at, pressing or keyboard-focusing a service holds it for 3 second
   assert.equal(shown.at(-1), 3, 'and holds it');
   clock.tick(1);
   assert.equal(shown.at(-1), 4, 'then the cycle continues from there');
-  clock.tick(1200);
-  assert.equal(shown.at(-1), 0, 'at the usual pace');
+  clock.tick(1560);
+  assert.equal(shown.at(-1), 5, 'at the usual pace');
   buttons[1].on.click();
   clock.tick(2999);
   assert.equal(shown.at(-1), 1, 'a press holds for 3 seconds too');
@@ -118,17 +127,42 @@ test('pointing at, pressing or keyboard-focusing a service holds it for 3 second
   assert.equal(shown.at(-1), 0, 'with the cycle stopped (off screen or reduced motion), a press just shows the service');
 });
 
-test('the five services feed one team label through five lines', () => {
+test('the six services feed one team label through six lines', () => {
   const html = sectionMarkup();
   services.forEach((service, index) => {
     const button = serviceMarkup(service, index);
     assert(button.includes(`data-index="${index}" aria-controls="sf-team" aria-describedby="sf-steps-${index}"`), `${service.id}: button`);
   });
-  const paths = [...html.matchAll(/<path data-index="(\d)" d="M(\d+) 0 C\d+ \d+ \d+ \d+ (\d+) (\d+)"\/>/g)];
-  assert.deepEqual(paths.map(match => [Number(match[1]), Number(match[2]), Number(match[3]), Number(match[4])]), services.map((_, index) => [index, 100 + index * 200, 500, 96]), 'each line runs from its column centre to the team label');
+  const paths = [...html.matchAll(/<path data-index="(\d)" d="M([\d.]+) 0 C[\d.]+ \d+ \d+ \d+ (\d+) (\d+)"\/>/g)];
+  assert.deepEqual(paths.map(match => [Number(match[1]), Number(match[2]), Number(match[3]), Number(match[4])]), services.map((_, index) => [index, Number(((index + 0.5) * 1000 / services.length).toFixed(1)), 500, 96]), 'each line runs from its column centre to the team label');
   const team = teamMarkup();
   assert.match(team, /^<p class="sf-team" id="sf-team">/);
   services.forEach((_, index) => assert.equal(team.match(new RegExp(`id="sf-steps-${index}"`, 'g'))?.length, 1, `steps ${index + 1} have one target`));
   assert.equal(team.match(/class="sf-team-state/g).length, services.length + 1);
   assert.deepEqual([...team.matchAll(/class="sf-team-state is-active" data-state="(-?\d)"/g)].map(match => match[1]), ['-1'], 'only the team line shows at first');
+});
+
+// The owner asked on 2026-11-12 for the partner symbols in the team label and left the choice to
+// the build. Only the projects already shown in the partner-logo strip appear.
+test('the partner projects\' symbols sit beside every service in the team label, as decoration', () => {
+  const page = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
+  const strip = page.slice(page.indexOf('class="reference-strip"'), page.indexOf('<section id="services"'));
+  for (const partner of partners) {
+    assert(existsSync(new URL(`../public/${partner.src}`, import.meta.url)), `${partner.name}: missing ${partner.src}`);
+    assert(partner.src.startsWith('assets/references/'), `${partner.name}: symbol comes from the reference logos`);
+    assert(strip.includes(`alt="${partner.name}"`), `${partner.name} is not in the partner-logo strip`);
+  }
+  // After the symbols comes "+N": the owner asked on 2026-11-12 for a figure from 5 to 10 per service.
+  for (const service of services) {
+    assert(Number.isInteger(service.more) && service.more >= 5 && service.more <= 10, `${service.id}: +N is between 5 and 10`);
+    const group = logoGroup(service);
+    assert.match(group, /^<span class="sf-logos" aria-hidden="true">/);
+    assert.equal(group.match(/<span class="sf-logo"/g).length, partners.length, 'one circle per project');
+    assert.equal(group.match(/<img [^>]*alt=""/g).length, partners.length, 'the symbols carry no alt text of their own');
+    assert.equal(group.replace(/<[^>]+>/g, ''), `+${service.more}`, `${service.id}: the only text in the row is its +N, after the symbols`);
+    assert(group.endsWith(`<span class="sf-logo sf-logo-more">+${service.more}</span></span>`), `${service.id}: +N comes last`);
+  }
+  const team = teamMarkup();
+  assert.equal(team.match(/class="sf-logos"/g).length, services.length, 'one row per service state');
+  assert(!team.slice(0, team.indexOf('data-state="0"')).includes('sf-logos'), 'the resting team line has no symbols');
 });

@@ -51,6 +51,46 @@
       "bytes": 10211,
       "sha256": "eb4abdc02d31b9eb7cb39cb2288a357f82dac66eac1d5fa183bbb5ae47757b65",
       "retrieved_at": "2026-10-23T05:39:52.698429+00:00"
+    },
+    {
+      "name": "Axis Robotics symbol",
+      "file": "symbols/axis-robotics.png",
+      "url": "https://www.axisrobotics.ai/favicon.ico",
+      "page": "https://www.axisrobotics.ai/",
+      "notes": "Official site icon (<link rel=\"icon\">), a 128 × 128 black mark on a clear ground. Converted from ICO to PNG without resizing or recoloring. Used at 26px in the services team label.",
+      "bytes": 688,
+      "sha256": "1a469b1fa5bf5df79dce7a8ccb587cf4726f167aad3d458933be2efb54a770e2",
+      "retrieved_at": "2026-11-12T03:00:07+00:00"
+    },
+    {
+      "name": "Fogo symbol",
+      "file": "symbols/fogo.png",
+      "url": "https://framerusercontent.com/images/Au7fFsXhIzoMNDWExAFcEQNYRQY.png",
+      "page": "https://www.fogo.io/",
+      "notes": "Official apple-touch-icon of fogo.io, 1024 × 1024; bytes unchanged. Used at 26px in the services team label.",
+      "bytes": 3286,
+      "sha256": "0d639776367fc279a2758f3cfa5b5f35b46538e3c1940605ec05c9877c236c7c",
+      "retrieved_at": "2026-11-12T03:00:07+00:00"
+    },
+    {
+      "name": "Superwalk symbol",
+      "file": "symbols/superwalk.png",
+      "url": "https://superwalk.io/meta/superwalk_icon_152.png",
+      "page": "https://superwalk.io/",
+      "notes": "Official apple-touch-icon of superwalk.io, 152 × 152; bytes unchanged. Used at 26px in the services team label.",
+      "bytes": 3572,
+      "sha256": "df8ab8dff527961c00465f9077324fdab0218b90d7753544c1e7ce2cb38ab85c",
+      "retrieved_at": "2026-11-12T03:00:07+00:00"
+    },
+    {
+      "name": "Korea Blockchain Week wordmark",
+      "file": "symbols/kbw.png",
+      "url": "https://framerusercontent.com/images/iKuRrIQE2FTN94uBNMGug53Ol8.png",
+      "page": "https://koreablockchainweek.com/",
+      "notes": "Official site icon of koreablockchainweek.com (apple-touch-icon and dark-scheme icon), the white KBW wordmark on a clear ground, 192 × 192; bytes unchanged. Used as a mask for the sign of the \"KBW & event production\" service, so it takes the text colour.",
+      "bytes": 995,
+      "sha256": "e434e6bbfc24959c8c7a1faf4daf66f534c8a2c31c3241d8cdd3b61d5f5ea7e4",
+      "retrieved_at": "2026-11-12T03:10:48+00:00"
     }
   ]
 }

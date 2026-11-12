@@ -13,6 +13,8 @@
 .rt-portrait { object-position: center top; filter: grayscale(1); }
 .rt-card[data-member="kang"] .rt-portrait { object-position: center 10%; }
 .rt-pfp { transform: rotateY(180deg); }
+/* Kang's character is cut out on a clear ground and sits whole inside the coin, with no disc behind it. */
+.rt-card[data-member="kang"] .rt-pfp { background: transparent; }
 .rt-caption { min-width: 0; }
 .rt-name-line { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
 .rt-caption h3 { font: 500 23px/1.25 Arial, sans-serif; letter-spacing: -.045em; }

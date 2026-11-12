@@ -3,7 +3,7 @@ const copy = (ko, en) => ({ ko, en });
 // Image sources and edits are recorded in docs/team-image-sources.json.
 export const members = [
   {
-    id: 'kang', name: 'Kang', image: 'kang-illustration.png', pfp: 'kang-pfp.jpg',
+    id: 'kang', name: 'Kang', image: 'kang-illustration.png', pfp: 'kang-pfp.png',
     alt: copy('제공된 Kang 사진을 바탕으로 만든 흑백 반실사 일러스트', 'A monochrome illustration based on a photo of Kang'),
     role: copy('전략·파트너십', 'Strategy & partnerships'),
     description: copy('한국 시장 진입 전략과 프로젝트·파트너 협업을 연결합니다.', 'Plans Korean market entry and coordinates project partnerships.'),

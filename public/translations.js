@@ -12,6 +12,7 @@ export const english = Object.freeze({
   "KOL 연결": "KOL campaigns",
   "밋업": "Meetups",
   "언론보도": "Press outreach",
+  "커뮤니티 구축·운영": "Community management",
   "에어드랍": "Airdrops",
   "KBW 및 행사 대행 운영": "KBW & event production",
   "성과 분석 & 시장 리서치": "Reporting & market research",

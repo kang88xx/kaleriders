@@ -1,12 +1,12 @@
 import { initMemberArt } from './member-art.js?v=garden-bloom-20261026';
-import { initLanguage, translate } from './i18n.js?v=first-paint-20261112';
+import { initLanguage, translate } from './i18n.js?v=symbols-20261112';
 import { initInquiryForm } from './contact.js';
 import { initFaq } from './faq.js';
 import { initRouteMotion } from './route-motion.js?v=route-flow-20261108';
-import { initRefreshServices } from './refresh-services.js?v=cycle-20261111';
+import { initRefreshServices } from './refresh-services.js?v=symbols-20261112';
 import { initRefreshInsights } from './refresh-insights.js?v=notes-20261108';
 import { initRefreshMedia } from './refresh-media.js?v=photos-20261112';
-import { initRefreshTeam } from './refresh-team.js?v=photos-20261111';
+import { initRefreshTeam } from './refresh-team.js?v=pfp-20261112';
 
 initRefreshServices();
 initRefreshInsights();

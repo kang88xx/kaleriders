@@ -1,21 +1,26 @@
-/* Infographic draft 1: five services side by side, their lines meeting at one team label.
+/* Services infographic: six services side by side, their lines meeting at one team label.
    Section padding and the heading margin come from site-refinements.css. */
 #refresh-services-root { --sf-line: #ffffff59; --sf-soft: #dce1f3; min-width: 0; }
 
-.sf-list { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin: 8px 0 0; padding: 0; list-style: none; }
+.sf-list { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); margin: 8px 0 0; padding: 0; list-style: none; }
 .sf-service { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; height: 100%; padding: 10px 10px 6px; border-radius: 12px; color: var(--paper); text-align: center; }
 .sf-service:focus-visible { outline-offset: 2px; }
 .sf-icon { position: relative; display: grid; flex: none; place-items: center; width: 68px; height: 68px; border: 1px solid var(--sf-line); border-radius: 50%; transition: background-color .25s, border-color .25s, color .25s; }
 .sf-icon .service-icon { width: 28px; height: 28px; }
-.sf-check { position: absolute; top: -3px; right: -3px; width: 22px; height: 22px; border: 2px solid var(--deep); border-radius: 50%; background: var(--lime); transform: scale(0); transition: transform .35s cubic-bezier(.3, 1.4, .5, 1) calc(.7s + var(--sf-delay, 0s)); }
-.sf-check::after { content: ''; position: absolute; left: 6px; top: 3px; width: 5px; height: 9px; border: solid var(--ink); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.sf-word { font-size: 19px; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
+.sf-mark { display: block; width: 54px; height: 54px; background: currentColor; -webkit-mask: center / contain no-repeat; mask: center / contain no-repeat; }
+/* Only the highlighted service has a lime check; the others keep a quiet outlined one. */
+.sf-check { position: absolute; top: -3px; right: -3px; width: 22px; height: 22px; border: 2px solid var(--deep); border-radius: 50%; background: var(--deep); box-shadow: inset 0 0 0 1px #ffffff80; transform: scale(0); transition: transform .35s cubic-bezier(.3, 1.4, .5, 1) calc(.7s + var(--sf-delay, 0s)), background-color .25s, box-shadow .25s; }
+.sf-check::after { content: ''; position: absolute; left: 6px; top: 3px; width: 5px; height: 9px; border: solid var(--sf-soft); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); transition: border-color .25s; }
 .sf-text { display: grid; justify-items: center; gap: 4px; }
-.sf-name { font-size: 19px; font-weight: 500; line-height: 1.35; letter-spacing: -.03em; }
+.sf-name { font-size: 18px; font-weight: 500; line-height: 1.35; letter-spacing: -.03em; }
 html[lang="en"] .sf-name { letter-spacing: -.01em; }
 .sf-line { max-width: 18em; color: var(--sf-soft); font-size: 14px; line-height: 1.55; }
 /* The highlighted service (cycling, or held after pointing or pressing): lime icon and name. */
 .sf-service.is-shown .sf-icon { border-color: var(--lime); background: var(--lime); color: var(--ink); }
 .sf-service.is-shown .sf-name { color: var(--lime); }
+.sf-service.is-shown .sf-check { background: var(--lime); box-shadow: none; }
+.sf-service.is-shown .sf-check::after { border-color: var(--ink); border-width: 0 2px 2px 0; }
 .sf-name { transition: color .25s; }
 
 .sf-fan { display: block; width: 100%; height: 88px; margin-top: 6px; overflow: visible; }
@@ -36,6 +41,7 @@ html[lang="en"] .sf-name { letter-spacing: -.01em; }
 :is(.sf-fan path, .sf-item):nth-child(3) { --sf-delay: .24s; }
 :is(.sf-fan path, .sf-item):nth-child(4) { --sf-delay: .36s; }
 :is(.sf-fan path, .sf-item):nth-child(5) { --sf-delay: .48s; }
+:is(.sf-fan path, .sf-item):nth-child(6) { --sf-delay: .6s; }
 
 /* Below 900px the services stack, joined by one rail down to the team label. */
 @media (max-width: 900px) {
@@ -47,6 +53,8 @@ html[lang="en"] .sf-name { letter-spacing: -.01em; }
   .sf-service { flex-direction: row; align-items: center; gap: 16px; padding: 10px 0; text-align: left; }
   .sf-icon { width: 56px; height: 56px; background: var(--deep); }
   .sf-icon .service-icon { width: 24px; height: 24px; }
+  .sf-word { font-size: 16px; }
+  .sf-mark { width: 44px; height: 44px; }
   .sf-text { justify-items: start; gap: 2px; }
   .sf-name { font-size: 18px; }
   .sf-line { max-width: none; }
@@ -66,3 +74,21 @@ html[lang="en"] .sf-name { letter-spacing: -.01em; }
   .sf-fan path, .sf-check, .sf-icon, .sf-list::before { transition: none; }
 }
 html.motion-paused :is(.sf-fan path, .sf-check, .sf-list::before) { transition: none; }
+
+/* The partner projects' symbols as an overlapping row beside the shown service. */
+.sf-logos { display: inline-flex; flex: none; align-items: center; margin-right: 4px; }
+.sf-logo { display: block; flex: none; width: 26px; height: 26px; margin-left: -7px; overflow: hidden; border: 2px solid var(--paper); border-radius: 50%; background: #fff; }
+.sf-logo:first-child { margin-left: 0; }
+.sf-logo img { display: block; width: 100%; height: 100%; object-fit: cover; }
+/* A mark on a clear ground sits inside the circle; a wordmark file shows the symbol at its left. */
+.sf-logo[data-fit="mark"] img { padding: 4px; object-position: left center; }
+.sf-logo.sf-logo-more { display: grid; place-items: center; width: auto; min-width: 26px; padding: 0 6px; border-radius: 999px; background: #e4e8f2; color: var(--ink); font-size: 12px; font-weight: 600; line-height: 1; }
+.sf-team-state { align-items: center; }
+@media (max-width: 900px) { .sf-logos { flex: 0 0 100%; margin: 0 0 6px; } }
+/* Just above the stacked layout the longest state wraps to two lines. Every state shares one cell
+   there too, so the label keeps the size of the longest and the cycle never moves the page. */
+@media (min-width: 901px) and (max-width: 1040px) {
+  .sf-team { display: grid; }
+  .sf-team-state, .sf-team-state.is-active { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 10px; grid-area: 1 / 1; }
+  .sf-team-state:not(.is-active) { visibility: hidden; }
+}
