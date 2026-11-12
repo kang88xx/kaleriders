@@ -72,3 +72,11 @@
 @media(prefers-reduced-motion:reduce) {
   .character-art g,.floating-member .member-flag { animation:none!important; }
 }
+
+/* Around the CRYPTO lettering only the name ribbons fly (owner, 2026-11-13): the drawn
+   characters and their shadows are still put in their slots by member-art.js but are not shown.
+   This applies to the homepage hero and to the /sample page, which shares this file. The
+   closing section's characters (.spotlight-character) are untouched. */
+.floating-member .member-avatar,
+.floating-member .flight-shadow { display: none !important; }
+.floating-member .member-flag { margin-top: 0; }

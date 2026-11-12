@@ -262,3 +262,61 @@ html[lang="en"] .route-stop strong { font-size: 14px; letter-spacing: 0; }
   .references:has(.reference-title) { padding-block: 28px 48px; }
   .reference-title { gap: 14px; margin-bottom: 4px; font-size: 15px; }
 }
+
+/* ---- Polish pass, 2026-11-13 (owner: the first screen had too much empty space) ---- */
+
+/* Hero. The section used to be stretched to the height of the first screen, which left about
+   160px of empty space above and below the CRYPTO lettering on a tall window. It is now as tall
+   as its content: the stage's height follows the lettering (about 21% of the pattern's width,
+   so the height is tied to the window's width) with a little air, so the partner logos come up into the first screen. */
+@media (min-width: 901px) { .hero { height: auto; min-height: 0; } }
+/* (The stage was a flex item that grew to fill the stretched hero; it has its own height now.) */
+.hero .member-stage { --pattern-inset: 0px; flex: none; min-height: 0; height: clamp(180px, 24vw + 10px, 342px); margin-top: 30px; }
+/* The pattern keeps its own 1400 x 450 shape, so the lettering stays as large as the width
+   allows whatever the stage's height. It is placed so that the capitals (y 66 to 356 of 450)
+   are centred on the stage: half the drawing's height is 16.07% of its width, less 1% because
+   the capitals sit that much above the drawing's middle. */
+.hero .member-stage .member-pattern { inset: auto var(--pattern-inset); top: 50%; height: auto; aspect-ratio: 1400 / 450; margin-top: calc((100% - 2 * var(--pattern-inset)) * -.1507); }
+@media (min-width: 901px) { .hero .member-stage { --pattern-inset: 8px; } }
+@media (max-width: 600px) { .hero .member-stage { --pattern-inset: 6px; height: 168px; margin-top: 4px; } }
+
+/* Section titles share one tracking in English; the services and approach titles were tighter
+   (-.045em) because their rules carried an id. */
+html[lang="en"] #refresh-services-root .services-heading h2,
+html[lang="en"] #approach h2 { letter-spacing: -.025em; }
+
+/* "Entering Korea with a plan." was the only centred section title. It now sits on the left with
+   its line on the right, like the other sections. */
+#approach .section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 40px; text-align: left; }
+#approach .section-heading > p:last-child { max-width: 400px; margin: 0; padding-bottom: 3px; text-align: left; }
+@media (max-width: 760px) {
+  #approach .section-heading { display: block; }
+  #approach .section-heading > p:last-child { margin-top: 16px; max-width: none; }
+}
+
+/* One rhythm between sections: the paddings that meet between two sections add up to 112px on
+   wide screens (they varied from 96 to 120) and 80px on phones (64 to 80). */
+.context, #approach, #growth { padding-bottom: 56px; }
+@media (max-width: 600px) { .context, #approach, #growth { padding-bottom: 40px; } }
+
+/* Labels are 12px or more: those on the process board and in the context picture were 10 and
+   11px (10px on phones). The one exception is the board's heading on the narrowest phones, below. */
+.map-heading, .route-stop small, .context-art .context-bottom { font-size: 12px; }
+@media (max-width: 600px) {
+  .map-heading, .route-stop small, .context-art .context-bottom { font-size: 12px; }
+  .button { font-size: 13px; }
+}
+@media (max-width: 900px) { .context-art .signal-tag { font-size: 12px; } }
+/* On the narrowest phones the board's heading would wrap at 12px; it keeps one line at 11px. */
+@media (max-width: 360px) { .map-heading { font-size: 11px; letter-spacing: 0; } }
+
+/* On phones the lettering is small, so the ribbons are a little smaller there and cover less of
+   it; the link keeps a taller touch area than the ribbon. */
+@media (max-width: 600px) {
+  .hero .floating-member { padding-block: 5px; }
+  .hero .floating-member .member-flag { width: 84px; }
+}
+
+/* On the stacked services list the label keeps the height of its longest state; a shorter one
+   (and the resting line) now sits in the middle of it, not at the top of an empty box. */
+@media (max-width: 900px) { .sf-team-state, .sf-team-state.is-active { align-self: center; } }

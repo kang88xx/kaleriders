@@ -26,6 +26,21 @@ export const FLIGHT_ROUTES = [
   [[.9,.52],[.61,.18],[.28,.72],[.08,.38],[.3,.09],[.63,.57],[.88,.8],[.93,.2]],
 ];
 
+// The hero's name ribbons keep to the band of the CRYPTO lettering (owner, 2026-11-13): each
+// route is a slow loop of gentle waves along the word and back, without wide swings above and
+// below it. The closing section keeps FLIGHT_ROUTES.
+export const HERO_ROUTES = [
+  [[.06,.44],[.22,.6],[.4,.4],[.6,.62],[.8,.42],[.9,.56],[.72,.66],[.5,.34],[.3,.62],[.12,.34]],
+  [[.88,.36],[.7,.56],[.5,.66],[.3,.44],[.1,.6],[.16,.36],[.36,.3],[.56,.5],[.76,.32],[.92,.58]],
+  [[.48,.3],[.66,.46],[.86,.64],[.92,.4],[.74,.3],[.54,.6],[.34,.36],[.14,.66],[.06,.4],[.26,.3]],
+];
+
+// Where on its route each ribbon starts. Chosen by trying every combination in steps of .05 for
+// the one that keeps the three ribbons apart longest after the page opens (they overlap 2% of
+// the first 20 seconds on a wide screen, against 14% before); with reduced motion they stay at
+// these points.
+export const HERO_OFFSETS = [.65, .95, .85];
+
 export function flightDepth(progress, index) {
   return Math.sin(progress * Math.PI * 4 + index * 1.7) < -.58 ? 2 : 4;
 }
@@ -59,8 +74,8 @@ export function initMemberArt() {
       actors: [...container.querySelectorAll('[data-flight-member]')].map((element, index) => ({
         element, index, elapsed: 0, hovered: false, focused: false, manual: null, drag: null,
         duration: closing ? 26 + index * 9 : 32 + index * 7,
-        offset: closing ? index * .47 : index * .27,
-        route: FLIGHT_ROUTES[index],
+        offset: closing ? index * .47 : HERO_OFFSETS[index],
+        route: closing ? FLIGHT_ROUTES[index] : HERO_ROUTES[index],
         avatar: element.querySelector('.member-avatar'),
       })),
     };

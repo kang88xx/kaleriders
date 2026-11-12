@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { sampleFlight, FLIGHT_ROUTES, flightDepth, initMemberArt } from '../public/member-art.js';
+import { sampleFlight, FLIGHT_ROUTES, HERO_ROUTES, HERO_OFFSETS, flightDepth, initMemberArt } from '../public/member-art.js';
 import { MIXED_BOTANICAL_VARIANTS } from '../public/mixed-botanical-art.js';
 
 for (const [index, route] of FLIGHT_ROUTES.entries()) {
@@ -25,6 +25,41 @@ for (const [index, route] of FLIGHT_ROUTES.entries()) {
     assert.deepEqual([...depths].sort(), [2, 4], 'Each route passes behind and in front');
   });
 }
+
+// The owner asked on 2026-11-13 for the hero's name ribbons to stay near the CRYPTO lettering and
+// to move naturally: the routes keep to the middle band of the stage, without sharp turns.
+for (const [index, route] of HERO_ROUTES.entries()) {
+  test(`hero route ${index}: kept to the band of the lettering, along most of the word, without hairpins`, () => {
+    const samples = Array.from({ length: 4001 }, (_, i) => sampleFlight(route, i / 4000));
+    const xs = samples.map(point => point.x), ys = samples.map(point => point.y);
+    assert(Math.min(...ys) >= .25 && Math.max(...ys) <= .7, `y leaves the band: ${Math.min(...ys).toFixed(2)} to ${Math.max(...ys).toFixed(2)}`);
+    assert(Math.min(...xs) >= 0 && Math.max(...xs) <= 1, 'x stays normalized');
+    assert(Math.max(...xs) - Math.min(...xs) > .75, 'the ribbon travels along most of the word');
+    // No hairpins: on a stage about four times as wide as it is tall, the direction never turns
+    // by more than 40 degrees over 1% of the loop (the routes used before turned up to 88).
+    let sharpest = 0;
+    for (let i = 20; i < samples.length - 20; i += 5) {
+      const a = Math.atan2(samples[i].y - samples[i - 20].y, (samples[i].x - samples[i - 20].x) * 4);
+      const b = Math.atan2(samples[i + 20].y - samples[i].y, (samples[i + 20].x - samples[i].x) * 4);
+      sharpest = Math.max(sharpest, Math.abs(Math.atan2(Math.sin(b - a), Math.cos(b - a))) * 180 / Math.PI);
+    }
+    assert(sharpest < 40, `the route turns ${sharpest.toFixed(1)} degrees at once`);
+  });
+}
+assert.equal(HERO_ROUTES.length, FLIGHT_ROUTES.length);
+
+// On a 1320 x 342 stage with 140 x 44 ribbons, as on a wide screen.
+test('the three hero ribbons start apart and stay apart while the page opens', () => {
+  const durations = [32, 39, 46];
+  let overlapping = 0, samples = 0;
+  for (let time = 0; time <= 20; time += .25, samples++) {
+    const at = HERO_ROUTES.map((route, index) => { const point = sampleFlight(route, HERO_OFFSETS[index] + time / durations[index]); return [point.x * (1320 - 140 - 24), point.y * (342 - 44 - 30)]; });
+    const touching = at.some((a, i) => at.some((b, j) => j > i && Math.abs(a[0] - b[0]) < 140 * .7 && Math.abs(a[1] - b[1]) < 44 * .7));
+    if (time === 0) assert(!touching, 'two ribbons start on top of each other');
+    overlapping += touching;
+  }
+  assert(overlapping / samples < .1, `ribbons overlap for ${(overlapping / samples * 100).toFixed(0)}% of the first 20 seconds`);
+});
 
 // This fixture models layout measurements and events only, not the flight math.
 // Position assertions compare observable transforms across real engine ticks.
@@ -544,4 +579,24 @@ test('failed artwork decoding keeps the existing SVG fallback and placement cont
     f.step(20);
     assert.equal(f.errors.length, 1, 'Animation does not repeatedly retry broken assets');
   } finally { f.restore(); }
+});
+
+// The hero scene must really fly its ribbons on HERO_ROUTES, each from its HERO_OFFSETS point
+// (review, 2026-11-13: nothing failed when the scene was switched back to the old routes).
+test('hero ribbons are placed on the hero routes, at their starting offsets', async () => {
+  const f = await fixture({ reduced: true });
+  try {
+    f.step(3);
+    const stage = f.scenes[0];
+    for (const index of [0, 1, 2]) {
+      const actor = f.actor(0, index);
+      const [, x, y] = actor.style.transform.match(/translate3d\(([-\d.]+)px,([-\d.]+)px/);
+      const at = sampleFlight(HERO_ROUTES[index], HERO_OFFSETS[index]);
+      const expectedX = 12 + at.x * Math.max(0, stage.clientWidth - actor.offsetWidth - 24);
+      const expectedY = 15 + at.y * Math.max(0, stage.clientHeight - actor.offsetHeight - 30);
+      assert(Math.abs(Number(x) - expectedX) < .02 && Math.abs(Number(y) - expectedY) < .02, `ribbon ${index} is at ${x},${y}, not on its hero route (${expectedX.toFixed(2)},${expectedY.toFixed(2)})`);
+      const old = sampleFlight(FLIGHT_ROUTES[index], index * .27);
+      assert(Math.abs(Number(x) - (12 + old.x * Math.max(0, stage.clientWidth - actor.offsetWidth - 24))) > 1 || Math.abs(Number(y) - (15 + old.y * Math.max(0, stage.clientHeight - actor.offsetHeight - 30))) > 1, `ribbon ${index} is still on the earlier route`);
+    }
+  } finally { f.dispose(); }
 });
