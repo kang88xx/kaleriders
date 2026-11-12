@@ -22,6 +22,18 @@ export const members = [
   },
 ];
 
+// Which coins turn on an automatic beat: usually one, sometimes two together, now and then all
+// three. A single coin is never the one that turned alone on the beat before.
+export function pickFlips(count, previous = [], random = Math.random) {
+  const roll = random();
+  const size = Math.min(count, roll < .6 ? 1 : roll < .92 ? 2 : 3);
+  const pool = Array.from({ length: count }, (_, index) => index);
+  const candidates = size === 1 && previous.length === 1 && count > 1 ? pool.filter(index => index !== previous[0]) : pool;
+  const turning = [];
+  while (turning.length < size) turning.push(...candidates.splice(Math.floor(random() * candidates.length), 1));
+  return turning.sort((first, second) => first - second);
+}
+
 export function initRefreshTeam(doc = document) {
   const root = doc.getElementById('refresh-team-root');
   if (!root || root.dataset.ready === 'true') return;
@@ -30,11 +42,10 @@ export function initRefreshTeam(doc = document) {
   const reducedMotion = view.matchMedia('(prefers-reduced-motion: reduce)');
   let language = doc.documentElement.lang === 'en' ? 'en' : 'ko';
   let visible = false;
-  let active = -1;
-  let last = -1;
+  let lastTurned = [];
   let autoTimer;
-  let phaseTimer;
-  let returnTimer;
+  const flipped = new Set();      // coins showing their PFP
+  const returnTimers = new Map(); // coin index -> timer that turns it back
   const bindings = [];
   const portraits = [];
   const element = (tag, className, parent, text) => {
@@ -88,60 +99,58 @@ export function initRefreshTeam(doc = document) {
     portraits.push(visual);
     visual.addEventListener('click', () => {
       const index = portraits.indexOf(visual);
-      if (active === index) resetPreview();
-      else preview(index);
+      if (flipped.has(index)) unflip(index);
+      else flip(index);
       schedule();
     });
   });
 
   function updateButtons() {
     portraits.forEach((button, index) => {
-      const flipped = index === active && button.classList.contains('is-flipped');
-      button.setAttribute('aria-pressed', String(flipped));
+      const turned = flipped.has(index);
+      button.setAttribute('aria-pressed', String(turned));
       button.setAttribute('aria-label', language === 'en'
-        ? `${members[index].name}: ${flipped ? 'return to portrait' : 'preview PFP character'}`
-        : `${members[index].name}: ${flipped ? '인물 사진으로 돌아가기' : 'PFP 캐릭터 보기'}`);
+        ? `${members[index].name}: ${turned ? 'return to portrait' : 'preview PFP character'}`
+        : `${members[index].name}: ${turned ? '인물 사진으로 돌아가기' : 'PFP 캐릭터 보기'}`);
     });
   }
-  function resetPreview() {
-    view.clearTimeout(phaseTimer);
-    view.clearTimeout(returnTimer);
-    portraits.forEach(button => button.classList.remove('is-flipped'));
-    active = -1;
-    root.dataset.pfpState = 'portrait';
-    delete root.dataset.pfpMember;
+  function updateState() {
+    root.dataset.pfpState = flipped.size ? 'pfp' : 'portrait';
+    if (flipped.size) root.dataset.pfpMember = [...flipped].map(index => members[index].id).join(' ');
+    else delete root.dataset.pfpMember;
     updateButtons();
   }
-  function preview(index) {
-    resetPreview();
-    active = index;
-    last = index;
-    const button = portraits[index];
-    const duration = reducedMotion.matches ? 0 : 350;
-    button.classList.add('is-flipped');
-    root.dataset.pfpMember = members[index].id;
-    root.dataset.pfpState = duration ? 'flipping' : 'pfp';
-    updateButtons();
-    phaseTimer = view.setTimeout(() => {
-      root.dataset.pfpState = 'pfp';
-      returnTimer = view.setTimeout(() => {
-        button.classList.remove('is-flipped');
-        root.dataset.pfpState = duration ? 'returning' : 'portrait';
-        updateButtons();
-        phaseTimer = view.setTimeout(resetPreview, duration);
-      }, 1000);
-    }, duration);
+  function unflip(index) {
+    view.clearTimeout(returnTimers.get(index));
+    returnTimers.delete(index);
+    portraits[index].classList.remove('is-flipped');
+    flipped.delete(index);
+    updateState();
+  }
+  // Each coin turns to its PFP, holds it for a second and turns back, independently of the others.
+  function flip(index) {
+    view.clearTimeout(returnTimers.get(index));
+    portraits[index].classList.add('is-flipped');
+    flipped.add(index);
+    updateState();
+    returnTimers.set(index, view.setTimeout(() => unflip(index), (reducedMotion.matches ? 0 : 350) + 1000));
+  }
+  function resetPreview() {
+    [...flipped].forEach(unflip);
+    updateState();
   }
   function schedule() {
     view.clearTimeout(autoTimer);
     const running = visible && !doc.hidden && !reducedMotion.matches && !root.contains(doc.activeElement);
     root.dataset.pfpAutoplay = reducedMotion.matches ? 'reduced-motion' : running ? 'running' : 'paused';
     if (!running) return;
+    // About every two seconds (it was three), a little uneven so the turns do not tick like a clock.
     autoTimer = view.setTimeout(() => {
-      const candidates = portraits.map((_, index) => index).filter(index => index !== last);
-      preview(candidates[Math.floor(Math.random() * candidates.length)]);
+      const turning = pickFlips(portraits.length, lastTurned);
+      lastTurned = turning;
+      turning.forEach(flip);
       schedule();
-    }, 3000);
+    }, 1700 + Math.random() * 600);
   }
   function pause() {
     view.clearTimeout(autoTimer);
@@ -158,7 +167,7 @@ export function initRefreshTeam(doc = document) {
   root.addEventListener('focusin', schedule);
   root.addEventListener('focusout', () => view.queueMicrotask(schedule));
   root.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && active >= 0) {
+    if (event.key === 'Escape' && flipped.size) {
       event.preventDefault();
       resetPreview();
       schedule();

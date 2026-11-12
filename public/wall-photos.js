@@ -1,6 +1,6 @@
 // Event photos added to the homepage photo wall on 2026-11-12: the event photographer's shots of
 // KBW Creators Night and Open AGI Frontier, and photos from public X posts about the events the
-// team ran or supported. Each appears once on the wall. Faces close to the camera are pixelated;
+// team ran or supported. Each appears once on the wall. Every face that can be made out is pixelated;
 // docs/case-study-sources.json records where every file came from and how it was edited.
 // `position` is an optional CSS object-position that keeps the subject inside the square tile
 // and the opened 3:2 frame.
@@ -152,4 +152,25 @@ export const addedWallPhotos = [
   { src: 'assets/cases/fogo/x-0178.jpg', position: '50% 66%', alt: copy('FOGO Mainnet Party 발표 화면과 행사 배너', 'Presentation screen and event banner at FOGO Mainnet Party') },
   { src: 'assets/cases/aria/x-0069.jpg', position: '50% 70%', alt: copy('Aria 밋업 입구의 안내 배너', 'Event banner outside the Aria meetup') },
   { src: 'assets/cases/aria/x-0023.jpg', position: '50% 74%', alt: copy('Aria 밋업 행사 안내 입간판', 'Signboard for the Aria meetup') },
+  // Added on 2026-11-13 to fill the 25 x 8 wall, chosen for merch, scale and production quality.
+  { src: 'assets/cases/creators-night/DSC05432.jpg', alt: copy('KBW Creators Night 기념품이 담긴 라탄 바구니와 장미', 'A rattan basket of KBW Creators Night keepsakes beside roses') },
+  { src: 'assets/cases/creators-night/DSC05489.jpg', alt: copy('KBW Creators Night 테이블에 쌓아 둔 에코백', 'Tote bags stacked on a table at KBW Creators Night') },
+  { src: 'assets/cases/open-agi/DSC01756.jpg', alt: copy('Open AGI Frontier 굿즈 테이블의 스티커 시트와 포장된 굿즈', 'Sticker sheets and wrapped merch on the Open AGI Frontier table') },
+  { src: 'assets/cases/momentum/x-0496.jpg', alt: copy('Momentum 로고가 들어간 백팩 굿즈', 'A backpack with the Momentum logo, given as event merch') },
+  { src: 'assets/cases/momentum/x-0510.jpg', position: '50% 60%', alt: copy('Keep The Mo’mentum 팔찌와 보조배터리 굿즈를 든 손', 'A hand holding a Keep The Mo’mentum wristband and a power bank gift') },
+  { src: 'assets/cases/fogo/x-0177.jpg', position: '50% 70%', alt: copy('FOGO Mainnet Party 현장에서 FOGO 캐릭터 패치가 달린 모자', 'A cap with a FOGO character patch at the FOGO Mainnet Party') },
+  { src: 'assets/cases/fogo/x-0191.jpg', alt: copy('Korea FOGO Meet Up 굿즈 테이블에 펼쳐 놓은 FOGO 티셔츠', 'FOGO T-shirts laid out on the merch table at Korea FOGO Meet Up') },
+  { src: 'assets/cases/kgen/x-0340.jpg', position: '50% 65%', alt: copy('VeriFi Korea 무대 화면 앞에서 든 금색 봉투', 'A gold envelope held up in front of the VeriFi Korea stage screen') },
+  { src: 'assets/cases/momentum/x-0365.jpg', alt: copy('‘For The Tokenized Future’ 문구가 인쇄된 Keep The Mo’mentum 행사 팔찌', 'A Keep The Mo’mentum wristband printed with “For The Tokenized Future”') },
+  { src: 'assets/cases/fogo/x-0195.jpg', position: '50% 30%', alt: copy('Korea FOGO Meet Up 입구의 불꽃 그림 스탠딩 배너', 'A standing banner with a flame illustration at the Korea FOGO Meet Up entrance') },
+  { src: 'assets/cases/creators-night/DSC05866.jpg', alt: copy('루프톱에 모여 이야기를 나누는 KBW Creators Night 참석자들', 'KBW Creators Night guests gathered on the rooftop') },
+  { src: 'assets/cases/creators-night/DSC05990.jpg', alt: copy('KBW Creators Night 루프톱을 채운 참석자들', 'Guests filling the rooftop at KBW Creators Night') },
+  { src: 'assets/cases/creators-night/DSC05785.jpg', alt: copy('KBW Creators Night 행사장을 가득 채운 참석자들', 'Guests crowding the venue floor at KBW Creators Night') },
+  { src: 'assets/cases/open-agi/DSC01808.jpg', alt: copy('Open AGI Frontier 케이터링 테이블 주변에 모인 참석자들', 'Attendees gathered around the catering table at Open AGI Frontier') },
+  { src: 'assets/cases/kgen/x-0264.jpg', alt: copy('KGEN VeriFi Korea 행운의 추첨 무대를 촬영하는 객석', 'The audience filming the lucky draw on the KGEN VeriFi Korea stage') },
+  { src: 'assets/cases/kgen/x-0338.jpg', alt: copy('KGEN VeriFi Korea 무대에서 커뮤니티 영상을 배경으로 한 발표', 'A talk on the KGEN VeriFi Korea stage in front of community footage') },
+  { src: 'assets/cases/creators-night/DSC05869.jpg', alt: copy('KBW Creators Night 바에 차려진 해산물과 핑거푸드', 'Seafood and finger food laid out on the bar at KBW Creators Night') },
+  { src: 'assets/cases/kgen/x-0333.jpg', alt: copy('‘VeriFi Korea · Human × Robots’ 타이틀이 뜬 KGEN 무대 화면', 'The KGEN stage screen showing the VeriFi Korea, Human × Robots title') },
+  { src: 'assets/cases/momentum/x-0378.jpg', position: '50% 80%', alt: copy('조명 아래 Keep The Mo’mentum 무대와 퀴즈 화면', 'The Keep The Mo’mentum stage and a quiz screen under the lighting rig') },
+  { src: 'assets/cases/fogo/x-0174.jpg', alt: copy('FOGO Mainnet Party의 케이터링 테이블과 꽃 장식', 'The catering table with flowers at the FOGO Mainnet Party') },
 ];

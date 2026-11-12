@@ -9,9 +9,10 @@
 .sf-icon .service-icon { width: 28px; height: 28px; }
 .sf-word { font-size: 19px; font-weight: 800; line-height: 1; letter-spacing: -.02em; }
 .sf-mark { display: block; width: 54px; height: 54px; background: currentColor; -webkit-mask: center / contain no-repeat; mask: center / contain no-repeat; }
-/* Only the highlighted service has a lime check; the others keep a quiet outlined one. */
-.sf-check { position: absolute; top: -3px; right: -3px; width: 22px; height: 22px; border: 2px solid var(--deep); border-radius: 50%; background: var(--deep); box-shadow: inset 0 0 0 1px #ffffff80; transform: scale(0); transition: transform .35s cubic-bezier(.3, 1.4, .5, 1) calc(.7s + var(--sf-delay, 0s)), background-color .25s, box-shadow .25s; }
-.sf-check::after { content: ''; position: absolute; left: 6px; top: 3px; width: 5px; height: 9px; border: solid var(--sf-soft); border-width: 0 1.5px 1.5px 0; transform: rotate(45deg); transition: border-color .25s; }
+/* Only the highlighted service has a mark: the KALE Riders leaf on the circle's right shoulder
+   (assets/kale-leaf-128.png, cut from the favicon). It pops in with the highlight and leaves with it. */
+.sf-leaf { position: absolute; top: -16px; right: -15px; width: 40px; height: 40px; background: url('assets/kale-leaf-128.png') center / contain no-repeat; filter: drop-shadow(0 2px 5px #0b183059); rotate: -6deg; opacity: 0; transform: scale(.5); transform-origin: left bottom; transition: transform .3s cubic-bezier(.3, 1.4, .5, 1), opacity .2s; pointer-events: none; }
+.sf-service.is-shown .sf-leaf { opacity: 1; transform: scale(1); }
 .sf-text { display: grid; justify-items: center; gap: 4px; }
 .sf-name { font-size: 18px; font-weight: 500; line-height: 1.35; letter-spacing: -.03em; }
 html[lang="en"] .sf-name { letter-spacing: -.01em; }
@@ -19,8 +20,6 @@ html[lang="en"] .sf-name { letter-spacing: -.01em; }
 /* The highlighted service (cycling, or held after pointing or pressing): lime icon and name. */
 .sf-service.is-shown .sf-icon { border-color: var(--lime); background: var(--lime); color: var(--ink); }
 .sf-service.is-shown .sf-name { color: var(--lime); }
-.sf-service.is-shown .sf-check { background: var(--lime); box-shadow: none; }
-.sf-service.is-shown .sf-check::after { border-color: var(--ink); border-width: 0 2px 2px 0; }
 .sf-name { transition: color .25s; }
 
 .sf-fan { display: block; width: 100%; height: 88px; margin-top: 6px; overflow: visible; }
@@ -33,10 +32,9 @@ html[lang="en"] .sf-name { letter-spacing: -.01em; }
 .sf-team-state.is-active { display: contents; }
 .sf-team strong { font-weight: 600; }
 
-/* Drawn once when the graphic first appears: lines from left to right, then the checks.
+/* Drawn once when the graphic first appears: lines from left to right.
    Only the drawing is staggered; highlight colours change at once. */
 .sf.is-drawn .sf-fan path { stroke-dashoffset: 0; }
-.sf.is-drawn .sf-check { transform: scale(1); }
 :is(.sf-fan path, .sf-item):nth-child(2) { --sf-delay: .12s; }
 :is(.sf-fan path, .sf-item):nth-child(3) { --sf-delay: .24s; }
 :is(.sf-fan path, .sf-item):nth-child(4) { --sf-delay: .36s; }
@@ -71,9 +69,9 @@ html[lang="en"] .sf-name { letter-spacing: -.01em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .sf-fan path, .sf-check, .sf-icon, .sf-list::before { transition: none; }
+  .sf-fan path, .sf-leaf, .sf-icon, .sf-list::before { transition: none; }
 }
-html.motion-paused :is(.sf-fan path, .sf-check, .sf-list::before) { transition: none; }
+html.motion-paused :is(.sf-fan path, .sf-leaf, .sf-list::before) { transition: none; }
 
 /* The partner projects' symbols as an overlapping row beside the shown service. */
 .sf-logos { display: inline-flex; flex: none; align-items: center; margin-right: 4px; }
@@ -82,6 +80,10 @@ html.motion-paused :is(.sf-fan path, .sf-check, .sf-list::before) { transition: 
 .sf-logo img { display: block; width: 100%; height: 100%; object-fit: cover; }
 /* A mark on a clear ground sits inside the circle; a wordmark file shows the symbol at its left. */
 .sf-logo[data-fit="mark"] img { padding: 4px; object-position: left center; }
+/* The KGeN mark is a square that fills its file, so a round crop cut its corners: it is drawn
+   smaller on its own charcoal ground. */
+.sf-logo[title='KGeN'] { background: #172629; }
+.sf-logo[title='KGeN'] img { transform: scale(.82); }
 .sf-logo.sf-logo-more { display: grid; place-items: center; width: auto; min-width: 26px; padding: 0 6px; border-radius: 999px; background: #e4e8f2; color: var(--ink); font-size: 12px; font-weight: 600; line-height: 1; }
 .sf-team-state { align-items: center; }
 @media (max-width: 900px) { .sf-logos { flex: 0 0 100%; margin: 0 0 6px; } }
@@ -92,3 +94,5 @@ html.motion-paused :is(.sf-fan path, .sf-check, .sf-list::before) { transition: 
   .sf-team-state, .sf-team-state.is-active { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 10px; grid-area: 1 / 1; }
   .sf-team-state:not(.is-active) { visibility: hidden; }
 }
+/* On the vertical list the leaf is smaller, so it stays clear of the service name. */
+@media (max-width: 900px) { .sf-leaf { top: -10px; right: -9px; width: 27px; height: 27px; } }

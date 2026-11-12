@@ -2,9 +2,14 @@ import { english } from './translations.js?v=symbols-20261112';
 
 let currentLanguage = 'en';
 
+// Korean is switched off for now (owner, 2026-11-13): the page opens in English whatever the
+// address says, and the pages hide the language buttons. Set this to true and remove `hidden`
+// from .language-switch in index.html and sample.html to bring Korean back.
+export const koreanEnabled = false;
+
 export const resolveLanguage = search => {
   const requested = new URLSearchParams(search).get('lang');
-  return requested === 'ko' || requested === 'en' ? requested : 'en';
+  return koreanEnabled && requested === 'ko' ? 'ko' : 'en';
 };
 
 export const translate = (text, language = currentLanguage) =>

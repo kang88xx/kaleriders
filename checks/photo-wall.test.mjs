@@ -6,13 +6,15 @@ import { fileURLToPath } from 'node:url';
 import { arrangeWall, eventFilms, initRefreshMedia, orderFilms, phoneTiles, thumbOf, wallPhotos, wallPool, wallTiles } from '../public/refresh-media.js';
 import { initRefreshGallery } from '../public/refresh-gallery.js';
 
-// The owner chose 25 columns on 2026-11-12 (tiles 20% smaller). Eleven rows keep the wall about as
-// tall as before, which takes more tiles than there are photos.
-test('the wall fills 25 x 11 tiles in a fixed order: every photo once, then some a second time', () => {
+// The owner chose 25 columns on 2026-11-12 (tiles 20% smaller) and 8 rows on 2026-11-13, then asked
+// for 200 photos so that none repeats.
+test('the wall fills 25 x 8 tiles in a fixed order with every photo once', () => {
   const wall = arrangeWall();
   const sources = wall.map(photo => photo.src);
   assert.equal(wall.length, wallTiles);
-  assert.equal(wallTiles, 25 * 11);
+  assert.equal(wallTiles, 25 * 8);
+  assert.equal(wallPool.length, wallTiles, 'The wall needs exactly 200 photos, or some repeat');
+  assert.equal(new Set(sources).size, wallTiles, 'A photo repeats on the wall');
   assert.deepEqual(arrangeWall().map(photo => photo.src), sources, 'The order changes between visits');
   assert.equal(new Set(sources.slice(0, wallPool.length)).size, wallPool.length, 'A photo is missing from the first pass');
   assert.notDeepEqual(sources.slice(0, wallPool.length), wallPool.map(photo => photo.src), 'The wall is not mixed');
@@ -145,8 +147,8 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
     const index = wall.indexOf(focused);
     tiles[index].listeners.get('click')[0]();
     assert(tiles[index].classList.contains('is-open'));
-    assert.equal(tiles[index].style.width, `${(columns === 25 ? 10 : 8) * cell}px`, 'The opened photo has the wrong width');
-    assert.equal(tiles[index].style.height, `${(columns === 25 ? 7 : 5) * cell}px`, 'The opened photo has the wrong height');
+    assert.equal(tiles[index].style.width, `${(columns === 25 ? 9 : 8) * cell}px`, 'The opened photo has the wrong width');
+    assert.equal(tiles[index].style.height, `${(columns === 25 ? 6 : 5) * cell}px`, 'The opened photo has the wrong height');
     assert.match(tiles[index].getAttribute('aria-label'), new RegExp(`^${index + 1}/${used} `), 'The label counts tiles that are not shown');
     assert(tiles[index].firstElementChild.src.endsWith(`/public/${focused.src}`), 'The opened photo did not load its full file');
     assert(tiles[(index + 1) % tiles.length].firstElementChild.src.endsWith(`/public/${wall[(index + 1) % tiles.length].thumb}`), 'A closed tile loaded its full file');
@@ -155,6 +157,42 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
     assert.equal(tiles[index].firstElementChild.alt, focused.alt.en);
     assert(grid.previousSibling.textContent.includes(focused.alt.en), 'The status does not describe the opened photo');
   }
+});
+
+// On 2026-11-13 the owner saw the wall "suddenly all bright": pressing the opened photo closed it,
+// and a tile pressed with the mouse kept focus, which left autoplay paused after the pointer had gone.
+test('the playing wall always has one photo open, and a press does not leave it stuck', () => {
+  const { doc, grid } = fakeGallery(1000, 1440);
+  const view = doc.defaultView;
+  let seen;
+  view.matchMedia = () => ({ matches: false, addEventListener() {} });
+  view.IntersectionObserver = class { constructor(callback) { seen = callback; } observe() {} };
+  initRefreshGallery(grid, arrangeWall(), doc, { compactCount: phoneTiles });
+  const tiles = grid.children.slice(1);
+  const opened = () => tiles.filter(tile => tile.classList.contains('is-open'));
+  assert.equal(opened().length, 1, 'A photo should be open before the wall is first seen');
+  assert(grid.classList.contains('rg-open'));
+  seen([{ isIntersecting: true, intersectionRatio: 1 }]);
+  assert.equal(grid.dataset.autoplay, 'running');
+
+  const first = opened()[0];
+  first.listeners.get('click')[0]();
+  assert.deepEqual(opened(), [first], 'Pressing the opened photo should leave it open');
+  assert.equal(grid.dataset.autoplay, 'paused', 'A pressed photo is held for a while');
+
+  // Focus from a mouse press is not :focus-visible, so it does not hold the wall once the pointer leaves.
+  grid.listeners.get('focusin')[0]({ target: { matches: () => false } });
+  grid.listeners.get('pointerleave')[0]({ pointerType: 'mouse' });
+  assert.equal(grid.dataset.autoplay, 'running');
+  // A finger lifting after a tap must not cancel the hold.
+  first.listeners.get('click')[0]();
+  grid.listeners.get('pointerleave')[0]({ pointerType: 'touch' });
+  assert.equal(grid.dataset.autoplay, 'paused');
+  grid.listeners.get('pointerleave')[0]({ pointerType: 'mouse' });
+  // Keyboard focus still holds it.
+  grid.listeners.get('focusin')[0]({ target: { matches: () => true } });
+  assert.equal(grid.dataset.autoplay, 'paused');
+  assert.equal(opened().length, 1);
 });
 
 test('any film can be the large one, with the other two after it in their listed order', () => {

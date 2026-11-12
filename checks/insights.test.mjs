@@ -5,9 +5,13 @@ import { getPerformanceSummary, performanceData } from '../public/service-perfor
 // The owner asked on 2026-11-12 for 2, 4 and 8 weeks in place of 4, 8 and 12.
 test('the report example offers 2, 4 and 8 weeks and its data ends at the longest period', () => {
   assert.deepEqual(performanceData.periods, [2, 4, 8]);
-  assert.equal(performanceData.defaultPeriod, 4, 'The report should open on the middle period');
+  // The report plays 2, 4, 8 weeks by itself from the first period; with reduced motion it stays on this one.
+  assert.equal(performanceData.defaultPeriod, 4, 'The resting report should show the middle period');
   assert.equal(performanceData.weeks.length, Math.max(...performanceData.periods), 'The chart would end before or after the longest period');
   assert.deepEqual(performanceData.weeks.map(row => row.week), [1, 2, 3, 4, 5, 6, 7, 8]);
+  // The chart's scale runs 0, 500, 1,000, 1,500, 2,000 (owner, 2026-11-13); the line should use it.
+  const peak = Math.max(...performanceData.weeks.map(row => row.actions));
+  assert(peak > 1500 && peak <= 2000, `The weekly peak ${peak} does not fit a 0 to 2,000 scale`);
 });
 
 test('each period sums the weeks up to it', () => {

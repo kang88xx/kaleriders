@@ -1,7 +1,7 @@
-import { services, sectionCopy, copy, lines, icon, escape, localize, serviceCycle, logoGroup } from './services-content.js?v=symbols-20261112';
+import { services, sectionCopy, copy, lines, icon, escape, localize, serviceCycle, logoGroup } from './services-content.js?v=leaf-20261113';
 
 // The services infographic: the six services side by side, each line running into one team.
-// Lines and checks draw once when the section appears. Then the highlight moves to the next
+// The lines draw once when the section appears. Then the highlight moves to the next
 // service every 1.56 seconds, round and round, and the team label shows that service's steps
 // beside the partner projects' symbols.
 // Pointing at, pressing or focusing a service holds it for 3 seconds. The cycle pauses while the
@@ -27,7 +27,7 @@ export const signMarkup = service => {
 };
 
 export const serviceMarkup = (service, index) => `<li class="sf-item"><button type="button" class="sf-service" data-index="${index}" aria-controls="sf-team" aria-describedby="sf-steps-${index}">`
-  + `<span class="sf-icon">${signMarkup(service)}<i class="sf-check" aria-hidden="true"></i></span>`
+  + `<span class="sf-icon">${signMarkup(service)}<i class="sf-leaf" aria-hidden="true"></i></span>`
   + `<span class="sf-text"><span class="sf-name">${copy(service.label)}</span><span class="sf-line">${copy(service.line)}</span></span>`
   + '</button></li>';
 
@@ -66,7 +66,7 @@ export function initRefreshServices(doc = document, view = window) {
       visible = entries[entries.length - 1].isIntersecting;
       if (visible && !drawn) {
         graphic.classList.add('is-drawn');
-        // Start after the lines and checks have drawn in.
+        // Start after the lines have drawn in.
         view.setTimeout(() => { drawn = true; update(); }, still.matches ? 0 : 1400);
       }
       update();

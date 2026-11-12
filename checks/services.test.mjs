@@ -9,13 +9,15 @@ const bilingual = (pair, where) => {
   assert(pair[0].trim() && pair[1].trim(), `${where}: a language is missing`);
 };
 
-test('the six services keep their order, each with a short line and three steps in both languages', () => {
+test('the six services keep their order, each with a short line and three or four steps in both languages', () => {
   assert.deepEqual(services.map(service => service.id), ['kol', 'community', 'meetup', 'press', 'airdrop', 'events']);
   for (const service of services) {
     bilingual(service.label, `${service.id} label`);
     bilingual(service.line, `${service.id} line`);
-    assert(service.line[0].length <= 20 && service.line[1].length <= 40, `${service.id}: a line is too long for the graphic`);
-    assert.equal(service.steps.length, 3, service.id);
+    // Airdrops is the longest: on 2026-11-13 the owner asked for whitelists and sale allocation in it
+    // and approved the draft with this line and four steps. The others stay at three.
+    assert(service.line[0].length <= 24 && service.line[1].length <= 48, `${service.id}: a line is too long for the graphic`);
+    assert.equal(service.steps.length, service.id === 'airdrop' ? 4 : 3, service.id);
     service.steps.forEach((step, index) => bilingual(step, `${service.id} step ${index + 1}`));
     // One sign per circle: a line icon, lettering (KOL) or a logo file drawn in the text colour (KBW).
     assert.equal([service.icon, service.word, service.mark].filter(Boolean).length, 1, `${service.id}: exactly one sign`);
@@ -33,7 +35,7 @@ test('the six services keep their order, each with a short line and three steps 
 test('the section stays a light infographic without numbers', () => {
   const html = sectionMarkup();
   assert.match(html, /<h2 id="services-title">/);
-  assert.equal(html.match(/<img /g).length, partners.length * services.length, 'the only images are the partner symbols in the team label');
+  assert.equal(html.match(/<img /g).length, services.reduce((sum, service) => sum + service.partners.length, 0), 'the only images are the partner symbols in the team label');
   assert.deepEqual(services.filter(service => service.word).map(service => service.id), ['kol']);
   assert.deepEqual(services.filter(service => service.mark).map(service => service.id), ['events']);
   assert(!/<video|<table|data-open-brief|예시|Example|사례 입력|sf-no|aria-pressed|aria-live/.test(html), 'a photo, record, inquiry button, number, toggle or live region is back');
@@ -142,9 +144,9 @@ test('the six services feed one team label through six lines', () => {
   assert.deepEqual([...team.matchAll(/class="sf-team-state is-active" data-state="(-?\d)"/g)].map(match => match[1]), ['-1'], 'only the team line shows at first');
 });
 
-// The owner asked on 2026-11-12 for the partner symbols in the team label and left the choice to
-// the build. Only the projects already shown in the partner-logo strip appear.
-test('the partner projects\' symbols sit beside every service in the team label, as decoration', () => {
+// The owner asked on 2026-11-12 for the partner symbols in the team label. Only the projects
+// already shown in the partner-logo strip appear.
+test('each service shows its own partner projects and +N in the team label, as decoration', () => {
   const page = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
   const strip = page.slice(page.indexOf('class="reference-strip"'), page.indexOf('<section id="services"'));
   for (const partner of partners) {
@@ -152,17 +154,45 @@ test('the partner projects\' symbols sit beside every service in the team label,
     assert(partner.src.startsWith('assets/references/'), `${partner.name}: symbol comes from the reference logos`);
     assert(strip.includes(`alt="${partner.name}"`), `${partner.name} is not in the partner-logo strip`);
   }
-  // After the symbols comes "+N": the owner asked on 2026-11-12 for a figure from 5 to 10 per service.
+  // On 2026-11-13 the owner listed each service's projects and its "+N"; KGeN comes last in a row.
+  const expected = {
+    kol: [['axis', 'buidlpad', 'fogo', 'kgen'], 12],
+    community: [['axis', 'buidlpad', 'fogo', 'superwalk'], 7],
+    meetup: [['axis', 'buidlpad', 'fogo', 'kgen'], 6],
+    press: [['axis', 'kgen'], 5],
+    airdrop: [['axis', 'buidlpad', 'fogo', 'superwalk', 'kgen'], 9],
+    events: [['axis', 'buidlpad', 'fogo', 'kgen'], 3],
+  };
+  assert.equal(partners.at(-1).id, 'kgen', 'KGeN should close the row');
   for (const service of services) {
-    assert(Number.isInteger(service.more) && service.more >= 5 && service.more <= 10, `${service.id}: +N is between 5 and 10`);
+    assert.deepEqual([service.partners, service.more], expected[service.id], `${service.id}: projects and +N`);
     const group = logoGroup(service);
     assert.match(group, /^<span class="sf-logos" aria-hidden="true">/);
-    assert.equal(group.match(/<span class="sf-logo"/g).length, partners.length, 'one circle per project');
-    assert.equal(group.match(/<img [^>]*alt=""/g).length, partners.length, 'the symbols carry no alt text of their own');
+    const shown = [...group.matchAll(/<span class="sf-logo"[^>]* title="([^"]+)"/g)].map(match => match[1]);
+    assert.deepEqual(shown, partners.filter(partner => service.partners.includes(partner.id)).map(partner => partner.name), `${service.id}: one circle per listed project, in the row's order`);
+    assert.equal(group.match(/<img [^>]*alt=""/g).length, service.partners.length, 'the symbols carry no alt text of their own');
     assert.equal(group.replace(/<[^>]+>/g, ''), `+${service.more}`, `${service.id}: the only text in the row is its +N, after the symbols`);
     assert(group.endsWith(`<span class="sf-logo sf-logo-more">+${service.more}</span></span>`), `${service.id}: +N comes last`);
   }
   const team = teamMarkup();
   assert.equal(team.match(/class="sf-logos"/g).length, services.length, 'one row per service state');
   assert(!team.slice(0, team.indexOf('data-state="0"')).includes('sf-logos'), 'the resting team line has no symbols');
+});
+
+// On 2026-11-13 the owner replaced the check on each circle with the team's own leaf, shown only
+// on the highlighted service, and asked for whitelists and sale allocation under Airdrops.
+test('the highlighted service carries the KALE Riders leaf, and Airdrops names whitelists and sale allocation', () => {
+  const html = sectionMarkup();
+  assert.equal(html.match(/<i class="sf-leaf" aria-hidden="true"><\/i>/g).length, services.length, 'one leaf slot per service');
+  assert(!html.includes('sf-check'), 'the check is back');
+  const css = readFileSync(new URL('../public/refresh-services.css', import.meta.url), 'utf8');
+  assert.match(css, /\.sf-leaf \{[^}]*opacity: 0/, 'a quiet service should show no leaf');
+  assert.match(css, /\.sf-service\.is-shown \.sf-leaf \{[^}]*opacity: 1/);
+  const leaf = readFileSync(new URL('../public/assets/kale-leaf-128.png', import.meta.url));
+  assert.equal(leaf.readUInt32BE(0), 0x89504e47, 'the leaf is a PNG');
+  assert(leaf.length < 40000, 'the leaf should stay a small file');
+  const airdrop = services.find(service => service.id === 'airdrop');
+  assert.deepEqual(airdrop.steps.map(step => step[1]), ['Mission design', 'Whitelist', 'Sale allocation', 'Participation review']);
+  assert.deepEqual(airdrop.steps.map(step => step[0]), ['참여 미션 설계', '화이트리스트', '세일 물량 배정', '참여 결과 확인']);
+  assert.match(airdrop.line[1], /whitelists and sale allocation/);
 });

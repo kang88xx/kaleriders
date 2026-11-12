@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
-import { initRefreshTeam, members } from '../public/refresh-team.js';
+import { initRefreshTeam, members, pickFlips } from '../public/refresh-team.js';
 
 test('every member has a portrait and a PFP file', () => {
   for (const member of members) {
@@ -95,4 +95,56 @@ test('each coin shows the member portrait and flips to their own PFP image', () 
   assert.equal(root.findAll(node => 'memberAvatar' in node.dataset).length, 0);
   listeners.get('languagechange')({ detail: { language: 'en' } });
   coins.forEach((images, index) => assert.equal(images[0].alt, members[index].alt.en));
+});
+
+// The owner asked on 2026-11-12 for the coins to turn at random, sometimes two at once.
+test('an automatic beat turns one coin, sometimes two together and now and then all three', () => {
+  const rolls = values => { let next = 0; return () => values[next++ % values.length]; };
+  assert.deepEqual(pickFlips(3, [], rolls([.1, 0])), [0]);
+  assert.deepEqual(pickFlips(3, [], rolls([.7, 0, 0])), [0, 1]);
+  assert.deepEqual(pickFlips(3, [], rolls([.95, .9, .5, 0])), [0, 1, 2]);
+  // A coin that turned alone does not turn alone again on the next beat.
+  assert.deepEqual(pickFlips(3, [0], rolls([.1, 0])), [1]);
+  const sizes = new Map();
+  let previous = [];
+  for (let beat = 0; beat < 3000; beat++) {
+    const turning = pickFlips(3, previous);
+    assert(turning.length >= 1 && turning.length <= 3);
+    assert.equal(new Set(turning).size, turning.length, 'A coin is picked twice on one beat');
+    assert(turning.every(index => index >= 0 && index < 3));
+    if (turning.length === 1 && previous.length === 1) assert.notEqual(turning[0], previous[0]);
+    sizes.set(turning.length, (sizes.get(turning.length) || 0) + 1);
+    previous = turning;
+  }
+  assert(sizes.get(1) > sizes.get(2) && sizes.get(2) > sizes.get(3) && sizes.get(3) > 0, 'One coin should be the usual case and three the rare one');
+});
+
+test('a pressed coin turns to its PFP and back without waiting for the others', () => {
+  const root = new FakeElement('div');
+  const view = {
+    matchMedia: () => ({ matches: true, addEventListener() {} }),
+    IntersectionObserver: class { observe() {} },
+    setTimeout: () => 0,
+    clearTimeout() {},
+    queueMicrotask() {},
+  };
+  const doc = {
+    defaultView: view, documentElement: { lang: 'ko' }, hidden: false, activeElement: null,
+    getElementById: id => (id === 'refresh-team-root' ? root : null),
+    createElement: tag => new FakeElement(tag),
+    addEventListener() {},
+  };
+  initRefreshTeam(doc);
+  const coins = root.findAll(node => node.className === 'rt-visual');
+  const press = index => coins[index].listeners.get('click')[0]();
+  press(0);
+  press(2);
+  assert.deepEqual(coins.map(coin => coin.getAttribute('aria-pressed')), ['true', 'false', 'true']);
+  assert.equal(root.dataset.pfpMember, 'kang mascot');
+  press(0);
+  assert.deepEqual(coins.map(coin => coin.getAttribute('aria-pressed')), ['false', 'false', 'true']);
+  assert.equal(root.dataset.pfpState, 'pfp');
+  press(2);
+  assert.equal(root.dataset.pfpState, 'portrait');
+  assert.equal(root.dataset.pfpMember, undefined);
 });

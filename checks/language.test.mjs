@@ -3,11 +3,12 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { resolveLanguage, translate, initLanguage } from '../public/i18n.js';
+import { koreanEnabled, resolveLanguage, translate, initLanguage } from '../public/i18n.js';
 import { english } from '../public/translations.js';
 
 for (const [search, saved, expected] of [
-  ['?lang=en', 'ko', 'en'], ['?lang=ko', 'en', 'ko'],
+  // Korean is switched off for now (owner, 2026-11-13), so ?lang=ko opens English too.
+  ['?lang=en', 'ko', 'en'], ['?lang=ko', 'en', 'en'],
   ['?lang=invalid', 'en', 'en'], ['?lang=', 'en', 'en'],
   ['', 'en', 'en'], ['', 'ko', 'en'], ['', undefined, 'en'],
   ['?lang=EN', 'invalid', 'en'], ['?other=en', null, 'en'],
@@ -151,8 +152,8 @@ test('the page stays hidden until the copy is in the visitor\'s language', () =>
     new Function('location', 'document', 'setTimeout', boot[1])({ search }, { documentElement: { classList } }, (callback, delay) => timers.push({ callback, delay }));
     return { classes, timers };
   };
-  assert.deepEqual([...visit('?lang=ko').classes], [], 'A Korean visit paints the Korean copy at once');
-  for (const search of ['', '?lang=en', '?lang=invalid', '?campaign=share']) {
+  // Korean is off for now, so a ?lang=ko address waits for the English copy like any other.
+  for (const search of ['', '?lang=en', '?lang=ko', '?lang=invalid', '?campaign=share']) {
     const { classes, timers } = visit(search);
     assert.deepEqual([...classes], ['language-pending'], `${JSON.stringify(search)} waits for the English copy`);
     assert.equal(timers.length, 1);
@@ -171,14 +172,14 @@ test('the page stays hidden until the copy is in the visitor\'s language', () =>
 test('explicit switching stores locale in the URL and preserves its query and anchor', () => {
   const f = fixture({ search: '?campaign=share&lang=ko', saved: 'en' });
   initLanguage(f.doc, f.view);
-  assert.equal(f.doc.documentElement.lang, 'ko', 'URL takes precedence at startup');
+  assert.equal(f.doc.documentElement.lang, 'en', 'Korean is off for now, so ?lang=ko opens in English');
   assert.deepEqual(f.writes, [], 'Initialization does not write a storage preference');
   f.buttons[1].click();
   assert.deepEqual(f.writes, [], 'Switching uses the URL without saving a storage preference');
   assert.equal(f.view.location.href, 'https://example.test/preview?campaign=share&lang=en#services');
   f.view.location.search = '?campaign=share&lang=ko';
   f.view.dispatchEvent(new Event('popstate'));
-  assert.equal(f.doc.documentElement.lang, 'ko', 'Browser history navigation applies URL locale');
+  assert.equal(f.doc.documentElement.lang, 'en', 'Going back to a ?lang=ko address stays in English while Korean is off');
   f.view.location.search = '?campaign=share';
   f.view.dispatchEvent(new Event('popstate'));
   assert.equal(f.doc.documentElement.lang, 'en', 'Returning to a URL without a locale restores English');
@@ -211,4 +212,13 @@ for (const denied of [false, true]) {
 test('unknown text is preserved in both locales', () => {
   assert.equal(translate('Unlisted / 사용자 텍스트', 'en'), 'Unlisted / 사용자 텍스트');
   assert.equal(translate('Unlisted / 사용자 텍스트', 'ko'), 'Unlisted / 사용자 텍스트');
+});
+
+test('the site shows English only for now: Korean is off and the language buttons are hidden', () => {
+  assert.equal(koreanEnabled, false);
+  assert.match(readFileSync(new URL('../public/index.html', import.meta.url), 'utf8'), /<html lang="en">/);
+  for (const page of ['index.html', 'sample.html']) {
+    const html = readFileSync(new URL(`../public/${page}`, import.meta.url), 'utf8');
+    assert.match(html, /<div class="language-switch" role="group" aria-label="언어 선택" hidden>/, `${page} still shows the language buttons`);
+  }
 });

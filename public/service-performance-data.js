@@ -5,8 +5,9 @@ export const performanceData = {
   periods: [2, 4, 8], defaultPeriod: 4,
   // Weekly activity in one fictional campaign. Columns: impressions, tracked visits, completed actions.
   weeks: [
-    [42000, 1400, 98], [56000, 1800, 144], [68000, 2200, 198], [84000, 2800, 280],
-    [92000, 3200, 352], [106000, 3600, 432], [122000, 4000, 520], [140000, 4600, 644],
+    // Tripled on 2026-11-13 so the weekly line fills the 0 to 2,000 scale the owner asked for; the rate is unchanged.
+    [126000, 4200, 294], [168000, 5400, 432], [204000, 6600, 594], [252000, 8400, 840],
+    [276000, 9600, 1056], [318000, 10800, 1296], [366000, 12000, 1560], [420000, 13800, 1932],
   ].map(([impressions, visits, actions], index) => ({ week: index + 1, impressions, visits, actions })),
 };
 export const getRate = (value, total) => total > 0 ? value / total * 100 : null;

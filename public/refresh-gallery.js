@@ -1,8 +1,8 @@
-import { fixedLayout } from './gallery-fixed/layouts.js?v=wall-25-20261112';
+import { fixedLayout } from './gallery-fixed/layouts.js?v=wall-200-20261113';
 
 const copy = {
-  ko: { hint: '사진을 눌러 크게 보세요.', toggle: '눌러서 펼치거나 접기', gallery: '행사 사진 갤러리' },
-  en: { hint: 'Select a photo to take a closer look.', toggle: 'Select to expand or collapse', gallery: 'Event photo gallery' },
+  ko: { hint: '사진을 눌러 크게 보세요.', toggle: '눌러서 크게 보기', gallery: '행사 사진 갤러리' },
+  en: { hint: 'Select a photo to take a closer look.', toggle: 'Select to enlarge', gallery: 'Event photo gallery' },
 };
 
 // Phones show only the first `compactCount` tiles; the rest of `photos` fills the wide wall.
@@ -17,11 +17,11 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
   let lastWidth = 0;
   let lastCompact = false;
   let autoplayTimer = null;
-  let autoplayStarted = false;
   let inView = false;
   let hovered = false;
   let focused = false;
   let manualPause = false;
+  let holdTimer = null;
   // Tiles in use at the current width.
   const isCompact = () => view.innerWidth <= 600;
   const inUse = () => (isCompact() ? Math.min(compactCount, photos.length) : photos.length);
@@ -64,9 +64,17 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
     tile.append(image);
     grid.append(tile);
     tile.addEventListener('click', () => {
+      // A pressed photo stays for four seconds (a touch has no pointer left over the wall to hold
+      // it); with a mouse it also stays while the pointer is on the wall.
       manualPause = true;
+      view.clearTimeout(holdTimer);
+      holdTimer = view.setTimeout(() => {
+        if (!manualPause) return; // the pointer left earlier and the wall is already playing
+        manualPause = false;
+        syncAutoplay();
+      }, 4000);
       syncAutoplay();
-      selected === index ? close() : open(index);
+      if (selected !== index) open(index);
     });
     return tile;
   });
@@ -232,10 +240,10 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
     // Automatic changes should not interrupt a screen reader every second and a half.
     status.setAttribute('aria-live', state === 'running' ? 'off' : 'polite');
     if (state !== 'running' || !photos.length) return;
-    if (!autoplayStarted) {
-      autoplayStarted = true;
-      if (selected < 0) showRandomPhoto();
-    }
+    // The wall never sits with every photo closed while it plays: on the first run, and after
+    // Escape or a narrower layout closed the photo, one opens at once.
+    if (selected < 0) showRandomPhoto();
+    else sharpen(selected);
     autoplayTimer = view.setTimeout(() => {
       autoplayTimer = null;
       if (!inView || doc.hidden || reducedMotion.matches || hovered || focused || manualPause) {
@@ -250,15 +258,20 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
   grid.addEventListener('pointerenter', event => {
     if (event.pointerType === 'touch') return;
     hovered = true;
+    grid.classList.toggle('rg-pointer', true); // lets small photos turn lime under a mouse, never after a tap
     syncAutoplay();
   });
-  grid.addEventListener('pointerleave', () => {
+  grid.addEventListener('pointerleave', event => {
+    if (event?.pointerType === 'touch') return;
     hovered = false;
+    grid.classList.toggle('rg-pointer', false);
     manualPause = false;
     syncAutoplay();
   });
-  grid.addEventListener('focusin', () => {
-    focused = true;
+  grid.addEventListener('focusin', event => {
+    // A tile pressed with the pointer keeps focus after the pointer has left, which used to leave
+    // the wall paused until a click elsewhere. Only focus from the keyboard holds it.
+    focused = event.target.matches?.(':focus-visible') ?? true;
     syncAutoplay();
   });
   grid.addEventListener('focusout', event => {
@@ -275,13 +288,6 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
   }, { threshold: [0, .2] }).observe(grid);
   doc.addEventListener('visibilitychange', syncAutoplay);
 
-  doc.addEventListener('click', event => {
-    if (!grid.contains(event.target) && !event.target.closest('[data-language]')) {
-      manualPause = false;
-      close();
-      syncAutoplay();
-    }
-  });
   doc.addEventListener('keydown', event => {
     if (selected < 0) return;
     if (event.key === 'Escape') {
@@ -307,6 +313,9 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
     layout(false);
     syncAutoplay();
   });
+  // One photo is open from the start (drawn from its small file until the wall is on screen), so
+  // the wall is not seen with every photo bright and then dimming. Reduced motion keeps it closed.
+  if (!reducedMotion.matches && photos.length) selected = Math.floor(Math.random() * inUse());
   updateLanguage(language);
   layout(false);
   syncAutoplay();

@@ -7,10 +7,9 @@
     // The copy below is written in Korean and i18n.js switches it to English, the default language.
     // Keep the page hidden until that switch so an English visit never paints Korean first.
     // If the scripts fail to load, show the page as it is after four seconds.
-    if (new URLSearchParams(location.search).get('lang') !== 'ko') {
-      document.documentElement.classList.add('language-pending');
-      setTimeout(function () { document.documentElement.classList.remove('language-pending'); }, 4000);
-    }
+    // Korean is switched off for now (see i18n.js), so every visit waits, ?lang=ko included.
+    document.documentElement.classList.add('language-pending');
+    setTimeout(function () { document.documentElement.classList.remove('language-pending'); }, 4000);
   </script>
   <style>.language-pending body { visibility: hidden; }</style>
   <meta name="theme-color" content="#f4f3eb">
@@ -38,36 +37,36 @@
   <link rel="preload" href="assets/fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="character-art.css">
-  <link rel="stylesheet" href="refresh-services.css?v=symbols-20261112">
-  <link rel="stylesheet" href="refresh-insights.css?v=notes-20261108">
+  <link rel="stylesheet" href="refresh-services.css?v=leaf-20261113">
+  <link rel="stylesheet" href="refresh-insights.css?v=mosaic-20261113">
   <link rel="stylesheet" href="refresh-media.css?v=films-20261112">
-  <link rel="stylesheet" href="refresh-gallery.css?v=wall-25-20261112">
+  <link rel="stylesheet" href="refresh-gallery.css?v=hover-20261113">
   <link rel="stylesheet" href="refresh-team.css?v=role-line-20261112">
   <link rel="stylesheet" href="brand-signature.css?v=italic-20261108">
   <link rel="stylesheet" href="site-refinements.css?v=references-line-20261111">
   <link rel="modulepreload" href="member-art.js?v=garden-bloom-20261026">
-  <link rel="modulepreload" href="i18n.js?v=symbols-20261112">
+  <link rel="modulepreload" href="i18n.js?v=english-20261113">
   <link rel="modulepreload" href="contact.js">
   <link rel="modulepreload" href="faq.js">
   <link rel="modulepreload" href="route-motion.js?v=route-flow-20261108">
-  <link rel="modulepreload" href="refresh-services.js?v=symbols-20261112">
-  <link rel="modulepreload" href="refresh-insights.js?v=periods-20261112">
-  <link rel="modulepreload" href="refresh-media.js?v=films-20261112">
-  <link rel="modulepreload" href="refresh-team.js?v=role-line-20261112">
+  <link rel="modulepreload" href="refresh-services.js?v=leaf-20261113">
+  <link rel="modulepreload" href="refresh-insights.js?v=mosaic-20261113">
+  <link rel="modulepreload" href="refresh-media.js?v=wall-200-20261113">
+  <link rel="modulepreload" href="refresh-team.js?v=flips-20261112">
   <link rel="modulepreload" href="character-art.js">
   <link rel="modulepreload" href="pattern-art.js?v=garden-bloom-20261026">
   <link rel="modulepreload" href="closing-spray.js?v=garden-bloom-20261026">
   <link rel="modulepreload" href="translations.js?v=symbols-20261112">
-  <link rel="modulepreload" href="services-content.js?v=symbols-20261112">
-  <link rel="modulepreload" href="service-performance-data.js?v=periods-20261112">
+  <link rel="modulepreload" href="services-content.js?v=leaf-20261113">
+  <link rel="modulepreload" href="service-performance-data.js?v=mosaic-20261113">
   <link rel="modulepreload" href="case-studies-data.js">
-  <link rel="modulepreload" href="refresh-gallery.js?v=wall-25-20261112">
-  <link rel="modulepreload" href="wall-photos.js?v=wall-180-20261112">
+  <link rel="modulepreload" href="refresh-gallery.js?v=wall-200-20261113">
+  <link rel="modulepreload" href="wall-photos.js?v=wall-200-20261113">
   <link rel="modulepreload" href="mixed-botanical-art.js?v=garden-bloom-20261026">
   <link rel="modulepreload" href="reference-spray.js">
-  <link rel="modulepreload" href="gallery-fixed/layouts.js?v=wall-25-20261112">
+  <link rel="modulepreload" href="gallery-fixed/layouts.js?v=wall-200-20261113">
   <link rel="modulepreload" href="botanical-art.js?v=garden-bloom-20261026">
-  <script type="module" src="app.js?v=role-line-20261112"></script>
+  <script type="module" src="app.js?v=flips-20261112"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문으로 바로가기</a>
@@ -79,7 +78,7 @@
         <a href="#work">진행 사례</a>
         <a href="#approach">일하는 방식</a>
       </nav>
-      <div class="header-right"><a class="team-link" href="#team">팀 소개</a><div class="language-switch" role="group" aria-label="언어 선택"><button type="button" data-language="en" lang="en" aria-label="영어로 보기" aria-pressed="true">EN</button><button type="button" data-language="ko" lang="ko" aria-label="한국어로 보기" aria-pressed="false">국문</button></div><button class="button small" data-open-brief>프로젝트 이야기하기</button><button class="menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="메뉴 열기"><i></i><i></i></button></div>
+      <div class="header-right"><a class="team-link" href="#team">팀 소개</a><div class="language-switch" role="group" aria-label="언어 선택" hidden><button type="button" data-language="en" lang="en" aria-label="영어로 보기" aria-pressed="true">EN</button><button type="button" data-language="ko" lang="ko" aria-label="한국어로 보기" aria-pressed="false">국문</button></div><button class="button small" data-open-brief>프로젝트 이야기하기</button><button class="menu-toggle" aria-expanded="false" aria-controls="mobile-nav" aria-label="메뉴 열기"><i></i><i></i></button></div>
     </div>
     <nav id="mobile-nav" class="section-shell" aria-label="모바일 메뉴" hidden>
       <a href="#services">우리가 하는 일</a><a href="#work">진행 사례</a><a href="#approach">일하는 방식</a><a href="#team">팀 소개</a><button class="button" data-open-brief>프로젝트 이야기하기</button>

@@ -1,7 +1,7 @@
 import { caseStudies } from './case-studies-data.js';
-import { initRefreshGallery } from './refresh-gallery.js?v=wall-25-20261112';
-import { compactColumns, wideColumns } from './gallery-fixed/layouts.js?v=wall-25-20261112';
-import { addedWallPhotos } from './wall-photos.js?v=wall-180-20261112';
+import { initRefreshGallery } from './refresh-gallery.js?v=wall-200-20261113';
+import { compactColumns, wideColumns } from './gallery-fixed/layouts.js?v=wall-200-20261113';
+import { addedWallPhotos } from './wall-photos.js?v=wall-200-20261113';
 
 const assetURL = path => new URL(path, import.meta.url).href;
 const copy = (ko, en) => ({ ko, en });
@@ -9,7 +9,7 @@ const copy = (ko, en) => ({ ko, en });
 // Event photos shown on the photo wall only, so they are not attached to a case story. The first
 // sixteen were supplied by the owner (other KGEN and Axis Robotics events, Momentum × Buidlpad's
 // Keep The Mo'mentum, the Aria meetup and FOGO). The rest, added on 2026-11-12, are listed in
-// wall-photos.js. Faces close to the camera are pixelated.
+// wall-photos.js. Every face that can be made out is pixelated (re-checked on 2026-11-13).
 // `position` is an optional CSS object-position for a subject that sits off-center.
 const suppliedWallPhotos = [
   { src: 'assets/cases/kgen/after-hours-talk.jpg', alt: copy('KGEN VeriFi Seoul After Hours에서 발표를 듣는 참석자들', 'Attendees watching a presentation at KGEN VeriFi Seoul After Hours') },
@@ -56,10 +56,10 @@ export const eventFilms = [
 // `featured` is the index of the large one; the page picks it at random on each visit.
 export const orderFilms = (films, featured) => [films[featured], ...films.filter((_, index) => index !== featured)];
 
-// The wide wall has 25 columns and 11 rows, about as tall as the 20 x 9 wall it replaced on
-// 2026-11-12, so it holds 275 tiles and 95 of the 180 photos appear twice. Phones show the first
-// pass only: every photo once, in whole rows of 10.
-export const wallTiles = wideColumns * 11;
+// The wide wall has 25 columns and 8 rows (the owner's choice on 2026-11-13, after 25 x 11): 200
+// tiles for 200 photos, so every photo appears once. Phones show the same photos in rows of 10.
+// Keep the photo count at 200; with fewer, arrangeWall repeats some to fill the wall.
+export const wallTiles = wideColumns * 8;
 export const phoneTiles = Math.floor(Math.min(wallTiles, wallPool.length) / compactColumns) * compactColumns;
 
 // Put the pool on the wall in a fixed mixed order. The first pass uses every photo once; each

@@ -40,6 +40,10 @@
 .rg-gallery.rg-open .rm-tile:not(.is-open) img,
 .rg-gallery.rg-open .rg-underlay img { filter: brightness(.38); }
 .rg-gallery .rm-tile.is-open img { filter: none; }
+/* A small photo under the pointer turns lime, the colour of the play buttons (owner, 2026-11-13). */
+/* .rg-pointer is set while a mouse or pen is over the wall, so a tapped photo does not stay lime. */
+.rg-gallery.rg-pointer .rm-tile:not(.is-open):hover img { filter: grayscale(1) brightness(1.2); }
+.rg-gallery.rg-pointer .rm-tile:not(.is-open):hover::after { content: ''; position: absolute; inset: 0; background: var(--lime); mix-blend-mode: multiply; pointer-events: none; }
 .rg-gallery .rm-tile[data-visible='false'] { pointer-events: none; }
 .rg-gallery .rm-tile:focus-visible {
   z-index: 4;

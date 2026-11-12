@@ -1,6 +1,6 @@
 const modes = new Set(['pack', 'push', 'clear']);
 
-// Columns of the wall on wide screens and on phones; an opened photo spans 10 x 7 or 8 x 5 cells.
+// Columns of the wall on wide screens and on phones; an opened photo spans 9 x 6 or 8 x 5 cells.
 export const wideColumns = 25;
 export const compactColumns = 10;
 
@@ -25,8 +25,8 @@ export function fixedLayout({ width, count = 100, selected = -1, compact = false
   const result = { width, height, cell, columns, rows, rects };
   if (!Number.isInteger(selected) || selected < 0 || selected >= count) return result;
 
-  const spanColumns = compact ? 8 : 10;
-  const spanRows = Math.min(rows, compact ? 5 : 7);
+  const spanColumns = compact ? 8 : 9;
+  const spanRows = Math.min(rows, compact ? 5 : 6);
   const clamp = (value, maximum) => Math.max(0, Math.min(maximum, value));
   const anchorColumn = clamp(selected % columns - Math.floor((spanColumns - 1) / 2), columns - spanColumns);
   const anchorRow = clamp(Math.floor(selected / columns) - Math.floor((spanRows - 1) / 2), rows - spanRows);
