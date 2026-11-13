@@ -1,0 +1,202 @@
+/* Phone-only compact layout (owner, 2026-11-13: the page scrolled far too long on phones).
+   Every rule sits inside max-width 760px, so wider screens render exactly as before. Each
+   section is a little smaller: titles 26px, body 14px, no new text under 12px, taps 44px tall. */
+
+/* ---- Films: a swipe slider wherever they used to stack (760px and below) ---- */
+@media (max-width: 760px) {
+  .rm-films { --bleed: 24px; }
+  .rm-event-videos {
+    display: flex;
+    gap: 12px;
+    margin-inline: calc(var(--bleed) * -1);
+    padding: 0 var(--bleed) 2px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--bleed);
+    scrollbar-width: none;
+  }
+  .rm-event-videos::-webkit-scrollbar { display: none; }
+  .rm-event-film, .rm-event-film:first-child { flex: 0 0 82%; scroll-snap-align: start; }
+  .rm-event-film:first-child .rm-film-caption,
+  .rm-event-film:not(:first-child) .rm-film-caption { padding: 40px 14px 12px; }
+  .rm-event-film .rm-film-caption h4 { font-size: 15px; }
+  .rm-event-film .rm-film-caption p { display: block; font-size: 12px; }
+  .rm-play-icon, .rm-event-film:not(:first-child) .rm-play-icon { width: 46px; height: 46px; }
+  /* Position dots under the slider (refresh-media.js); decoration only. */
+  .rm-film-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+  .rm-film-dots > span { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background-color .2s, width .2s; }
+  .rm-film-dots > span.is-current { width: 18px; border-radius: 3px; background: var(--blue); }
+}
+@media (min-width: 761px) { .rm-film-dots { display: none; } }
+@media (max-width: 600px) { .rm-films { --bleed: 20px; } }
+@media (prefers-reduced-motion: reduce) { .rm-film-dots > span { transition: none; } }
+
+/* ---- Phones ---- */
+@media (max-width: 600px) {
+  :root { --section-title: 26px; }
+  #refresh-services-root .services-heading h2,
+  html[lang="en"] #refresh-services-root .services-heading h2,
+  .ri-heading h2, .rm-heading h2, .rt-heading h2,
+  #approach h2, .context-copy h2 { line-height: 1.25; }
+  .services-heading > p, .ri-intro, .rt-intro, .rm-intro,
+  .section-heading > p:last-child { font-size: 14px; line-height: 1.7; }
+  .section-heading, #refresh-services-root .services-heading,
+  .ri-heading, .rm-heading, .rt-heading { margin-bottom: 18px; }
+
+  /* Sections meet with 56px between them (80px before). */
+  .section-space { padding-block: 28px; }
+
+  /* Hero: a little less air around the lettering. */
+  .hero { padding-top: 24px; }
+  .hero-eyebrow { margin-bottom: 14px; }
+  .hero-description { line-height: 1.7; }
+  .brand-signature-hero { margin-top: 14px; }
+  .hero .member-stage { height: 150px; }
+
+  /* Partner logos: one row of five. */
+  .references:has(.reference-title) { padding-block: 22px 26px; }
+  .reference-title { margin-bottom: 6px; font-size: 14px; }
+  /* Columns follow each logo's weight, not equal shares: the square KGeN mark and the bold FOGO wordmark
+     get less room so the five read as the same size (owner, 2026-11-13). */
+  .reference-strip { grid-template-columns: minmax(26px, .5fr) 1.45fr 1.4fr .95fr 1.45fr; gap: 0 14px; padding-top: 0; }
+  .reference-strip > a, .reference-strip > a:nth-child(4), .reference-strip > a:nth-child(5) { grid-column: auto; min-height: 48px; padding: 4px 0; }
+  .reference-strip img { max-height: 22px; }
+  .reference-strip .ref-kgen img { width: clamp(18px, 6vw, 22px); max-width: none; max-height: 22px; }
+  .reference-strip :is(.ref-axis, .ref-buidl, .ref-fogo, .ref-walk) img { width: 100%; }
+
+  /* Services: six cells in two columns; the rail is not drawn. */
+  #services:has(#refresh-services-root) { padding-block: 24px 18px; padding-inline: 16px; }
+  #refresh-services-root .services-heading { margin-bottom: 18px; }
+  #refresh-services-root .services-heading > p { margin-top: 8px; }
+  /* Each cell: the circle with the name beside it, the short line under both. */
+  .sf-list { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 12px; }
+  .sf-list::before { display: none; }
+  .sf-service { display: grid; grid-template-columns: 36px minmax(0, 1fr); align-items: center; gap: 6px 9px; padding: 8px 0; }
+  .sf-icon { width: 36px; height: 36px; }
+  .sf-icon .service-icon { width: 17px; height: 17px; }
+  .sf-word { font-size: 12px; }
+  .sf-mark { width: 30px; height: 30px; }
+  .sf-leaf { top: -8px; right: -9px; width: 21px; height: 21px; }
+  .sf-text { display: contents; }
+  .sf-name { font-size: 14px; line-height: 1.3; }
+  .sf-line { grid-column: 1 / -1; align-self: start; font-size: 12px; line-height: 1.45; }
+  .sf-team { margin-top: 12px; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.5; }
+  .sf-team-state, .sf-team-state.is-active { gap: 2px 8px; }
+  /* The partner symbols share the first line with the service's name. */
+  .sf-logos { flex: none; margin: 0; }
+  .sf-logo { width: 22px; height: 22px; margin-left: -6px; }
+  .sf-logo.sf-logo-more { min-width: 22px; font-size: 12px; }
+
+  /* Work: smaller title and wall; films slide (above). */
+  #work:has(#refresh-gallery-root) { padding-block: 28px; }
+  .rm-heading { margin-bottom: 16px; }
+  .rm-films { padding-top: 28px; }
+  .rm-films-heading { margin-bottom: 14px; }
+  .rm-films-heading h3 { font-size: 21px; line-height: 1.3; }
+
+  /* Context: tighter copy, and the orbit picture as a short band beside its caption. */
+  .context { padding-block: 28px; gap: 20px; }
+  .context-copy .large-copy { font-size: 17px; line-height: 1.55; margin: 12px 0 12px; }
+  .context-copy > p:not(.eyebrow):not(.large-copy) { font-size: 14px; line-height: 1.7; }
+  .context-copy > p + p:not(.large-copy) { margin-top: 10px; }
+  .context-art { position: relative; height: 124px; min-height: 0; padding: 0; border-radius: 14px; overflow: hidden; }
+  .context-art .context-orbits { position: absolute; top: 50%; right: -14px; width: 210px; max-width: none; margin: 0; transform: translateY(-50%); }
+  .context-art .signal-tag { padding: 3px 9px; font-size: 12px; }
+  .context-art .tag-one { left: 20%; top: 30%; }
+  .context-art .tag-two { left: 72%; top: 34%; }
+  .context-art .tag-three { left: 14%; top: 72%; }
+  .context-art .tag-four { left: 70%; top: 66%; }
+  .context-art .context-bottom { position: absolute; left: 18px; top: 50%; bottom: auto; width: 46%; margin: 0; transform: translateY(-50%); }
+  .context-art .context-bottom em { display: block; margin-top: 4px; font-size: 19px; line-height: 1.3; }
+
+  /* Approach: tighter heading, intro and board. */
+  #approach { padding-block: 28px; }
+  .route-intro { padding: 16px 16px 14px; }
+  .route-intro h3 { font-size: 20px; line-height: 1.3; }
+  .route-intro p { margin-top: 8px; font-size: 14px; line-height: 1.6; }
+  .route-map { padding: 14px 10px 0; }
+  .route-stages { min-height: 162px; padding-top: 18px; gap: 8px; }
+  .route-stop { min-height: 98px; padding: 10px 8px; }
+  .route-stop:nth-child(2) { margin-top: 28px; }
+  .stop-number { font-size: 21px; margin-bottom: 8px; }
+  .map-track { top: 36px; height: 130px; }
+  .route-detail { min-height: 0; padding-block: 10px 12px; font-size: 14px; line-height: 1.6; }
+
+  /* Research and report example. */
+  #growth { padding-block: 28px; }
+  .ri-heading { gap: 8px; }
+  .ri-layout > article { padding: 16px; }
+  .ri-layout h3 { font-size: 20px; line-height: 1.3; }
+  .ri-research-intro { margin-top: 6px; font-size: 14px; line-height: 1.6; }
+  .ri-research-list { margin: 12px 0 0; }
+  .ri-research-list li { gap: 10px; padding-block: 8px; }
+  .ri-research-list h4 { margin-bottom: 1px; font-size: 15px; }
+  .ri-research-list p { font-size: 14px; line-height: 1.5; max-width: none; }
+  .ri-handoff { margin-top: 0; padding-top: 10px; line-height: 1.6; }
+  /* The "Example report" pill sits on the line between the two cards instead of a row of its own. */
+  .ri-report { position: relative; }
+  .ri-report-top { position: absolute; top: -12px; right: 16px; }
+  .ri-report h3 { margin-top: 0; }
+  .ri-example-note { margin-top: 4px; font-size: 13px; line-height: 1.55; }
+  .ri-report-toolbar { flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; margin: 10px 0 12px; }
+  .ri-report-toolbar > p { font-size: 13px; }
+  .ri-report-toolbar .ri-periods { align-self: center; }
+  .ri-periods button { padding-inline: 9px; }
+  .ri-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; padding-block: 12px; }
+  .ri-metrics > div, .ri-metrics > div:first-child { display: block; padding: 0 0 0 10px; border-left: 1px solid var(--line); }
+  .ri-metrics > div:first-child { padding-left: 0; border-left: 0; }
+  .ri-metrics dt { font-size: 12px; line-height: 1.35; }
+  .ri-metrics dd { margin-top: 6px; font-size: 20px; }
+  /* The widest total (8 weeks of impressions) is wider than a column at 350px and below. */
+  .ri-metrics .ri-mosaic { max-width: 100%; height: auto; }
+  .ri-chart { margin: 10px 0 0; }
+  .ri-chart svg { height: 180px; }
+  .ri-report-foot { flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; }
+  .ri-table-details { margin-top: 10px; }
+  .ri-table-details summary { padding-top: 12px; }
+
+  /* Team: smaller coins, tighter rows. */
+  #team:has(#refresh-team-root) { padding-block: 28px; }
+  .rt-heading { margin-bottom: 8px; }
+  .rt-intro { margin-top: 8px; }
+  .rt-card { gap: 14px; padding: 10px 0; }
+  .rt-visual { width: 60px; height: 60px; }
+  .rt-caption h3 { font-size: 19px; }
+  .rt-role { font-size: 13px; }
+  .rt-description { margin-top: 2px; font-size: 14px; line-height: 1.55; }
+
+  /* Closing and footer. */
+  .closing { padding: 10px 0 26px; }
+  .closing-stage { height: 128px; }
+  .closing-copy > p:not(.eyebrow) { margin: 2px 0 14px; font-size: 14px; line-height: 1.7; }
+  .footer-compact { padding-block: 12px 10px; }
+  .footer-compact .footer-main { gap: 0; padding-bottom: 0; }
+  .footer-compact .footer-bottom { grid-template-columns: auto auto; justify-content: space-between; align-items: center; column-gap: 12px; padding-top: 2px; }
+  .footer-compact .brand-signature-footer { grid-column: 1 / -1; margin-bottom: 0; }
+  .footer-compact .footer-copyright { justify-self: end; margin-top: 0; }
+}
+
+/* Narrow phones: the period buttons go under their label, and the context band keeps its caption
+   clear of the orbit. */
+@media (max-width: 380px) {
+  .ri-report-toolbar { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .ri-report-toolbar .ri-periods { align-self: flex-start; }
+  /* The orbit keeps the same visible part at every narrow width (it is pinned to the right edge),
+     so the tags are placed for that part; the caption moves to the top left. */
+  .context-art { height: 148px; }
+  .context-art .context-orbits { top: calc(50% + 6px); right: -14px; width: 180px; }
+  .context-art .context-bottom { top: 18px; left: 14px; width: 42%; transform: none; white-space: nowrap; }
+  .context-art .context-bottom em { font-size: 17px; white-space: normal; }
+  .context-art .tag-one { left: 42%; top: 15%; }
+  .context-art .tag-two { left: 62%; top: 33%; }
+  .context-art .tag-three { left: 6%; top: 68%; }
+  .context-art .tag-four { left: 66%; top: 78%; }
+  .sf-service { grid-template-columns: 34px minmax(0, 1fr); gap: 6px 8px; }
+  .sf-icon { width: 34px; height: 34px; }
+  .sf-word { letter-spacing: -.04em; }
+  #services:has(#refresh-services-root) { padding-inline: 14px; }
+  .sf-list { column-gap: 8px; }
+  .sf-name { font-size: 13px; }
+  .sf-mark { width: 28px; height: 28px; }
+}

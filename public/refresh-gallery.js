@@ -1,4 +1,4 @@
-import { fixedLayout } from './gallery-fixed/layouts.js?v=wall-200-20261113';
+import { fixedLayout } from './gallery-fixed/layouts.js?v=mobile-20261113';
 
 const copy = {
   ko: { hint: '사진을 눌러 크게 보세요.', toggle: '눌러서 크게 보기', gallery: '행사 사진 갤러리' },

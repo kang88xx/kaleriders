@@ -3,8 +3,9 @@ import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { arrangeWall, eventFilms, initRefreshMedia, orderFilms, phoneTiles, thumbOf, wallPhotos, wallPool, wallTiles } from '../public/refresh-media.js';
+import { arrangeWall, eventFilms, initRefreshMedia, orderFilms, phoneTiles, pickPhoneWall, thumbOf, wallPhotos, wallPool, wallTiles } from '../public/refresh-media.js';
 import { initRefreshGallery } from '../public/refresh-gallery.js';
+import { compactColumns, fixedLayout, wideColumns } from '../public/gallery-fixed/layouts.js';
 
 // The owner chose 25 columns on 2026-11-12 (tiles 20% smaller) and 8 rows on 2026-11-13, then asked
 // for 200 photos so that none repeats.
@@ -30,9 +31,41 @@ test('the wall fills 25 x 8 tiles in a fixed order with every photo once', () =>
   });
 });
 
-test('phones show every photo once in whole rows of 10', () => {
+// On 2026-11-13 the owner found the page too long on phones and asked for part of the wall there:
+// 8 rows of 10, drawn afresh from the 200 on each visit (all 200 in rows of 10 before).
+test('phones show 80 of the photos in whole rows of 10', () => {
   assert.equal(phoneTiles % 10, 0, 'The last row is incomplete at 10 columns');
-  assert.equal(phoneTiles, wallPool.length, 'A photo is left off the phone wall');
+  assert.equal(phoneTiles, 80);
+  assert(phoneTiles < wallPool.length, 'The phone wall is meant to show part of the photos');
+});
+
+test('the phone wall is 8 rows tall and an opened photo takes 6 x 4 tiles there, 9 x 6 on wide screens', () => {
+  const phone = fixedLayout({ width: 350, count: phoneTiles, selected: 34, compact: true, mode: 'push' });
+  assert.equal(phone.columns, compactColumns);
+  assert.equal(phone.rows, 8);
+  assert.equal(phone.height, 8 * phone.cell, 'Opening a photo changes the height of the wall');
+  assert.equal(phone.rects.filter(rect => !rect.visible).length, 6 * 4 - 1, 'The opened photo does not take 6 x 4 tiles on phones');
+  const wide = fixedLayout({ width: 1250, count: wallTiles, selected: 60, mode: 'push' });
+  assert.equal(wide.columns, wideColumns);
+  assert.equal(wide.rows, 8);
+  assert.equal(wide.rects.filter(rect => !rect.visible).length, 9 * 6 - 1, 'The opened photo does not take 9 x 6 tiles on wide screens');
+});
+
+test('each visit draws a different part of the wall for phones, every photo once, in the wall order', () => {
+  const wall = arrangeWall();
+  const first = pickPhoneWall(wall);
+  assert.equal(first.length, phoneTiles);
+  assert.equal(new Set(first.map(photo => photo.src)).size, phoneTiles, 'A photo repeats on the phone wall');
+  const places = first.map(photo => wall.indexOf(photo));
+  assert(places.every(place => place >= 0), 'A photo is not from the wall');
+  assert.deepEqual(places, [...places].sort((a, b) => a - b), 'The phone wall does not keep the wall order');
+  const drawn = new Set();
+  for (let visit = 0; visit < 40; visit++) pickPhoneWall(wall).forEach(photo => drawn.add(photo.src));
+  assert(drawn.size > phoneTiles * 2, 'Visits keep getting the same photos');
+  // A fixed random source gives a fixed draw, and a short wall is shown whole.
+  const fixed = () => 0;
+  assert.deepEqual(pickPhoneWall(wall, phoneTiles, fixed), pickPhoneWall(wall, phoneTiles, fixed));
+  assert.deepEqual(pickPhoneWall(wall.slice(0, 5)), wall.slice(0, 5));
 });
 
 test('a larger wall repeats photos evenly without a repeat beside or above', () => {
@@ -147,8 +180,8 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
     const index = wall.indexOf(focused);
     tiles[index].listeners.get('click')[0]();
     assert(tiles[index].classList.contains('is-open'));
-    assert.equal(tiles[index].style.width, `${(columns === 25 ? 9 : 8) * cell}px`, 'The opened photo has the wrong width');
-    assert.equal(tiles[index].style.height, `${(columns === 25 ? 6 : 5) * cell}px`, 'The opened photo has the wrong height');
+    assert.equal(tiles[index].style.width, `${(columns === 25 ? 9 : 6) * cell}px`, 'The opened photo has the wrong width');
+    assert.equal(tiles[index].style.height, `${(columns === 25 ? 6 : 4) * cell}px`, 'The opened photo has the wrong height');
     assert.match(tiles[index].getAttribute('aria-label'), new RegExp(`^${index + 1}/${used} `), 'The label counts tiles that are not shown');
     assert(tiles[index].firstElementChild.src.endsWith(`/public/${focused.src}`), 'The opened photo did not load its full file');
     assert(tiles[(index + 1) % tiles.length].firstElementChild.src.endsWith(`/public/${wall[(index + 1) % tiles.length].thumb}`), 'A closed tile loaded its full file');
