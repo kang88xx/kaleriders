@@ -56,7 +56,7 @@
       "url": "https://drive.google.com/file/d/1ZfbCtllAv5ZJ600FIBxE534oDPYUpHvE/view?usp=drivesdk",
       "mimeType": "image/jpeg",
       "bytes": 892091,
-      "edit": "Published as assets/cases/open-agi/DSC02137.jpg (668551 bytes, sha256 19b826d10103a392e4e2e2aba9b4de6d34763db57efa8c70ea0332adcc6b2a3e). On 2026-11-13, after the owner said some people were still recognisable, 17 areas were pixelated (every face that can be made out; presenters on stage and printed faces are left as they are)."
+      "edit": "Published as assets/cases/open-agi/DSC02137.jpg (695691 bytes, sha256 b8a0f2f0b80f870b1122627b7db34c94055d362f09ef38e3fd1663fcae21aff3). On 2026-11-13, after the owner said some people were still recognisable, 17 areas were pixelated (every face that can be made out; presenters on stage and printed faces are left as they are). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
@@ -182,13 +182,13 @@
       "name": "momentum-buidlpad-01-stage.jpg",
       "url": "https://drive.google.com/file/d/1wg6zpf6qIuunCCCYRJSkkK3269CUHjmr/view?usp=drivesdk",
       "mimeType": "image/jpeg",
-      "bytes": 212728,
+      "bytes": 223150,
       "receivedAt": "2026-11-12",
       "source": "Owner-supplied image pasted into the working session on 2026-11-12; the original is in the kaleriders Drive folder \"2026-11 행사 사진 (Momentum·Buidlpad, Aria Meetup)\".",
       "localPath": "assets/cases/momentum/stage.jpg",
-      "sha256": "0df746e2bb3b9c5abc556f47990942869803af09029552bd553e2d5df39d4c8d",
+      "sha256": "f0d4d3fb5bb731ff6b13e7f4843c8edd6a4cb104d66d82872dd276e4a7ec4f6a",
       "usage": "Homepage photo wall only (wallPhotos in public/refresh-media.js); not part of a case story.",
-      "edit": "Published file. On 2026-11-13, after the owner said some people were still recognisable, 3 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Published file. On 2026-11-13, after the owner said some people were still recognisable, 3 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Momentum × Buidlpad",
@@ -240,28 +240,28 @@
       "name": "aria-meetup-01-audience-panel.jpg",
       "url": "https://drive.google.com/file/d/1pvHM3nljfuwOVHW85ClqgQvGKl3a_mmb/view?usp=drivesdk",
       "mimeType": "image/jpeg",
-      "bytes": 175845,
+      "bytes": 185865,
       "receivedAt": "2026-11-12",
       "source": "Owner-supplied image pasted into the working session on 2026-11-12; the original is in the kaleriders Drive folder \"2026-11 행사 사진 (Momentum·Buidlpad, Aria Meetup)\".",
       "localPath": "assets/cases/aria/audience-panel.jpg",
-      "sha256": "c32a6e117ee2ab2bf8ba9fe33eb6a76a7a3f13bf16804501916e037ecd3729e7",
+      "sha256": "f7104c2f46c982b41095d6cc42a623a1889a2d38e8c8ed3fb455c73aa88812d2",
       "usage": "Homepage photo wall only (wallPhotos in public/refresh-media.js); not part of a case story.",
       "originalBytes": 135227,
       "originalSha256": "f3d51feb41e7a2b1ca17813554cdebabd4f2aed642147bafb798f6e252d78806",
-      "edit": "Faces close to the camera pixelated on 2026-11-12 at the owner's request: every face in the seated rows or at the front of the crowd, while presenters on stage and small faces standing at the back are left as they are. Re-checked face by face the same night after an independent review found missed faces; re-encoded as JPEG (quality 0.9). On 2026-11-13, after the owner said some people were still recognisable, 37 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Faces close to the camera pixelated on 2026-11-12 at the owner's request: every face in the seated rows or at the front of the crowd, while presenters on stage and small faces standing at the back are left as they are. Re-checked face by face the same night after an independent review found missed faces; re-encoded as JPEG (quality 0.9). On 2026-11-13, after the owner said some people were still recognisable, 37 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Aria",
       "name": "aria-meetup-02-stage.jpg",
       "url": "https://drive.google.com/file/d/1xo5bPYWiwO_UFUTqFuUaqHC3LQdl0Vvf/view?usp=drivesdk",
       "mimeType": "image/jpeg",
-      "bytes": 95858,
+      "bytes": 100151,
       "receivedAt": "2026-11-12",
       "source": "Owner-supplied image pasted into the working session on 2026-11-12; the original is in the kaleriders Drive folder \"2026-11 행사 사진 (Momentum·Buidlpad, Aria Meetup)\".",
       "localPath": "assets/cases/aria/stage.jpg",
-      "sha256": "02f9bd3c4fe5f8a6a597e8ecd6804ce1675cd867f4571ad686126d8239144eeb",
+      "sha256": "2088c1f079564f5d69889cff5bdeb3cb090bbdc2175a40aad0bb6b5f0a9fee36",
       "usage": "Homepage photo wall only (wallPhotos in public/refresh-media.js); not part of a case story.",
-      "edit": "Published file. On 2026-11-13, after the owner said some people were still recognisable, 5 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Published file. On 2026-11-13, after the owner said some people were still recognisable, 5 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Aria",
@@ -369,15 +369,15 @@
     },
     {
       "group": "KGEN",
-      "name": "KGeN_애프터무비_편집본.mp4, frame at 1:07.5",
+      "name": "KGeN_애프터무비_편집본.mp4, frame at 0:03.8",
       "mimeType": "image/jpeg",
-      "bytes": 92253,
+      "bytes": 53070,
       "receivedAt": "2026-11-12",
       "source": "A frame of the owner's KGEN · VeriFi Korea after-movie.",
       "localPath": "assets/cases/kgen/after-movie.jpg",
-      "sha256": "ab8608eb27a110848f67a2937339caa05a74de920a3e5bf900ce9ddbc08b1c5f",
+      "sha256": "d24e31b47847e3574dd9e56caf98a21f794ac27b16ccbd99473d11268b5968c5",
       "usage": "Poster of the KGEN after-movie in the homepage film row.",
-      "edit": "The frame at 1:07.5 (presenters on stage beside the VeriFi Korea banner and screen; no bystander face close to the camera) scaled to 1000 × 562 JPEG, the size of the FOGO posters."
+      "edit": "The frame at 0:03.8 (the VeriFi Korea · KGEN banner in the lobby, no people) scaled to 1000 × 562 JPEG. It replaced the frame at 1:07.5 on 2026-11-13 because that one showed presenters' faces."
     },
     {
       "group": "Kaito",
@@ -580,13 +580,13 @@
       "name": "x-0110.jpg",
       "url": "https://x.com/arifm1088/status/2106672881254257066",
       "mimeType": "image/jpeg",
-      "bytes": 178927,
+      "bytes": 187072,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @arifm1088, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/creators-night/x-0110.jpg",
-      "sha256": "3fc25cdb420e50cb8e9fb51948b3938786d0707dd01d2de77d6a346d754cab31",
+      "sha256": "83b5fc6a0697222667e14468a09e0ea2750ef13b7523bfe3de91de2cc6fea8de",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 2 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 2 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Kaito",
@@ -941,70 +941,70 @@
       "name": "DSC02099.jpg",
       "url": "https://drive.google.com/file/d/1NTSSww8hQ4Zo5D0jwoF6aVZOPzyCNSR1/view",
       "mimeType": "image/jpeg",
-      "bytes": 187800,
+      "bytes": 195895,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02099.jpg",
-      "sha256": "0a3524c92ad8bfb7889982c40ccf351a264b514b8921993f760e72fe742ef39b",
+      "sha256": "767c75fd102c1a53152f4b852680d376d78279dff74954578268fcbabca2561f",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 789184,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 3 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 3 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "DSC02126.jpg",
       "url": "https://drive.google.com/file/d/1U7t1PwbG_I96u8b_r4ZXw8D8iEjM66oD/view",
       "mimeType": "image/jpeg",
-      "bytes": 168549,
+      "bytes": 173571,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02126.jpg",
-      "sha256": "eff606075670503504260f187136e9e5b4be0fef45d25625e61ffd778485adfd",
+      "sha256": "e3e8a0313ee29c7231ad9ac4942c04aedf5cd906e0f1bb8b84c206660ab2bf7e",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 889836,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13, after the owner said some people were still recognisable, 2 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13, after the owner said some people were still recognisable, 2 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "DSC02128.jpg",
       "url": "https://drive.google.com/file/d/1oUCcE2Ei9RuGc3GjmPIKB1SDJhlclBl9/view",
       "mimeType": "image/jpeg",
-      "bytes": 163045,
+      "bytes": 168321,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02128.jpg",
-      "sha256": "11aaec3f791ed71ed69cbbde9027ce5fa1db69c652d51a5a2070460e8c440b41",
+      "sha256": "9dbffdda01c63e79ae3aad2d9ef556567994fdaa8505a0c2084799f88a8caeae",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 865044,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "DSC02159.jpg",
       "url": "https://drive.google.com/file/d/1dhGwj2kWz_4wLclawf91LnyILyz7zf0t/view",
       "mimeType": "image/jpeg",
-      "bytes": 214447,
+      "bytes": 218420,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02159.jpg",
-      "sha256": "f33c0bc4ebdae846ac6c86edf58d842054a1a3373e4cfa10fcb6b87f57ab6d52",
+      "sha256": "c29db15ae8ae79bc8c2a3c5a150a52bb8264c1b6021fa842e17d69e620b9abe1",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 949945,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "DSC02191.jpg",
       "url": "https://drive.google.com/file/d/1w4XpjwruMDOuBcE2bo8pfp9wjf-XmiXC/view",
       "mimeType": "image/jpeg",
-      "bytes": 165639,
+      "bytes": 171346,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02191.jpg",
-      "sha256": "e28761ab0467cf51516cf88c06de80af04dd99b4fc14cd688c148681929d3eb3",
+      "sha256": "65b683d20793629d6a014f77c929b936e032d0a5a0b03df4e6598a84c9b51ba4",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 744752,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
@@ -1039,14 +1039,14 @@
       "name": "DSC02366.jpg",
       "url": "https://drive.google.com/file/d/1hEA2Hn1s1dQlHhCnelConZfk6RY7CgEh/view",
       "mimeType": "image/jpeg",
-      "bytes": 217904,
+      "bytes": 227393,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02366.jpg",
-      "sha256": "2d7b33071b5411e945eabcf729bf54fe09150efa0a0edecbd08a552a9c6ebf95",
+      "sha256": "9b0e10277d07711230c1ad80fe4cd1e6bbb36d05847ad5f8647eabee882958c1",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 995095,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 4 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
@@ -1067,42 +1067,42 @@
       "name": "DSC02523.jpg",
       "url": "https://drive.google.com/file/d/1egIfpIYVPxj7IVH6I5q8gua-Uf0BJjyn/view",
       "mimeType": "image/jpeg",
-      "bytes": 148521,
+      "bytes": 153538,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02523.jpg",
-      "sha256": "38ebde1b8805efb9620739d383b1ec972a4598eedff55f69cb7687966453b8bf",
+      "sha256": "10a80c8ef7714d4ebf67ba7bdb0b66f7d0ee5c5098ca11f0d9febffe57fd5194",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 661716,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 3 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "DSC02551.jpg",
       "url": "https://drive.google.com/file/d/1VRMnMZ96LiC7id8GHpd4QWalgOCPkPxp/view",
       "mimeType": "image/jpeg",
-      "bytes": 166541,
+      "bytes": 165756,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02551.jpg",
-      "sha256": "2606ff55a057278fd764d583c12374c27029d7959e429ed6d36da5b8a83ba0a8",
+      "sha256": "8b83324000d1ae295c5c21da19925c2bcb9d48ffddaa0fd2cfc1a58d175eaa4f",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 774459,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 4 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "DSC02580.jpg",
       "url": "https://drive.google.com/file/d/1LdkAu7Cq4skAbjU3a-X5UnHVtfSkJEvA/view",
       "mimeType": "image/jpeg",
-      "bytes": 154661,
+      "bytes": 159929,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02580.jpg",
-      "sha256": "25c9c5149bb5ffc1d4a20185554130afd5d77de0307dbc4db818835ca9030a03",
+      "sha256": "cc3169627c5c9e77bd4e889efa2af53cb2f23e086672bd37e75e4ebf52b2e576",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 725741,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
@@ -1165,52 +1165,52 @@
       "name": "x-0528.jpg",
       "url": "https://x.com/igangsan54078/status/2106309280395923653",
       "mimeType": "image/jpeg",
-      "bytes": 181305,
+      "bytes": 188916,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @igangsan54078, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/open-agi/x-0528.jpg",
-      "sha256": "68dad01776e891190dbbc724c46d22c75f2adbed3b5b6c8d22e8ce7539ec63ed",
+      "sha256": "f35422c4e4f661f0ccdca02d3c96000a32e28c98510b722ac8b33346b992359b",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 8 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "x-0535.jpg",
       "url": "https://x.com/penrian12/status/2105297767082193377",
       "mimeType": "image/jpeg",
-      "bytes": 187576,
+      "bytes": 196028,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @penrian12, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/open-agi/x-0535.jpg",
-      "sha256": "729bb7af1800683d78dd80b721406bf2a79f5e23fcd8ab2cc644f2a013a575ab",
+      "sha256": "04b7b0afa41444906012357f2510473ef7565dd8c14f6b8022c379aa0cc0c9e9",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "x-0536.jpg",
       "url": "https://x.com/penrian12/status/2105297767082193377",
       "mimeType": "image/jpeg",
-      "bytes": 146942,
+      "bytes": 154063,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @penrian12, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/open-agi/x-0536.jpg",
-      "sha256": "bba246143021541d46f842bde40880c6ce7155a399707400d4b1126cc0691594",
+      "sha256": "994badd00659af7810bbd1797dd47d9553b9a24a88062b062345471abf45570d",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "The Bridge Summit",
       "name": "x-0639.jpg",
       "url": "https://x.com/axisrobotics/status/2106402810015445379",
       "mimeType": "image/jpeg",
-      "bytes": 179106,
+      "bytes": 187284,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @axisrobotics (an official project account), collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/bridge-summit/x-0639.jpg",
-      "sha256": "352e05a63f76028c7e1ece7ad4f2ec21500109451b930eeb497227ce7c7a46cc",
+      "sha256": "60ee5e9b21a77efd66c4f42ccb3d9b9dffa0c59c549f505741d3048ff0489fac",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 2 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 2 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "The Bridge Summit",
@@ -1295,13 +1295,13 @@
       "name": "x-0714.jpg",
       "url": "https://x.com/hayandaejang/status/2108068428598923634",
       "mimeType": "image/jpeg",
-      "bytes": 266182,
+      "bytes": 277822,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @hayandaejang, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/bridge-summit/x-0714.jpg",
-      "sha256": "fd5f6588ed765db442b80e690ffa8893b55dbeaa13f8d0b37cfdf1656fe31405",
+      "sha256": "4ece92ded09dc7bf3ac7ae3268a6669173c58ac9c4fee0e0230795c986d50bcd",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 26 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 21 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 26 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 21 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "The Bridge Summit",
@@ -1360,26 +1360,26 @@
       "name": "x-0287.jpg",
       "url": "https://x.com/TonyApebayc/status/2092760885970567617",
       "mimeType": "image/jpeg",
-      "bytes": 100729,
+      "bytes": 105877,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @TonyApebayc, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0287.jpg",
-      "sha256": "18f835cea2196bce0b075263316518ab68b04c2255ab6ee50e8c5ae3bc0226f1",
+      "sha256": "bdc9d785958ed03a2c1b0a76e339d71a8e744b276775f9a8749f9a88715f8ef8",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
       "name": "x-0298.jpg",
       "url": "https://x.com/gomddun/status/2092572831238221880",
       "mimeType": "image/jpeg",
-      "bytes": 153318,
+      "bytes": 160062,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @gomddun, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0298.jpg",
-      "sha256": "ef3c5724439d701b7b1f55f1405d868e1ce37b0549fa7668850aaa30ff7481ab",
+      "sha256": "65b688abfb707768a3443b6340b1ce16787805481bb4925d0fee0a67408252fa",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
@@ -1412,13 +1412,13 @@
       "name": "x-0272.jpg",
       "url": "https://x.com/wiyeonsug/status/2092886264211272069",
       "mimeType": "image/jpeg",
-      "bytes": 182371,
+      "bytes": 192177,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @wiyeonsug, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0272.jpg",
-      "sha256": "74d777cad0c85c9a4e5414695066b8a9a0567069a48fd026fdec08b081853d16",
+      "sha256": "91bb00a87e21f4a67b63d62bfa02fb71cd493279ae2d6d91ddcef625c62297e5",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
@@ -1438,78 +1438,78 @@
       "name": "x-0348.jpg",
       "url": "https://x.com/Bridge34__/status/2092870502046191781",
       "mimeType": "image/jpeg",
-      "bytes": 67403,
+      "bytes": 61543,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @Bridge34__, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0348.jpg",
-      "sha256": "5d708f8807c248d42ab957d843bbd893ee09d9d9ab2e33c3f4fbd448a8afca6c",
+      "sha256": "947d3afa6f666e995ba923667ad0c3d773d6661fc8d94cafe74f20881b15624b",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
       "name": "x-0355.jpg",
       "url": "https://x.com/Peter210222/status/2092825199163093289",
       "mimeType": "image/jpeg",
-      "bytes": 174485,
+      "bytes": 182783,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @Peter210222, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0355.jpg",
-      "sha256": "c21cb13567c2d88d6217a6cbfc27bb7d08ec7d3dc5dfdcf3fc5265872123cc67",
+      "sha256": "0acf53887b60eb97fa662579d96ca7d2182ce3a952abcecf8002f16f60ea4695",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
       "name": "x-0356.jpg",
       "url": "https://x.com/Peter210222/status/2092825199163093289",
       "mimeType": "image/jpeg",
-      "bytes": 169133,
+      "bytes": 177323,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @Peter210222, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0356.jpg",
-      "sha256": "caaf9189d99152c9ada8821722e439b0aeb29df32dd94b4639bb4c106fb0fec2",
+      "sha256": "22c30d86736fb546bd699180c4552cced9f6bbca02ffa2af60b4c2a22e351018",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
       "name": "x-0249.jpg",
       "url": "https://x.com/dhl1013/status/2097104679171957228",
       "mimeType": "image/jpeg",
-      "bytes": 213966,
+      "bytes": 224779,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @dhl1013, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0249.jpg",
-      "sha256": "583ab9e91ea7799679161f1df799db959e1acac220732588f15041abe9140a9f",
+      "sha256": "fdd9b149193aba1c4554ce40b5eeda67581226241a5e38ec7403d815a820a5ad",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
       "name": "x-0242.jpg",
       "url": "https://x.com/xogur1685/status/2097309810702303293",
       "mimeType": "image/jpeg",
-      "bytes": 181127,
+      "bytes": 190821,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @xogur1685, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0242.jpg",
-      "sha256": "5b5d8f7ff5e0481a046ccedcb5edfba9750f740c2863547bce1b52036532dbf3",
+      "sha256": "e53b569e2d882cdaba2e03ece919dd2820e6a7471664cc7eba4409d5254771f1",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 5 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 5 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
       "name": "x-0244.jpg",
       "url": "https://x.com/jangjun219/status/2097291961141194753",
       "mimeType": "image/jpeg",
-      "bytes": 219761,
+      "bytes": 231805,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @jangjun219, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0244.jpg",
-      "sha256": "eb0fdd8f1c648683e2ca0dd9a9432c25c65eda6ca75235872955278fb9a2fd2e",
+      "sha256": "238a58bbf7a57376cda1fe2c399d4474ae30350aa3c7890020464f26b2438953",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 2 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 2 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
@@ -1555,26 +1555,26 @@
       "name": "x-0288.jpg",
       "url": "https://x.com/TonyApebayc/status/2092760885970567617",
       "mimeType": "image/jpeg",
-      "bytes": 146685,
+      "bytes": 153039,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @TonyApebayc, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0288.jpg",
-      "sha256": "0024b91e7d51cdde189ee26c4bf390a50248ac1c915421a53f90faad67827555",
+      "sha256": "6a09e13d97baaab3e9aa8cae750e91794a23384d746680d8321e0e2e5397601d",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
       "name": "x-0241.jpg",
       "url": "https://x.com/xogur1685/status/2097309810702303293",
       "mimeType": "image/jpeg",
-      "bytes": 209153,
+      "bytes": 219969,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @xogur1685, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0241.jpg",
-      "sha256": "05a5b61ba069f495da8d4c3584d37c2c90e4616f61770b00745dbbeb8c3d7731",
+      "sha256": "e1f6f87b8baef2e20252c5823f5e9004a09f0bfccf478cf806fa424b9cb7cb02",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
@@ -1607,13 +1607,13 @@
       "name": "x-0228.jpg",
       "url": "https://x.com/youddd1/status/2104208173951529298",
       "mimeType": "image/jpeg",
-      "bytes": 160150,
+      "bytes": 168434,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @youddd1, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0228.jpg",
-      "sha256": "0b146584b410610e43045fd54ac666c7acb68d6dd55ab051283816d7c96e973b",
+      "sha256": "39ef2f4d0bfbfb083fe57e9d82a7b64c40dc47d914ee5f4ea2063ace65c45f4c",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
@@ -1672,13 +1672,13 @@
       "name": "x-0461.jpg",
       "url": "https://x.com/MMTFinance/status/1981713048265277507",
       "mimeType": "image/jpeg",
-      "bytes": 182251,
+      "bytes": 196678,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @MMTFinance (an official project account), collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/momentum/x-0461.jpg",
-      "sha256": "52adf8d746f730d2cf5370fb634dcb6864a6d6932d08e8bdbfa1db005beb3440",
+      "sha256": "b773d9d327e3a4a45111b8ff3adeea5199fdc7b9addceff3689d7937f220201a",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Momentum × Buidlpad",
@@ -1698,13 +1698,13 @@
       "name": "x-0401.jpg",
       "url": "https://x.com/hAYAnS3/status/1981624077422080037",
       "mimeType": "image/jpeg",
-      "bytes": 298621,
+      "bytes": 311982,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @hAYAnS3, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/momentum/x-0401.jpg",
-      "sha256": "93f8a987fa8fa2fa257b238e4ee01ef8288cbba98b94d1e96d0eee91cc43015e",
+      "sha256": "d7dcf992d2987ee4bd3c689bdfa9937b50316062baff8be115900ca6ddab3bb8",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 8 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 12 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 8 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 12 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Momentum × Buidlpad",
@@ -1724,13 +1724,13 @@
       "name": "x-0470.jpg",
       "url": "https://x.com/penrian12/status/1980705950593094110",
       "mimeType": "image/jpeg",
-      "bytes": 148867,
+      "bytes": 156912,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @penrian12, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/momentum/x-0470.jpg",
-      "sha256": "72f7995ce1c164919c7b24e1678b030fbf3d6ed2737810665fe50883c716d6d7",
+      "sha256": "ef6438d275feacadb15ab210a9c93892de7e37fa147d7776b3d8d163d5566a11",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Momentum × Buidlpad",
@@ -1750,13 +1750,13 @@
       "name": "x-0498.jpg",
       "url": "https://x.com/minggimsoo/status/1968969695031079203",
       "mimeType": "image/jpeg",
-      "bytes": 229508,
+      "bytes": 240965,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @minggimsoo, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/momentum/x-0498.jpg",
-      "sha256": "1dd4bbe87f3c5cd166084071c878a976cd6c5bb4021fb73c2da8afec606ce40d",
+      "sha256": "0daa6c5c9d4ad0dbd38b858adcbd65f72a12ffd3b031784ad9a96c61e98e0d17",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Momentum × Buidlpad",
@@ -1867,13 +1867,13 @@
       "name": "x-0485.jpg",
       "url": "https://x.com/skskskskmandoo/status/1973098823598875108",
       "mimeType": "image/jpeg",
-      "bytes": 141004,
+      "bytes": 150114,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @skskskskmandoo, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/momentum/x-0485.jpg",
-      "sha256": "69e09965ad7b4e7205ee5c5077d67bb927509548ca4fdf9d3092994a239e06c5",
+      "sha256": "2fbe8c36fbdf53f6fde7aeaef358bd02ac24510b73ccac26e6d2b0a5674a3540",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "FOGO",
@@ -1893,26 +1893,26 @@
       "name": "x-0158.jpg",
       "url": "https://x.com/Good_boy9802/status/1999885378115850570",
       "mimeType": "image/jpeg",
-      "bytes": 118006,
+      "bytes": 120342,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @Good_boy9802, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/fogo/x-0158.jpg",
-      "sha256": "280f42de7365c4db4261e1e387f45013e6ade4ad3af0bdb56973074cbc5563e4",
+      "sha256": "bf7973901a8a4cc567d5e1fe213636b250f89124b6c535abccf287ee7c0a6651",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "FOGO",
       "name": "x-0159.jpg",
       "url": "https://x.com/Good_boy9802/status/1999885378115850570",
       "mimeType": "image/jpeg",
-      "bytes": 166392,
+      "bytes": 173209,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @Good_boy9802, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/fogo/x-0159.jpg",
-      "sha256": "4347c5fc03748e34802765c01add8304f27f9e7a8c07b9286834baa4b712fcc4",
+      "sha256": "189c6dca7dc00e75a84d87ee443e3bdfeb7822a8049b7fe004af24c63df48d82",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 8 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 5 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 8 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 5 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "FOGO",
@@ -1945,26 +1945,26 @@
       "name": "x-0156.jpg",
       "url": "https://x.com/Good_boy9802/status/1999885378115850570",
       "mimeType": "image/jpeg",
-      "bytes": 78463,
+      "bytes": 81103,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @Good_boy9802, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/fogo/x-0156.jpg",
-      "sha256": "6909a00cfe4f2cc63222b325f8f7084f73b88ff8d92a4fbebaba515759fcf8bb",
+      "sha256": "df100be1e100144bc39365558f23581a0a24ba8a5378e65ca1e32cb16353e482",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 3 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 3 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "FOGO",
       "name": "x-0167.jpg",
       "url": "https://x.com/coinhanna/status/1999722269199737134",
       "mimeType": "image/jpeg",
-      "bytes": 136162,
+      "bytes": 144133,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @coinhanna, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/fogo/x-0167.jpg",
-      "sha256": "0d704a5c2612c7a03717c93e8baaba4b77494a5da13f29d8f972a572de725a10",
+      "sha256": "0a49652b142101c80a85c4ef59dc4998debbacaa078f2b0c79911ae8b435b0e5",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 3 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 15 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 3 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 15 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "FOGO",
@@ -2036,26 +2036,26 @@
       "name": "x-0048.jpg",
       "url": "https://x.com/gomddun/status/1984501051052212274",
       "mimeType": "image/jpeg",
-      "bytes": 113670,
+      "bytes": 120236,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @gomddun, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/aria/x-0048.jpg",
-      "sha256": "237637ee5d37bc8a4c4991cc520995fc70f88d4b2fda6078b44a621cee0c56d0",
+      "sha256": "63a4da2e83cc9287bc031826d6c6c3c57ac73cc37abb72ac4aa61f36604c4d83",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 4 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 4 more areas were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Aria",
       "name": "x-0049.jpg",
       "url": "https://x.com/gomddun/status/1984501051052212274",
       "mimeType": "image/jpeg",
-      "bytes": 131944,
+      "bytes": 139084,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @gomddun, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/aria/x-0049.jpg",
-      "sha256": "7770674e5f2f74a73a723e60481b083fa4c2ef7f5fb9909b6435e01af5b98f9a",
+      "sha256": "ab8eec3760fd36cf0ce0c21670f9082ed09973ae6e2681aa52ec41e4f1e17630",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 4 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Aria",
@@ -2116,28 +2116,28 @@
       "name": "DSC02424.jpg",
       "url": "https://drive.google.com/file/d/1CrizQAhSTrn9y0ExL5EkA5PQUajjIUWU/view",
       "mimeType": "image/jpeg",
-      "bytes": 162971,
+      "bytes": 167906,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02424.jpg",
-      "sha256": "5998cec4abbd6cfc525fe7ee69e184fae469c44827c8b05cf0d8b7ee820bfaba",
+      "sha256": "e2f4d56e91df2fababbf206a02af9a8da168ca6e8403e612f4aaab6c9447b1f9",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 803689,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 2 faces close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "OpenAGI",
       "name": "DSC02514.jpg",
       "url": "https://drive.google.com/file/d/1-lUQlATLREjA_ip6UHcbLVZAEVLauPf0/view",
       "mimeType": "image/jpeg",
-      "bytes": 199855,
+      "bytes": 203814,
       "receivedAt": "2026-11-12",
       "source": "Event photographer's Drive folder \"9.29Sentient\", shared with the owner; the same shoot as the case photos already on the site.",
       "localPath": "assets/cases/open-agi/DSC02514.jpg",
-      "sha256": "d015f8d2caabe9000575959be4e6d11d604ae052247935a356cb4dad421aff42",
+      "sha256": "5bf98e0a4879ffcbf21ed9ab500f4175cac89ff4ef15ebe40dd0b5da1befae96",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
       "originalBytes": 975363,
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 2 more areas pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "The Bridge Summit",
@@ -2196,13 +2196,13 @@
       "name": "x-0254.jpg",
       "url": "https://x.com/gomddun/status/2094449230530363629",
       "mimeType": "image/jpeg",
-      "bytes": 117787,
+      "bytes": 124469,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @gomddun, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0254.jpg",
-      "sha256": "5d2492e45b9b483d541b075d19160927cd5796752786c609aebfa31422801dd3",
+      "sha256": "a478383ddbb86be3277b65bb49b70b5f0a61b5eb15f4a6d717b34e2dcc7701a1",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
@@ -2261,26 +2261,26 @@
       "name": "x-0224.jpg",
       "url": "https://x.com/FISlab/status/2104398026420928998",
       "mimeType": "image/jpeg",
-      "bytes": 393997,
+      "bytes": 406971,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @FISlab, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0224.jpg",
-      "sha256": "d28a2025a899675a00e2466f53cc99c38031be3063423ac1b5f80259412c6136",
+      "sha256": "8a3a00a7f0def2efb0eab16650734d931d93d8ce53ae32164118b4126a0a2798",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Momentum × Buidlpad",
       "name": "x-0383.jpg",
       "url": "https://x.com/JH_929292/status/1981778802213892384",
       "mimeType": "image/jpeg",
-      "bytes": 204720,
+      "bytes": 215091,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @JH_929292, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/momentum/x-0383.jpg",
-      "sha256": "0be8b951bd8801b7f0e54286a2f02d22e9e5feacf6bb90f4ba85dfdb29f662af",
+      "sha256": "7c8b421b34e907922cc8d1c5d8ce9aadd9a4ec6ad0c3bba4d5552fc55a99806c",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face close to the camera pixelated on 2026-11-12 under the owner's rule; presenters on stage and printed faces are left as they are. On 2026-11-13, after the owner said some people were still recognisable, 1 more area were pixelated under a stricter check (every face that can be made out, not only those close to the camera). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "FOGO",
@@ -2515,26 +2515,26 @@
       "name": "x-0264.jpg",
       "url": "https://x.com/choejunho5625/status/2093187592946872687",
       "mimeType": "image/jpeg",
-      "bytes": 206169,
+      "bytes": 219050,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @choejunho5625, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0264.jpg",
-      "sha256": "c865c19ffcc1ad59a396847114ce345756c48cea6c71b1695914a6324374af26",
+      "sha256": "8558ba11e74521a6f2dad87009fae6b8fd3a8bf0269b3bc4213f8125f4979f8a",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face pixelated on 2026-11-13 (every face that can be made out; presenters on stage and printed faces are left as they are)."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. 1 face pixelated on 2026-11-13 (every face that can be made out; presenters on stage and printed faces are left as they are). On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "KGEN",
       "name": "x-0338.jpg",
       "url": "https://x.com/superJinee/status/2093926607446782150",
       "mimeType": "image/jpeg",
-      "bytes": 281243,
+      "bytes": 292482,
       "receivedAt": "2026-11-12",
       "source": "Photo attached to a public X post by @superJinee, collected on 2026-11-12; published on the wall at the owner's decision.",
       "localPath": "assets/cases/kgen/x-0338.jpg",
-      "sha256": "7f16b66a71c5c1799214162d20e2aa2607d9d872e344bd290b5486ed5c165e2d",
+      "sha256": "0e4b736b5858187c1f66bee6de084533109cd22edcdfabaab78af9270dc23bce",
       "usage": "Homepage photo wall only (public/wall-photos.js).",
-      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata."
+      "edit": "Scaled to 1280px on the long side and saved as JPEG without metadata. On 2026-11-13 the owner reported that people holding microphones were still recognisable; 1 more area pixelated (presenters, panellists and real people's faces shown on screens or slides)."
     },
     {
       "group": "Kaito",
@@ -2597,9 +2597,9 @@
     "kgenCasePhotos": [
       {
         "localFile": "assets/cases/kgen/stage-and-audience.jpg",
-        "bytes": 144933,
-        "sha256": "100e5138e4d68995e7a10dd067c0db959f22a0d1d2e7906f67bfe7ecb9dbb3fa",
-        "areasPixelated": 37
+        "bytes": 151894,
+        "sha256": "24f17ccb3a0435155107d6b36e660f5dccd1309af5ff99dbe7d207c79e09669a",
+        "areasPixelated": 38
       },
       {
         "localFile": "assets/cases/kgen/stage-participation.jpg",
@@ -2609,9 +2609,9 @@
       },
       {
         "localFile": "assets/cases/kgen/community-mission.jpg",
-        "bytes": 89402,
-        "sha256": "da68f36fffbc2d9d03b7b8fa01f910df8497c0d3dd70271282262b6b1490549b",
-        "areasPixelated": 2
+        "bytes": 93672,
+        "sha256": "d87052fed5786f3bf829644743dd3635f8ae18a6f0418a4005e0fffcf81e6ef0",
+        "areasPixelated": 3
       },
       {
         "localFile": "assets/cases/kgen/catering.jpg",
@@ -2620,5 +2620,34 @@
         "areasPixelated": 4
       }
     ]
+  },
+  "presenterCheck20261113": {
+    "rule": "Every real person's face is pixelated, now including people presenting (microphone, podium, panel seat, MC) and photographs of real people shown on screens or slides. Illustrations, mascots and printed artwork are left. Asked for by the owner after seeing a woman holding a microphone still recognisable on the wall.",
+    "scope": "200 wall photos: the 60 where presenters had been left were re-read by eye, a face detector was run over the final version of all 200, and four independent reviewers re-read the 60 as 2x tiles.",
+    "result": "80 areas pixelated in 51 photos.",
+    "notChanged": "The films themselves (FOGO Mainnet Party, Korea FOGO Meet Up, KGEN after-movie) are the owner's edits and still show faces when played.",
+    "filmPosters": {
+      "change": "On 2026-11-13 the three film posters were replaced with frames of the same films that show no faces; the earlier posters showed a crowd, a group photo and presenters on stage.",
+      "posters": {
+        "assets/cases/fogo-mainnet.jpg": {
+          "frameAt": "0:17.0",
+          "shows": "the \"Welcome Fogees\" projection on the venue wall",
+          "bytes": 38651,
+          "sha256": "562d06abfc1de78abb9994056e64da025a9c76e50c441e1762e77589ce0f1508"
+        },
+        "assets/cases/fogo-meetup.jpg": {
+          "frameAt": "0:05.8",
+          "shows": "the film's own title card (FOGO mark, 25.7.13, Korea FOGO Meet Up)",
+          "bytes": 33494,
+          "sha256": "768dcb7d9ccf0e6d35a3a2bbe6b2e6735d210e436bb05c2db91989af32271b5d"
+        },
+        "assets/cases/kgen/after-movie.jpg": {
+          "frameAt": "0:03.8",
+          "shows": "the VeriFi Korea · KGEN banner in the venue lobby",
+          "bytes": 53070,
+          "sha256": "d24e31b47847e3574dd9e56caf98a21f794ac27b16ccbd99473d11268b5968c5"
+        }
+      }
+    }
   }
 }
