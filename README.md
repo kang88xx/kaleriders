@@ -39,7 +39,7 @@ Faces close to the camera are pixelated under the owner's rule (attendees, booth
 
 Since 2026-11-13 every real person's face is pixelated: the small faces at the back, then presenters, panellists, MCs and photographs of real people shown on screens or slides, after the owner reported a woman holding a microphone still recognisable. Only illustrations, mascots and printed artwork are left, and the film posters are frames without faces (`docs/case-study-sources.json`, `presenterCheck20261113`).
 
-On phones (600px and below) the wall shows 80 of the 200 photos, 10 × 8, drawn afresh on each visit, with the opened photo 6 × 4 tiles; the owner found the page too long there. The rest of the phone layout is in `public/mobile-compact.css` and described in `DESIGN.md` under Responsive behavior.
+On phones (600px and below) the wall shows 80 of the 200 photos, 10 × 8, drawn afresh on each visit, with the opened photo 6 × 4 tiles; the owner found the page too long there. The rest of the phone layout is in `public/mobile-compact.css` and described in `DESIGN.md` under Responsive behavior. On phones the research list shows its three titles only; the descriptions stay in the page for screen readers.
 
 The wall draws a small copy of every photo from `public/assets/cases/thumbs/` (short side 200px, about 2.4 MB for the whole wall) and loads the full file only when a photo is opened. A photo's optional `position` (CSS `object-position`, such as `50% 20%`) keeps its subject inside the square tile and the opened frame.
 

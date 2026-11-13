@@ -5,7 +5,7 @@ import { initFaq } from './faq.js';
 import { initRouteMotion } from './route-motion.js?v=route-flow-20261108';
 import { initRefreshServices } from './refresh-services.js?v=leaf-20261113';
 import { initRefreshInsights } from './refresh-insights.js?v=blocks-20261113';
-import { initRefreshMedia } from './refresh-media.js?v=mobile-20261113';
+import { initRefreshMedia } from './refresh-media.js?v=mobile2-20261113';
 import { initRefreshTeam } from './refresh-team.js?v=focus-20261113';
 
 initRefreshServices();

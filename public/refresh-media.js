@@ -1,5 +1,5 @@
 import { caseStudies } from './case-studies-data.js';
-import { initRefreshGallery } from './refresh-gallery.js?v=mobile-20261113';
+import { initRefreshGallery } from './refresh-gallery.js?v=mobile2-20261113';
 import { compactColumns, wideColumns } from './gallery-fixed/layouts.js?v=mobile-20261113';
 import { addedWallPhotos } from './wall-photos.js?v=wall-200-20261113';
 
@@ -195,7 +195,7 @@ export function initRefreshMedia(doc = document) {
       const photos = wall.phone ? pickPhoneWall(gallery) : gallery;
       wall.gallery = initRefreshGallery(wall.grid, photos, doc, { compactCount: wall.phone ? phoneTiles : photos.length });
       bindings.push(language => wall.gallery.updateLanguage(language));
-      wall.status = wall.grid.previousSibling; // the gallery puts its status line before the grid
+      wall.status = wall.gallery.status;
     }
     [wall.grid, wall.status].forEach(node => { if (node) node.style.display = shown ? '' : 'none'; });
   });
@@ -221,15 +221,21 @@ export function initRefreshMedia(doc = document) {
     element('p', '', caption, copy('행사 리캡 영상', 'Event recap'));
   });
   // At 760px and below the films are a swipe slider (mobile-compact.css); these dots show which
-  // film is in view. They are decoration: each film stays reachable by its own play button.
+  // film is in view. They are decoration: each film stays reachable by its own play button. A
+  // pointer can press one to bring its film in, for a mouse without sideways scrolling.
   const dots = element('div', 'rm-film-dots', films);
   dots.setAttribute('aria-hidden', 'true');
   const dotList = eventFilms.map((_, index) => element('span', index ? '' : 'is-current', dots));
   const view = doc.defaultView;
   // Where a film's left edge rests when it is the current one.
   const snapLine = () => filmsGrid.getBoundingClientRect().left + (Number.parseFloat(view.getComputedStyle(filmsGrid).scrollPaddingLeft) || 0);
+  const slideTo = card => {
+    const still = view.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    filmsGrid.scrollTo({ left: filmsGrid.scrollLeft + card.getBoundingClientRect().left - snapLine(), behavior: still ? 'auto' : 'smooth' });
+  };
   let dotFrame = 0;
-  filmsGrid.addEventListener('scroll', () => {
+  // Also after a resize: the slider's scroll position does not survive a trip to the wide layout.
+  const markDot = () => {
     if (dotFrame) return;
     dotFrame = view.requestAnimationFrame(() => {
       dotFrame = 0;
@@ -238,14 +244,18 @@ export function initRefreshMedia(doc = document) {
       const current = distances.indexOf(Math.min(...distances));
       dotList.forEach((dot, index) => dot.classList.toggle('is-current', index === current));
     });
-  }, { passive: true });
+  };
+  filmsGrid.addEventListener('scroll', markDot, { passive: true });
+  view.addEventListener('resize', markDot, { passive: true });
+  dotList.forEach((dot, index) => dot.addEventListener('click', () => {
+    const card = filmsGrid.children[index];
+    if (card) slideTo(card);
+  }));
   // A film reached with the keyboard, or pressed while it only peeks in, slides fully into view.
   filmsGrid.addEventListener('focusin', event => {
     if (filmsGrid.scrollWidth <= filmsGrid.clientWidth) return; // side by side on wide screens
     const card = [...filmsGrid.children].find(child => child.contains(event.target));
-    if (!card) return;
-    const still = view.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    filmsGrid.scrollTo({ left: filmsGrid.scrollLeft + card.getBoundingClientRect().left - snapLine(), behavior: still ? 'auto' : 'smooth' });
+    if (card) slideTo(card);
   });
 
   const friendsShell = element('div', 'rm-friends-shell', friendsRoot);

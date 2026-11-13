@@ -157,6 +157,8 @@ test('the gallery keeps square tiles in a fixed frame and applies a photo crop f
   for (const [viewport, width, columns, used] of [[1440, 1000, 25, wallTiles], [390, 390, 10, phoneTiles]]) {
     const { doc, grid } = fakeGallery(width, viewport);
     const gallery = initRefreshGallery(grid, wall, doc, { compactCount: phoneTiles });
+    // refresh-media.js hides the status line of whichever wall is set aside, so the gallery hands it back.
+    assert.equal(gallery.status.className, 'rg-status visually-hidden');
     const [underlay, ...allTiles] = grid.children;
     const cell = width / columns;
     const frameHeight = `${used / columns * cell}px`;

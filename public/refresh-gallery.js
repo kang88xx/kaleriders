@@ -329,5 +329,5 @@ export function initRefreshGallery(grid, photos, doc = document, { compactCount 
   layout(false);
   syncAutoplay();
   grid.dataset.galleryReady = 'true';
-  return { updateLanguage };
+  return { updateLanguage, status };
 }

@@ -24,9 +24,11 @@
   .rm-event-film .rm-film-caption p { display: block; font-size: 12px; }
   .rm-play-icon, .rm-event-film:not(:first-child) .rm-play-icon { width: 46px; height: 46px; }
   /* Position dots under the slider (refresh-media.js); decoration only. */
-  .rm-film-dots { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
-  .rm-film-dots > span { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background-color .2s, width .2s; }
-  .rm-film-dots > span.is-current { width: 18px; border-radius: 3px; background: var(--blue); }
+  .rm-film-dots { display: flex; justify-content: center; margin-top: 3px; }
+  /* Each dot is drawn 6px wide inside a larger area a pointer can press. */
+  .rm-film-dots { gap: 0; }
+  .rm-film-dots > span { box-sizing: content-box; width: 6px; height: 6px; padding: 9px 4px; border-radius: 50%; background: var(--line) content-box; cursor: pointer; transition: background-color .2s, width .2s; }
+  .rm-film-dots > span.is-current { width: 18px; border-radius: 12px; background: var(--blue) content-box; }
 }
 @media (min-width: 761px) { .rm-film-dots { display: none; } }
 @media (max-width: 600px) { .rm-films { --bleed: 20px; } }
@@ -132,7 +134,10 @@
   .ri-research-list { margin: 12px 0 0; }
   .ri-research-list li { gap: 10px; padding-block: 8px; }
   .ri-research-list h4 { margin-bottom: 1px; font-size: 15px; }
-  .ri-research-list p { font-size: 14px; line-height: 1.5; max-width: none; }
+  /* The research list is titles only on phones, to shorten the longest section (owner, 2026-11-13).
+     The descriptions stay in the page for screen readers. */
+  .ri-research-list p { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .ri-research-list li { align-items: baseline; }
   .ri-handoff { margin-top: 0; padding-top: 10px; line-height: 1.6; }
   /* The "Example report" pill sits on the line between the two cards instead of a row of its own. */
   .ri-report { position: relative; }

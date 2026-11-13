@@ -2636,10 +2636,11 @@
           "sha256": "562d06abfc1de78abb9994056e64da025a9c76e50c441e1762e77589ce0f1508"
         },
         "assets/cases/fogo-meetup.jpg": {
-          "frameAt": "0:05.8",
-          "shows": "the film's own title card (FOGO mark, 25.7.13, Korea FOGO Meet Up)",
-          "bytes": 33494,
-          "sha256": "768dcb7d9ccf0e6d35a3a2bbe6b2e6735d210e436bb05c2db91989af32271b5d"
+          "frameAt": "0:08.4",
+          "shows": "FOGO T-shirts laid out on the merch table, a guest seen from the shoulders down; no faces and no caption",
+          "bytes": 48610,
+          "sha256": "24f441029e9f165094afb2bfaf2b0e03ad010b08f618e9ec9558e64cde8d4c68",
+          "replaced": "The film's title card at 0:05.8, used earlier on 2026-11-13, whose lettering showed under the film title."
         },
         "assets/cases/kgen/after-movie.jpg": {
           "frameAt": "0:03.8",
