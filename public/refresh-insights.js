@@ -100,8 +100,8 @@ export function initRefreshInsights() {
   if (!reducedMotion.matches) period = shown = performanceData.periods[0];
 
   // A mosaic standing for a figure: four rows of blocks, as wide as the figure, shaded from a hash
-  // of its text so each period looks different and the same period always looks the same.
-  function mosaic(text) {
+  // of its text so each figure looks different and the same figure always looks the same.
+  function mosaicBlocks(text) {
     const columns = Math.max(6, Math.round(text.length * 2.1)), rows = 4;
     let seed = [...text].reduce((hash, character) => (Math.imul(hash, 31) + character.charCodeAt(0)) >>> 0, 7);
     let cells = '';
@@ -110,8 +110,19 @@ export function initRefreshInsights() {
       const shade = (.1 + (seed >>> 8) % 1000 / 1000 * .55) * (row === 0 || row === rows - 1 ? .6 : 1);
       cells += `<rect x="${column}" y="${row}" width="1.03" height="1.03" opacity="${shade.toFixed(2)}"/>`;
     }
+    return { columns, rows, cells };
+  }
+  // In running text: sized by the font, one em tall.
+  function mosaic(text) {
+    const { columns, rows, cells } = mosaicBlocks(text);
     return `<svg class="ri-mosaic" viewBox="0 0 ${columns} ${rows}" width="${columns * .25}em" height="${rows * .25}em" fill="currentColor" aria-hidden="true" focusable="false">${cells}</svg>`;
   }
+  // Inside the chart: `height` pixels tall and placed with x and y, in chart pixels.
+  function chartMosaic(text, height) {
+    const { columns, rows, cells } = mosaicBlocks(text);
+    return { viewBox: `0 0 ${columns} ${rows}`, width: columns * height / rows, cells };
+  }
+  const axisHeight = 12, valueHeight = 14; // the sizes the axis figures and the end figure had as text
 
   // The point on the line after `weeks` weeks (fractional between two weekly figures).
   function pointAt(weeks) {
@@ -130,11 +141,20 @@ export function initRefreshInsights() {
     const end = chart.querySelector('[data-ri-end]');
     end.setAttribute('cx', point.x);
     end.setAttribute('cy', point.y);
+    // The figure by the end point is a mosaic too (owner, 2026-11-13). It stands for the period
+    // being shown, so its blocks keep still while the point travels.
     const value = chart.querySelector('[data-ri-value]');
-    value.setAttribute('x', point.x);
-    value.setAttribute('y', point.y - 14);
-    value.setAttribute('text-anchor', weeks > span - .5 ? 'end' : 'middle');
-    value.textContent = number(Math.round(point.actions));
+    const figure = number(performanceData.weeks[period - 1].actions);
+    if (value.dataset.riFigure !== figure) {
+      const blocks = chartMosaic(figure, valueHeight);
+      value.dataset.riFigure = figure;
+      value.setAttribute('viewBox', blocks.viewBox);
+      value.setAttribute('width', blocks.width);
+      value.innerHTML = blocks.cells;
+    }
+    const width = Number(value.getAttribute('width'));
+    value.setAttribute('x', weeks > span - .5 ? point.x - width : point.x - width / 2);
+    value.setAttribute('y', point.y - 13 - valueHeight);
   }
   function drawChart() {
     // An unfinished fade belongs to the nodes this replaces: drop it and show its period at once.
@@ -156,17 +176,22 @@ export function initRefreshInsights() {
     const y = actions => baseline - actions / max * (baseline - 32);
     geometry = { x, y };
     const points = performanceData.weeks.map(row => `${x(row.week)},${y(row.actions)}`).join(' ');
+    // The scale's figures are blocks as well, right-aligned where the numbers stood.
+    const axisMosaic = tick => {
+      const blocks = chartMosaic(number(tick), axisHeight);
+      return `<svg class="ri-axis-mosaic" x="${38 - blocks.width}" y="${y(tick) - axisHeight / 2}" width="${blocks.width}" height="${axisHeight}" viewBox="${blocks.viewBox}" fill="currentColor" aria-hidden="true" focusable="false">${blocks.cells}</svg>`;
+    };
     chart.innerHTML = `
       <title id="ri-chart-title">${t('주간 완료 행동')}</title><desc id="ri-chart-description"></desc>
       <defs><clipPath id="ri-reveal"><rect data-ri-clip x="0" y="0" width="0" height="${chartHeight}"/></clipPath></defs>
-      ${Array.from({ length: max / step + 1 }, (_, index) => index * step).map(tick => `<line class="ri-gridline" x1="48" y1="${y(tick)}" x2="${right}" y2="${y(tick)}"/><text class="ri-axis" x="38" y="${y(tick) + 4}" text-anchor="end">${number(tick)}</text>`).join('')}
+      ${Array.from({ length: max / step + 1 }, (_, index) => index * step).map(tick => `<line class="ri-gridline" x1="48" y1="${y(tick)}" x2="${right}" y2="${y(tick)}"/>${axisMosaic(tick)}`).join('')}
       <g data-ri-series clip-path="url(#ri-reveal)">
         <polygon class="ri-chart-fill" points="48,${baseline} ${points} ${x(span)},${baseline}"/>
         <polyline class="ri-chart-line" points="${points}"/>
         ${performanceData.weeks.map(row => `<circle class="ri-chart-dot" cx="${x(row.week)}" cy="${y(row.actions)}" r="3.5"/>`).join('')}
       </g>
       <circle class="ri-chart-end" data-ri-end r="6"/>
-      <text class="ri-chart-value" data-ri-value></text>
+      <svg class="ri-chart-value" data-ri-value height="${valueHeight}" fill="currentColor" aria-hidden="true" focusable="false"></svg>
       ${[1, ...performanceData.periods].map(week => `<text class="ri-axis" x="${x(week)}" y="${chartHeight - 10}" text-anchor="middle">${language === 'en' ? `W${week}` : `${week}주`}</text>`).join('')}`;
     describeChart();
     setProgress(shown);

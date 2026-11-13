@@ -23,3 +23,30 @@ test('each period sums the weeks up to it', () => {
   }
   assert.throws(() => getPerformanceSummary(12), RangeError);
 });
+
+// The owner asked on 2026-11-13 for the chart's scale and the figure by the end point to be drawn
+// as a mosaic, like the three totals. Only the week labels (W1, 2주) remain as text in the chart.
+test('the chart writes no figure as text', async () => {
+  const { readFileSync } = await import('node:fs');
+  const source = readFileSync(new URL('../public/refresh-insights.js', import.meta.url), 'utf8');
+  const texts = [...source.matchAll(/<text\b[^>]*>(.*?)<\/text>/g)];
+  assert.equal(texts.length, 1, 'The chart should hold one kind of text: the week labels');
+  assert(!texts[0][1].includes('number('), 'A chart text shows a figure');
+  assert.match(source, /<svg class="ri-chart-value" data-ri-value/, 'The figure by the end point should be a mosaic');
+  assert.match(source, /\$\{axisMosaic\(tick\)\}/, 'The scale should be drawn with mosaics');
+  assert(!/textContent\s*=\s*number\(/.test(source), 'A figure is written into the chart as text');
+});
+
+// The chart mosaics are filled with currentColor, so each needs a colour from the stylesheet:
+// without one they would take the page's text colour by accident.
+test('the stylesheet colours both chart mosaics', async () => {
+  const { readFileSync } = await import('node:fs');
+  const source = readFileSync(new URL('../public/refresh-insights.js', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../public/refresh-insights.css', import.meta.url), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
+  for (const name of ['ri-axis-mosaic', 'ri-chart-value']) {
+    assert(source.includes(`<svg class="${name}"`), `The chart no longer draws .${name}`);
+    const rules = [...css.matchAll(new RegExp(`\\.${name}\\s*\\{([^}]*)\\}`, 'g'))].map(match => match[1]);
+    assert(rules.some(rule => /(^|;)\s*color\s*:/.test(rule)), `.${name} has no colour`);
+    assert(!rules.some(rule => /\bfont(-size)?\s*:/.test(rule)), `.${name} still carries text styles`);
+  }
+});

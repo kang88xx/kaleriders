@@ -36,14 +36,17 @@
 .ri-chart { margin: 23px 0 4px; }
 .ri-chart figcaption { display: flex; justify-content: space-between; gap: 12px; font-size: 12px; }
 .ri-chart figcaption > span:last-child { color: var(--muted); font-size: 12px; }
-.ri-chart svg { width: 100%; height: auto; display: block; overflow: visible; }
+.ri-chart > svg { width: 100%; height: auto; display: block; overflow: visible; }
 .ri-gridline { stroke: #254ad825; stroke-width: 1; stroke-dasharray: 3 5; }
 .ri-axis { fill: var(--muted); font: 12px var(--sans); }
 .ri-chart-fill { fill: var(--lime); opacity: .55; }
 .ri-chart-line { fill: none; stroke: var(--blue); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
 .ri-chart-dot { fill: var(--blue); }
 .ri-chart-end { fill: var(--blue); stroke: #fbfaf5; stroke-width: 2; }
-.ri-chart-value { fill: var(--ink); font: 500 14px var(--sans); }
+/* Since 2026-11-13 the scale's figures and the figure by the end point are mosaics as well. They
+   are svg elements inside the chart, which is why the chart's own size rules say `.ri-chart > svg`. */
+.ri-axis-mosaic { color: var(--ink); opacity: .75; }
+.ri-chart-value { color: var(--ink); }
 .ri-report-foot { display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 12px; color: var(--muted); }
 .ri-report-foot strong { font-weight: 500; color: var(--ink); }
 .ri-table-details { border-top: 1px solid var(--line); margin-top: 18px; }
@@ -102,9 +105,8 @@
 /* Example reporting is identified beside the numbers, not in a distant footnote. */
 #growth { padding-block: 80px 48px; }
 .ri-example-note { font-size: 13px; line-height: 1.8; color: var(--muted); margin-top: 10px; }
-.ri-chart svg { height: 220px; }
+.ri-chart > svg { height: 220px; }
 .ri-axis { font-size: 12px; }
-.ri-chart-value { font-size: 14px; }
 .ri-disclaimer { font-size: 12px; max-width: 390px; }
 @media (max-width: 600px) {
   #growth { padding-block: 52px 32px; }
@@ -113,7 +115,7 @@
   .ri-metrics > div, .ri-metrics > div:first-child { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 0; border: 0; }
   .ri-metrics dd { margin: 0; font-size: 26px; }
   .ri-metrics dt { font-size: 13px; }
-  .ri-chart svg { height: 210px; }
+  .ri-chart > svg { height: 210px; }
   .ri-layout > article { padding-inline: 18px; }
 }
 /* A thumb slides between the period buttons instead of each button filling in (owner, 2026-11-13). */

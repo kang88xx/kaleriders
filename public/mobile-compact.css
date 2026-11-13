@@ -156,7 +156,7 @@
   /* The widest total (8 weeks of impressions) is wider than a column at 350px and below. */
   .ri-metrics .ri-mosaic { max-width: 100%; height: auto; }
   .ri-chart { margin: 10px 0 0; }
-  .ri-chart svg { height: 180px; }
+  .ri-chart > svg { height: 180px; }
   .ri-report-foot { flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 2px 12px; }
   .ri-table-details { margin-top: 10px; }
   .ri-table-details summary { padding-top: 12px; }
