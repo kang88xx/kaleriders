@@ -1,12 +1,20 @@
 # English social preview
 
-- Published asset: `public/assets/kale-riders-social-en-v1.png`
-- Dimensions: 1736 × 906, opaque PNG.
-- Tool: built-in `image_gen.imagegen`, reference-image generation mode.
-- Reference: original transparent `public/assets/favicon-kale-rider.png`.
-- Usage: Open Graph and Twitter large-image metadata; independent of body language.
-- Visual inspection confirmed the English headline, description, acronym and domain are legible and correctly spelled.
+- Published asset: `public/assets/kale-riders-social-en-v2.png`
+- Dimensions: 1200 × 630, opaque PNG, about 150 KB.
+- Source: `scripts/social-card.html`, drawn with the site's own files: the logo
+  (`public/assets/kale-riders-logo-transparent.png`), the leaf (`public/assets/favicon-kale-rider.png`)
+  and Pretendard Variable. `node scripts/render-social-card.mjs <path to playwright-core>` writes the PNG.
+- Text on the image: the logo and the headline “Global projects. Local connections.” Nothing else.
+  On 2026-11-13 the owner asked for less text on the thumbnail and chose this from two drafts
+  (kept in `../../previews/share-card-20261113/`).
+- Usage: Open Graph and Twitter large-image metadata on the homepage and `/sample`; independent of body language.
+- Title: “KALE Riders | Your Local Partner in Korea” (unchanged).
+- Description, shortened the same day: “KOL campaigns, community management, meetups, press and
+  airdrops for global projects entering Korea.”
 
-## Generation prompt
+## Earlier version
 
-Use case: ads-marketing. Create a polished English-only website social-sharing thumbnail / Open Graph brand card for KALE Riders, landscape 1536x800, approximately 1.92:1 ratio. The provided transparent leaf image is the existing official brand symbol: use this exact green leaf with cobalt blue outline, preserving its silhouette and colors without reinterpreting or adding details. Design language matches kaleriders.com: warm ivory #f4f3eb, cobalt blue #254ad8, green leaf, editorial clean typography and generous spacing. Composition: 70px safe margins; a small leaf symbol plus bold 'KALE Riders' at top left; large left-aligned two-line headline 'Global projects.' then 'Local connections.'; supporting description below in clear readable smaller sans-serif 'We help global projects take root in Korea' then 'and build lasting fan relationships.'; bottom left 'KOLs, Authenticity, Loyalty & Engagement'; bottom right 'kaleriders.com'. A larger copy of the original leaf anchors the right third over sparse thin cobalt orbital arcs and small green dots, with no overlap into text. Make all exact English text highly legible at social preview size. No Korean, no invented words, no button, no UI screenshot, no gradients, no shadows, no mockup frame, no extra logos. This is the final card itself, flat edge-to-edge image. Background opaque warm ivory.
+`public/assets/kale-riders-social-en-v1.png` (1736 × 906) stays in the repository so link previews
+that messengers cached with the old address keep loading. It was generated with an image model from
+the leaf symbol and carried the headline, a two-line description, the KALE acronym and the domain.

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<title>KALE Riders share card</title>
+<!-- The link-preview image, 1200 × 630. scripts/render-social-card.mjs turns this page into
+     public/assets/kale-riders-social-en-v2.png. The owner asked on 2026-11-13 for less text on it:
+     the logo and the two-line headline only. -->
+<style>
+  @font-face { font-family: 'Pretendard Variable'; font-weight: 45 920; src: url('../public/assets/fonts/PretendardVariable.woff2') format('woff2-variations'); }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body { position: relative; background: #f4f3eb; color: #254ad8; font-family: 'Pretendard Variable', sans-serif; }
+  .orbits { position: absolute; inset: 0; width: 1200px; height: 630px; }
+  .orbits ellipse { fill: none; stroke: #254ad8; stroke-width: 1.6; }
+  .orbits circle { fill: #7fcf1f; }
+  .lockup { position: absolute; left: 72px; top: 66px; height: 60px; }
+  h1 { position: absolute; left: 69px; top: 262px; font-size: 76px; font-weight: 800; line-height: 1.1; letter-spacing: -.04em; white-space: nowrap; }
+  .leaf { position: absolute; right: 26px; top: 100px; width: 440px; height: 440px; }
+</style>
+</head>
+<body>
+  <svg class="orbits" viewBox="0 0 1200 630" aria-hidden="true">
+    <ellipse cx="985" cy="322" rx="262" ry="170" transform="rotate(-24 985 322)"/>
+    <ellipse cx="1010" cy="300" rx="205" ry="300" transform="rotate(18 1010 300)"/>
+    <circle cx="767" cy="330" r="9"/><circle cx="1111" cy="66" r="9"/><circle cx="1108" cy="548" r="9"/>
+  </svg>
+  <svg class="lockup" viewBox="277 244 1695 310" aria-label="KALE Riders"><image href="../public/assets/kale-riders-logo-transparent.png" width="1984" height="793"/></svg>
+  <h1>Global projects.<br>Local connections.</h1>
+  <img class="leaf" src="../public/assets/favicon-kale-rider.png" alt="">
+</body>
+</html>

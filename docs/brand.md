@@ -24,7 +24,8 @@ Riders의 설명은 사전적 번역이 아닌 이름에 담은 브랜드 이야
 
 - 브라우저 탭 제목과 검색·링크 공유 제목/설명은 화면 언어와 무관하게 영문으로 유지한다.
 - 영문 탭 제목: **KALE Riders | Your Local Partner in Korea**.
-- 공유 이미지: `public/assets/kale-riders-social-en-v1.png` (1736 × 906). 영문 헤드라인, 서비스 설명, KALE의 풀네임, 도메인을 포함한다.
+- 공유 이미지: `public/assets/kale-riders-social-en-v2.png` (1200 × 630). 로고와 영문 헤드라인 두 줄(Global projects. Local connections.)만 넣는다. 2026-11-13에 사용자가 썸네일 글자를 줄여 달라고 요청했다.
+- 공유 설명: **KOL campaigns, community management, meetups, press and airdrops for global projects entering Korea.**
 - Google 계정 프로필은 배경이 투명한 기존 leaf 심볼 `favicon-kale-rider.png`를 사용한다. Gmail 서명은 영문으로만 구성한다.
 - 영문 브랜드 의미: **Turning authentic engagement into lasting fan relationships.**
 - Buidlpad는 공식 홈페이지 헤더에서 추출한 원본 가로형 SVG를 사용한다. 추출 근거와 해시는 `reference-logo-sources.json`에 기록한다.
